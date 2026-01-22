@@ -8,8 +8,8 @@ function App() {
   // 0: 1: 2: 3: 4: 5: 6:
   const [payCycle, setPayCycle] = useState('Annual')
   const [fortnightlyWorkHours, setFortnightlyWorkHours] = useState(0)
-  const [salaryIncludesSuper, setSalaryIncludesSuper] = useState(false)
-  const [studentLoan, setStudentLoan] = useState(false)
+  const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
+  const [studentLoan, setStudentLoan] = useToggle()
   const [bonus, setBonus] = useState(0)
   const [bonusFrequency, setBonusFrequency] = useState('')
   const [payFrequency, setPayFrequency] = useState('Annual')
@@ -120,14 +120,14 @@ function App() {
                     <tr>
 
                       <td colSpan={2}>
-                        <button>Salary includes Superannuation</button>
+                        <button onClick={setSalaryIncludesSuper}>Salary includes Superannuation</button>
                         <span> Super Guarantee of $[SUPER AMMOUNT] is paid on top of your ${salary} [CONVERT TO ANNUAL SALARY] annual salary</span>
                       </td>
                     </tr>
                     <tr>
 
                       <td colSpan={2}>
-                        <button>Student loan</button>
+                        <button onClick={setStudentLoan}>Student loan</button>
                         <span>HELP (HECS), VSL, TSL, SSL, SFSS</span>
                       </td>
                     </tr>

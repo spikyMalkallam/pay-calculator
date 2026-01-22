@@ -1,0 +1,114 @@
+.dropdown-container {
+    width: 100%;
+    border: 1px solid #000000;
+    cursor: pointer;
+    margin: auto;
+    overflow: hidden;
+    transition: max-height 0.7s cubic-bezier(0.4, 0, 0.4, 1);
+}
+
+.dropdown-container .dropdown-label {
+    text-align: left;
+    padding: 12px 15px;
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    font-family: "Brandon Grotesque";
+}
+
+/* The DETAILS element holds the content to be revealed */
+.dropdown-container .dropdown-details {
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+/* Styles to apply when the container is expanded */
+.dropdown-details.expanded {
+    max-height: 500px;
+}
+
+/* Styling for the inner content (paragraph) */
+.dropdown-container .dropdown-details p {
+    padding: 15px;
+    margin: 0;
+    line-height: 1.6;
+    color: #555;
+    background-color: white;
+    border-top: 1px solid #cecece;
+}
+
+.finance-dropdown-name {
+    text-align: left;
+    width: 100%;
+}
+
+.finance-dropdown-amount {
+    text-align: right;
+}
+
+.dropdown-sub-rows {
+    width: 100%;
+}
+
+.dropdown-header {
+    width: 100%;
+    background-color: #000000;
+}
+
+.finance-dropdown-header-amount {
+    text-align: right;
+    padding: 12px 0px;
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    font-family: "Brandon Grotesque";
+}
+
+.coloured-dot-Taxable {
+    width: 12px;
+    height: 12px;
+    border-radius: 20px;
+    background-color: rgb(113, 151, 44);
+    margin: 5px 5px 5px 10px;
+}
+
+.coloured-dot-Superannuation {
+    width: 12px;
+    height: 12px;
+    border-radius: 20px;
+    background-color: rgb(51, 162, 198);
+    margin: 5px 5px 5px 10px;
+}
+
+.coloured-dot-Tax {
+    width: 12px;
+    height: 12px;
+    border-radius: 20px;
+    background-color: rgb(234, 159, 33);
+    margin: 5px 5px 5px 10px;
+}
+
+.coloured-dot-header-Taxable {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: rgb(113, 151, 44);
+    margin: 5px 5px 5px 10px;
+}
+
+.coloured-dot-header-Superannuation {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: rgb(51, 162, 198);
+    margin: 5px 5px 5px 10px;
+}
+
+.coloured-dot-header-Tax {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: rgb(234, 159, 33);
+    margin: 5px 5px 5px 10px;
+}

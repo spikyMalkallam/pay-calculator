@@ -1,69 +1,92 @@
-#root {
-  max-width: 1920px;
+:root {
+
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
   background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0);
+  --hive-yellow: #fdc333;
+  --background-grey: #363636;
+  --tax-colour: #71972c;
+  --super-colour: #33a2c6;
+  --tax-colour: #ea9f21;
 }
 
-table {}
-
-#salary-box {
-  color: black;
-  text-align: left;
-  background-color: #fdc333;
-  width: 50%;
-  height: 10vh;
-}
-
-#salary-box p {
-  margin: 10px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-#salary-input {
-  margin: 2px 10px 10px 10px;
-  font-size: 30px;
-  background: none;
-  border: none;
-}
-
-#cycle-box {
-  color: rgb(0, 0, 0);
-  text-align: left;
-  background-color: #fdc333;
-  width: 50%;
-  height: 10vh;
-}
-
-#cycle-box p {
-  margin: 10px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-#pay-cycle-input {
-  margin: 2px 10px 10px 10px;
-  font-size: 30px;
-  background: none;
-  border: none;
+#root {
+  max-width: 1920px;
+  height: auto;
 }
 
 /* td {
-  border-style: hidden !important;
+  border: 2px solid pink;
 } */
+.global-div {
+  display: flex;
+  flex-wrap: wrap;
+  /* Allows summary to move below income on mobile */
+  gap: 20px;
+  width: 100%;
+  max-width: 1400px;
+  /* Optional: keeps it from getting too wide on ultrawide monitors */
+  margin: 0 auto;
+  padding: 10px;
+}
 
+#income-div,
 #summary-div {
-  width: 60vw
+  flex: 1 1 400px;
+  /* Grow to fill space, shrink if needed, base width 400px */
+  min-width: 0;
+  /* Essential for allowing children to shrink */
+  width: 100%;
+}
+
+input:focus,
+button:focus {
+  outline: none;
 }
 
 #summary-table {
-  width: 60vw
+  width: 60vw;
+  max-width: 1600px;
 }
 
-select>option {
-  background-color: rgb(255, 255, 255);
-  color: #fdc333;
+#chart-section {
+  display: flex;
+  flex-direction: row;
+  /* border: 2px solid green; */
+  width: 60vw;
+  max-width: 1600px;
+  overflow: visible;
+}
+
+.big-table-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.big-table-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+#resetButton {
+  border: solid 2px black;
+}
+
+#resetButton:hover {
+  transition: all 0.3s ease-in-out;
+  background-color: var(--hive-yellow);
+  color: black;
+  border: solid 2px var(--hive-yellow);
+}
+
+.annual-pay-div {
+  background-color: var(--hive-yellow);
+  color: black;
+  font-weight: bold;
+  height: 50px;
+  font-size: 25px;
+  text-align: left;
+  width: 100%;
 }

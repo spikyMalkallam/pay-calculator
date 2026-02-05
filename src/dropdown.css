@@ -1,19 +1,58 @@
+* {
+    box-sizing: border-box;
+}
+
 .dropdown-container {
     width: 100%;
-    border: 1px solid #000000;
+    border: 1px solid rgb(54, 54, 54);
     cursor: pointer;
     margin: auto;
     overflow: hidden;
     transition: max-height 0.7s cubic-bezier(0.4, 0, 0.4, 1);
+    min-width: 0;
 }
 
 .dropdown-container .dropdown-label {
     text-align: left;
     padding: 12px 15px;
-    color: #ffffff;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
     transition: background-color 0.3s ease;
     user-select: none;
-    font-family: "Brandon Grotesque";
+}
+
+.summary-label {
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: left;
+    padding: 15px;
+}
+
+/* .summary-table {
+    table-layout: fixed;
+} */
+
+#summary-table td {
+    border: none
+}
+
+.summary-tab {
+    width: 100%;
+    height: 50px;
+    background-color: var(--hive-yellow);
+}
+
+.summary-tab-amount {
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: right;
+    padding: 15px;
+}
+
+.coloured-dot-div {
+    width: 15px;
 }
 
 /* The DETAILS element holds the content to be revealed */
@@ -43,8 +82,57 @@
     width: 100%;
 }
 
+.dropdown-subdiv.expanded {
+    max-height: 500px;
+}
+
 .finance-dropdown-amount {
     text-align: right;
+}
+
+select>option {
+    background-color: rgb(255, 255, 255);
+    color: var(--hive-yellow);
+}
+
+.dropdown {
+    background-color: black;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: var(--hive-yellow);
+    width: 100%;
+}
+
+.dropdown-button {
+    background-color: black;
+    color: var(--hive-yellow);
+    transition: background-color 0.2s, color 0.2s;
+    border: none;
+    border-radius: 0px;
+    margin-right: 10px;
+}
+
+.dropdown-table {
+    width: 100%;
+    table-layout: fixed;
+    /* border: 2px solid var(--hive-yellow); */
+    border-collapse: collapse;
+    /* Removes space between cells */
+    padding: 0;
+}
+
+
+.dropdown-table div {}
+
+
+.dropdown-subdiv {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    background-color: var(--background-grey);
+    color: white;
+
 }
 
 .dropdown-sub-rows {
@@ -53,23 +141,23 @@
 
 .dropdown-header {
     width: 100%;
-    background-color: #000000;
+    background-color: var(--background-grey);
 }
 
 .finance-dropdown-header-amount {
     text-align: right;
-    padding: 12px 0px;
+    padding: 15px;
     color: #ffffff;
     transition: background-color 0.3s ease;
     user-select: none;
-    font-family: "Brandon Grotesque";
+    font-size: 20px;
 }
 
-.coloured-dot-Taxable {
+/* .coloured-dot-Taxable {
     width: 12px;
     height: 12px;
     border-radius: 20px;
-    background-color: rgb(113, 151, 44);
+    background-color: #71972c;
     margin: 5px 5px 5px 10px;
 }
 
@@ -77,7 +165,7 @@
     width: 12px;
     height: 12px;
     border-radius: 20px;
-    background-color: rgb(51, 162, 198);
+    background-color: #33a2c6;
     margin: 5px 5px 5px 10px;
 }
 
@@ -85,30 +173,131 @@
     width: 12px;
     height: 12px;
     border-radius: 20px;
-    background-color: rgb(234, 159, 33);
+    background-color: #ea9f21;
     margin: 5px 5px 5px 10px;
-}
+} */
 
-.coloured-dot-header-Taxable {
+.coloured-dot-TaxableIncome {
     width: 20px;
-    height: 20px;
+    height: 60px;
     border-radius: 20px;
     background-color: rgb(113, 151, 44);
     margin: 5px 5px 5px 10px;
+    text-align: left;
 }
 
-.coloured-dot-header-Superannuation {
+.coloured-dot-Superannuation {
     width: 20px;
-    height: 20px;
+    height: 60px;
     border-radius: 20px;
     background-color: rgb(51, 162, 198);
     margin: 5px 5px 5px 10px;
 }
 
-.coloured-dot-header-Tax {
+.coloured-dot-TotalTaxes {
     width: 20px;
-    height: 20px;
+    height: 60px;
     border-radius: 20px;
     background-color: rgb(234, 159, 33);
     margin: 5px 5px 5px 10px;
+}
+
+.income-table {
+    width: 100%;
+    /* background-color: var(--background-grey); */
+    text-align: left;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    border-collapse: collapse;
+    /* Removes space between cells */
+    padding: 0;
+}
+
+.income-table-header {
+    font-weight: bold;
+    font-size: 20px;
+    width: 100%;
+    height: 50px;
+    background-color: var(--hive-yellow);
+    color: black;
+    text-align: center;
+}
+
+.income-table-header-amount {
+    text-align: left;
+    padding: 12px 15px;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    background-color: grey;
+
+}
+
+.income-table-header-name {
+    text-align: left;
+    /* padding: 12px 15px; */
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    background-color: grey;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 4px;
+    font-weight: bold;
+    /* space between dot and text */
+}
+
+.income-table-name {
+    text-align: left;
+    padding: 12px 15px;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    background-color: var(--background-grey);
+}
+
+.income-table-amount {
+    text-align: left;
+    padding: 12px 15px;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    user-select: none;
+}
+
+.income-table-category {
+    text-align: center;
+    background-color: var(--background-grey);
+}
+
+.income-table-header-category {
+    background-color: grey;
+    text-align: center;
+    width: 100%;
+    margin: 0px;
+}
+
+.income-table-takehome-row {
+    background-color: var(--hive-yellow);
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    text-align: left;
+}
+
+.income-table-takehome-cell {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.income-table-takehome-label {
+    padding: 12px 15px;
+    text-align: left;
 }

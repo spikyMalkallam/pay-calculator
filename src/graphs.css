@@ -1,0 +1,45 @@
+.background-gradient {
+    position: relative;
+    height: 100px;
+    /* This may be overridden by inline styles in TSX */
+    margin-top: 150px;
+    margin-right: 40px;
+
+}
+
+.overlay-bar {
+    background-color: rgba(10, 10, 10, 0.5);
+    /* Assuming alpha should be 0.5 for semi-transparent */
+    position: absolute;
+    top: 0;
+    /* right: 100px */
+    /* width: 100%; */
+    height: 100%;
+}
+
+.vertical-line {
+    position: absolute;
+    top: -60%;
+    width: 1px;
+    /* Thin vertical line */
+    height: 160%;
+    background-color: rgb(0, 0, 0);
+    /* Or any color you prefer */
+    z-index: 1;
+    /* Ensure it appears above the gradient and overlay */
+}
+
+.tax-band-arrow {
+    position: absolute;
+    top: 90%;
+    font-size: 30px;
+}
+
+.tax-band-info {
+    margin: 5px;
+}
+
+.band-header {
+    top: -150px;
+    position: absolute;
+}

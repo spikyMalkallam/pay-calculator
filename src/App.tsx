@@ -189,7 +189,6 @@ function App() {
     taxAmount += medicareLevy;
     let totalTaxSplit = splitTax(taxAmount, hours);
     // Add LITO
-    // totalTaxSplit[4] += lito;
     taxAmount += lito;
     let medicareSplit = splitTax(medicareLevy, hours);
     let litoSplit = null;

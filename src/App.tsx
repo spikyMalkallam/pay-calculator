@@ -266,7 +266,7 @@ function App() {
   const financialData = useMemo(() => {
     let yearlyHours = calculateYearlyHours(dailyHours, daysPerPeriod, hoursPeriod);
     let salaryPeriods = calculateSalaryPeriods(salary, payCycle, yearlyHours);
-    console.log(salaryPeriods)
+
     let salarySum = salaryPeriods[4];
     let superSum = 0;
     let superSalary = salaryPeriods[4];

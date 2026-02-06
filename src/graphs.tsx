@@ -1,5 +1,4 @@
 import { PieChart } from '@mui/x-charts/PieChart';
-import { useEffect, useRef } from 'react';
 import { IoMdArrowDropup } from "react-icons/io";
 // import p5 from 'p5';
 import './graphs.css'
@@ -66,12 +65,8 @@ export function TaxBandBar({ title, earnings, barWidth, lowerLimit, upperLimit, 
     );
 }
 
-import * as React from 'react';
 import { pieArcLabelClasses } from '@mui/x-charts/PieChart';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { useDrawingArea } from '@mui/x-charts/hooks';
-import { styled } from '@mui/material/styles';
 // 1. Data Structure
 export interface SubCategory {
     id: string;
@@ -116,17 +111,13 @@ export default function PayrollPieChart({ data }: PayrollPieProps) {
             color: sub.color, // Using the unique sub-color
         }))
     );
-    const innerRadius = 60;
-    const middleRadius = 130;
-    const outerRadius = 160;
+    const innerRadius = 50;
+    const middleRadius = 110;
+    const outerRadius = 130;
 
     return (
-        <Box sx={{ maxWidth: 600, height: 400, textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-                Salary Breakdown
-            </Typography>
-
-            <Box sx={{ display: 'flex', justifyContent: 'center', height: 420 }}>
+        <Box sx={{ maxWidth: 400, height: 200, textAlign: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: 400, height: 300 }}>
                 <PieChart
                     series={[
                         {
@@ -158,11 +149,13 @@ export default function PayrollPieChart({ data }: PayrollPieProps) {
                         },
                     }}
                     slotProps={{
-                        legend: {
-                            direction: 'horizontal' as const,
-                            position: { vertical: 'bottom', horizontal: 'center' },
-                        },
+                        // legend: {
+                        //     direction: 'horizontal' as const,
+                        //     position: { vertical: 'bottom', horizontal: 'center' },
+                        // },
+
                     }}
+                    slots={{ legend: () => null }}
                 >
                 </PieChart>
             </Box>

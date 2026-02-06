@@ -1,13 +1,11 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import './App.css'
-import { IncomeTable, DropdownSummaryInformation, DropdownTab, ToggleDropdownTab, SummaryTab } from './dropdown'
+import { IncomeTable, ToggleDropdownTab } from './dropdown'
 import useToggle from './hooks/useToggle'
-import { AiOutlineCloseSquare, AiOutlinePlusCircle } from "react-icons/ai";
 import { InputField, SelectField } from './forms'
 import { SwitchToggle } from './buttons'
-import { DonutChart, TaxBandBar } from './graphs';
+import { TaxBandBar } from './graphs';
 import PayrollPieChart from './graphs';
-import type { MainCategory, SubCategory } from './graphs'
 
 function App() {
   function round(num: number, fractionDigits: number): number {
@@ -36,21 +34,16 @@ function App() {
 
     }
   }
-  const [salary, setSalary] = useState(60000)
+  const [salary, setSalary] = useState(60000.00)
   // 0: 1: 2: 3: 4: 5: 6:
   const [payCycle, setPayCycle] = useState('Annual')
-  const [fortnightlyWorkHours, setFortnightlyWorkHours] = useState(0)
   const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
   const [hasStudentLoan, setHasStudentLoan] = useToggle()
-  const [superPercentage, setSuperPercentage] = useState(12.00)
   const [bonus, setBonus] = useState(0)
   const [bonusFrequency, setBonusFrequency] = useState('Annual')
-  const [payFrequency, setPayFrequency] = useState('Annual')
-  const [taxYear, setTaxYear] = useState('1819')
   // const [medicareLevy, setMedicareLevy] = useState(0)
-  const [payAmount, setPayAmount] = useState(0)
   const [hasBonus, setHasBonus] = useToggle()
-  const [bonusTax, setBonusTax] = useState(0)
+  // const [bonusTax, setBonusTax] = useState(0)
   const [studentLoanContribution, setStudentLoanContribution] = useState(0)
   // const [incomeTax, setIncomeTax] = useState(0)
   const [hasPartTimeHours, setHasPartTimeHours] = useToggle()
@@ -58,14 +51,14 @@ function App() {
   const studentTwentyFiveTwentySix = { 67000: [0.15, 0], 125000: [0.17, 8700], 179286: [0.1, 17928] }
   const taxRates = { "2226": twentyTwoTwentySix }
   const studentRates = { "2526": studentTwentyFiveTwentySix }
-  const [payPeriods, setPayPeriods] = useState(1);
   const [dailyHours, setDailyHours] = useState(7.6);
   const [daysPerPeriod, setDaysPerPeriod] = useState(5);
   const [hoursPeriod, setHoursPeriod] = useState('Week');
-
+  let superPercentage = 12.00;
   function calculateSalaryPeriods(rate: number, period: string, hours: number[]) {
     let hourlyRate = 0;
     let dailyRate = 0;
+
     let weeklyRate = 0;
     let fortnightlyRate = 0;
     let monthlyRate = 0;
@@ -141,7 +134,7 @@ function App() {
     let weekly = round(ammount / (hours[4] / hours[1]), 2);
     let fortnightly = round(ammount / (hours[4] / hours[2]), 2);
     let monthly = round(ammount / (hours[4] / hours[3]), 2);
-    return [daily, weekly, fortnightly, monthly, ammount]
+    return [daily, weekly, fortnightly, monthly, round(ammount, 2)]
   }
   function calculateTax(salary: number, superSum: number, taxBands: Record<number, number[]>, hours: number[]): any {
     let taxAmount = 0;
@@ -168,27 +161,30 @@ function App() {
     taxAmount += (grossEarnings - currentThreshold) * currentTaxRate
     incomeTax = taxAmount;
     let incomeTaxSplit = splitTax(incomeTax, hours);
-    console.log(incomeTaxSplit)
     // Division 293 tax
     if (grossEarnings + superSum > 250000) {
       let taxableAmmount = (grossEarnings + superSum) - 250000 > superSum ? superSum : (grossEarnings + superSum) - 250000;
       div293 = taxableAmmount * .15;
     }
-
+    let medicareLevy = 0;
     // Medicare Levy
-    let medicareLevy = salary * 0.02
-    // Low Income Tax Offset
-    // maximum offset of $700
-    if (salary <= 37500) {
-      lito = 700
+    if (grossEarnings > 18200) {
+      medicareLevy = salary * 0.02
     }
-    // $700 minus 5 cents for every $1 above $37,500
-    else if (salary > 37500 && salary <= 45000) {
-      lito = 700 - ((salary - 37500) * 0.05);
-    }
-    // $325 minus 1.5 cents for every $1 above $45,000 
-    else if (salary > 45000 && salary <= 66667) {
-      lito = 325 - ((salary - 45000) * 0.015);
+    if (grossEarnings > 18200) {
+      // Low Income Tax Offset
+      // maximum offset of $700
+      if (salary <= 37500) {
+        lito = 700
+      }
+      // $700 minus 5 cents for every $1 above $37,500
+      else if (salary > 37500 && salary <= 45000) {
+        lito = 700 - ((salary - 37500) * 0.05);
+      }
+      // $325 minus 1.5 cents for every $1 above $45,000 
+      else if (salary > 45000 && salary <= 66667) {
+        lito = 325 - ((salary - 45000) * 0.015);
+      }
     }
     taxAmount += medicareLevy;
     let totalTaxSplit = splitTax(taxAmount, hours);
@@ -198,6 +194,7 @@ function App() {
     let medicareSplit = splitTax(medicareLevy, hours);
     let litoSplit = null;
     if (lito != 0) {
+      lito = round(lito, 2);
       litoSplit = ['-', '-', '-', '-', -lito]
     }
 
@@ -206,7 +203,7 @@ function App() {
     let bonusTax = 0;
     if (hasBonus) {
       taxAmount += round(bonusTax, 2);
-      setBonusTax(bonusTax)
+      // setBonusTax(bonusTax)
     }
     let adjustedSalary = grossEarnings + round(bonus / stringToNumFreq(bonusFrequency), 0)
     for (const [threshold, value] of Object.entries(taxBands)) {
@@ -270,7 +267,7 @@ function App() {
   const financialData = useMemo(() => {
     let yearlyHours = calculateYearlyHours(dailyHours, daysPerPeriod, hoursPeriod);
     let salaryPeriods = calculateSalaryPeriods(salary, payCycle, yearlyHours);
-
+    console.log(salaryPeriods)
     let salarySum = salaryPeriods[4];
     let superSum = 0;
     let superSalary = salaryPeriods[4];
@@ -305,8 +302,6 @@ function App() {
     let currentTax = calculateTax(salaryPeriods[4], superSum, taxRates['2226'], yearlyHours);
 
     currentTax['HECS'] = currentRepayments;
-    // currentTax['total'] = (currentTax['total'] as number) + currentRepayments;
-    console.log(currentTax)
     // LITO
     currentTax['totalTaxSplit'][4] = Number(currentTax['totalTaxSplit'][4]) - Number(currentTax['LITO']);
     // 293
@@ -389,17 +384,13 @@ function App() {
     <>
       <div className='global-div'>
         <div id='income-div'>
-          <h1>INCOME</h1>
+
           <table>
             <thead>
               <tr>
                 <td>
-                  Enter your salary, adjust the settings and see the results in the summary below.
-                </td>
-                <td>
-                  <button id='resetButton'>
-                    Reset Calculator
-                  </button>
+                  <div style={{ textAlign: 'center' }}>Enter your salary, adjust the settings and see the results in the summary below.</div>
+                  <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
                 </td>
               </tr>
             </thead>
@@ -409,10 +400,11 @@ function App() {
                   <InputField
                     id='Salary'
                     label='Salary'
-                    inputType='number'
                     value={salary}
                     setFunc={(val) => { setSalary(val); }}
                     styling='large-dark'
+                    monetary={true}
+                    rounding={2}
                   />
                   <SelectField
                     id="pay-cycle"
@@ -429,7 +421,6 @@ function App() {
                     }}
                     styling='large-dark'
                   />
-                  {payCycle == "Hourly" ? <a target="_blank" href="https://www.fairwork.gov.au/pay-and-wages/minimum-wages/pay-guides">Check Award rates</a> : <></>}
                   <ToggleDropdownTab
                     label={'Part-time hours'}
                     contents={
@@ -441,20 +432,22 @@ function App() {
                               <InputField
                                 label='Hours per day'
                                 id='work-hours'
-                                inputType='number'
                                 value={dailyHours}
                                 setFunc={setDailyHours}
                                 styling='large-dark'
+                                monetary={false}
+                                rounding={2}
                               />
                             </td>
                             <td>
                               <InputField
                                 label='Days per'
                                 id='days-per-period'
-                                inputType='number'
                                 value={daysPerPeriod}
                                 setFunc={setDaysPerPeriod}
                                 styling='large-dark'
+                                monetary={false}
+                                rounding={1}
                               />
                             </td>
                             <td>
@@ -489,10 +482,11 @@ function App() {
                             <InputField
                               label={bonusFrequency + ' bonus'}
                               id='bonus-amount'
-                              inputType='number'
                               value={bonus}
                               setFunc={(val) => { setBonus(val); }}
                               styling='large-dark'
+                              monetary={true}
+                              rounding={2}
                             />
                           </td>
 
@@ -515,6 +509,7 @@ function App() {
                     toggleFunc={setHasBonus}
                     expandedVar={hasBonus}
                   />
+
                   <div>
                     <SwitchToggle
                       label="Salary includes Superannuation"
@@ -539,7 +534,6 @@ function App() {
           </table>
         </div >
         <div id='summary-div'>
-          <h1>SUMMARY</h1>
           <table id='summary-table'>
             <tbody>
               <tr>
@@ -563,10 +557,11 @@ function App() {
               </tr>
             </tbody>
           </table>
+
           <div id='chart-section'>
             <PayrollPieChart data={financialData['payrollData']} />
             {/* <DonutChart data={donutIncomeSummary} /> */}
-            <TaxBandBar title={'Tax Band'} earnings={financialData['incomeSplit'][4]} barWidth={600} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />
+            <TaxBandBar title={'Tax Bands'} earnings={financialData['incomeSplit'][4]} barWidth={600} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />
 
           </div>
         </div >

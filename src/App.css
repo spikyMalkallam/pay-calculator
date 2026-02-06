@@ -1,7 +1,7 @@
 :root {
 
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
   background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0);
@@ -15,6 +15,27 @@
 #root {
   max-width: 1920px;
   height: auto;
+  margin-top: 0px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  /* overflow: hidden; */
+  /* justify-content: center; */
+  /* Horizontal centering */
+  /* align-items: center; */
+  /* Vertical centering */
+  min-height: 0;
+  /* Takes full height of screen */
+  /* width: 100vw; */
+  /* Takes full width of screen */
+  /* overflow: hidden; */
+  /* Prevents scrolling */
+  /* background-color: rgb(255, 255, 255); */
+  /* color: rgb(0, 0, 0); */
+  text-align: center;
 }
 
 /* td {
@@ -26,7 +47,7 @@
   /* Allows summary to move below income on mobile */
   gap: 20px;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1500px;
   /* Optional: keeps it from getting too wide on ultrawide monitors */
   margin: 0 auto;
   padding: 10px;
@@ -39,6 +60,7 @@
   min-width: 0;
   /* Essential for allowing children to shrink */
   width: 100%;
+  justify-content: center;
 }
 
 input:focus,
@@ -48,7 +70,7 @@ button:focus {
 
 #summary-table {
   width: 60vw;
-  max-width: 1600px;
+  max-width: 1000px;
 }
 
 #chart-section {

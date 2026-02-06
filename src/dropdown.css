@@ -181,7 +181,7 @@ select>option {
     width: 20px;
     height: 60px;
     border-radius: 20px;
-    background-color: rgb(113, 151, 44);
+    background-color: #71972c;
     margin: 5px 5px 5px 10px;
     text-align: left;
 }
@@ -190,7 +190,7 @@ select>option {
     width: 20px;
     height: 60px;
     border-radius: 20px;
-    background-color: rgb(51, 162, 198);
+    background-color: #33a2c6;
     margin: 5px 5px 5px 10px;
 }
 
@@ -198,7 +198,7 @@ select>option {
     width: 20px;
     height: 60px;
     border-radius: 20px;
-    background-color: rgb(234, 159, 33);
+    background-color: #ea9f21;
     margin: 5px 5px 5px 10px;
 }
 

@@ -202,7 +202,7 @@ export function IncomeTable({ label, items, totals }: IncomeProps) {
                 }
                 <tr className="income-table-takehome-row">
                     <td className="income-table-takehome-label">Take-home pay</td>
-                    <td className="income-table-takehome-cell">{'$' + totals[1]}</td>
+                    <td className="income-table-takehome-cell">{'$' + totals[1] + label}</td>
                     <td className="income-table-takehome-cell">{'$' + totals[2]}</td>
                     <td className="income-table-takehome-cell">{'$' + totals[3]}</td>
                     <td className="income-table-takehome-cell">{'$' + totals[4]}</td>

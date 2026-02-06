@@ -3,10 +3,11 @@ import './forms.css'
 type InputProps = {
     id: string;
     label: string;
-    inputType: string
     value: any;
     setFunc: (val: any) => void;
     styling: string;
+    monetary: boolean;
+    rounding: number;
 }
 type SelectProps = {
     id: string;
@@ -17,22 +18,52 @@ type SelectProps = {
     styling: string;
 }
 
-export function InputField({ id, label, inputType, value, setFunc, styling }: InputProps) {
-    const internalLabel = id.toLowerCase().replace(" ", "-")
+export function InputField({ id, label, value, setFunc, styling, monetary }: InputProps) {
+    const internalLabel = id.toLowerCase().replace(" ", "-");
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const input = e.target;
+        const selectionStart = input.selectionStart; // Capture cursor position
+        let rawValue = input.value;
+
+        // 1. Filter characters
+        rawValue = rawValue.replace(/[^\d.]/g, '');
+
+        // 2. Handle multiple decimals
+        const parts = rawValue.split('.');
+        if (parts.length > 2) {
+            rawValue = parts[0] + '.' + parts.slice(1).join('');
+        }
+
+        // 3. Logic for numeric conversion 
+        // NOTE: If you use .toFixed() here, it returns a string. 
+        // If setFunc expects a number, use parseFloat().
+        const numericValue = parseFloat(rawValue);
+        const finalValue = isNaN(numericValue) ? 0 : numericValue;
+
+        setFunc(finalValue);
+
+        // 4. Restore Cursor Position
+        // We use requestAnimationFrame to wait for the next render cycle
+        requestAnimationFrame(() => {
+            if (selectionStart !== null) {
+                input.setSelectionRange(selectionStart, selectionStart);
+            }
+        });
+    };
+
     return (
-        <div className={styling + '-form-box ' + internalLabel}>
-            <div className={styling + '-form-box-header ' + internalLabel}>
+        <div className={`${styling}-form-box ${internalLabel}`}>
+            <div className={`${styling}-form-box-header ${internalLabel}`}>
                 <p>{label}</p>
             </div>
             <input
-                type={inputType}
-                id={internalLabel + "-input"}
-                className={styling + '-form ' + internalLabel}
-                value={value}
-                onChange={(e) => {
-                    const val = Number(e.target.value);
-                    setFunc(val);
-                }}
+                type="text"
+                id={`${internalLabel}-input`}
+                className={`${styling}-form ${internalLabel}`}
+                // 4. Format the display only: Add $ and commas for the user
+                value={(monetary ? '$' : '') + value.toLocaleString()}
+                onChange={handleChange}
             />
         </div>
     )

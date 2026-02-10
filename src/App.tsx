@@ -550,7 +550,7 @@ function App() {
           <table id='summary-table'>
             <tbody>
               <tr>
-                <td colSpan={2}>
+                <td className='big-table-cell' colSpan={2}>
                   <IncomeTable
                     label=''
                     items={{

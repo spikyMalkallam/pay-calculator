@@ -35,7 +35,7 @@ body {
   /* background-color: rgb(255, 255, 255); */
   /* color: rgb(0, 0, 0); */
   text-align: center;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 /* td {
@@ -44,6 +44,7 @@ body {
 .global-div {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   /* Allows summary to move below income on mobile */
   gap: 20px;
   width: 100%;
@@ -51,6 +52,12 @@ body {
   /* Optional: keeps it from getting too wide on ultrawide monitors */
   margin: 0 auto;
   padding: 10px;
+}
+
+@media (max-width: 1410px) {
+  .global-div {
+    flex-direction: column;
+  }
 }
 
 #income-div,
@@ -90,6 +97,7 @@ button:focus {
 .big-table-cell {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 #resetButton {

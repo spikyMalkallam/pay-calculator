@@ -546,7 +546,7 @@ function App() {
             </tbody>
           </table>
         </div >
-        <div id='summary-div' >
+        <div id='summary-div'>
           <div>
             <table id='summary-table'>
               <tbody>
@@ -573,6 +573,7 @@ function App() {
             </table>
           </div>
           <div id='chart-section'>
+
             <PayrollPieChart data={financialData['payrollData']} />
             {/* <DonutChart data={donutIncomeSummary} /> */}
             <TaxBandBar title={'Tax Bands'} earnings={financialData['incomeSplit'][4]} barWidth={600} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />

@@ -120,7 +120,7 @@ export default function PayrollPieChart({ data }: PayrollPieProps) {
     const outerRadius = 130;
 
     return (
-        <Box sx={{ maxWidth: 350, height: 200, textAlign: 'center' }}>
+        <Box sx={{ maxWidth: 350, height: 350, textAlign: 'center' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: 350, height: 350 }}>
                 <PieChart
                     series={[

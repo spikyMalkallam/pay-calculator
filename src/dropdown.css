@@ -29,9 +29,16 @@
     padding: 15px;
 }
 
-/* .summary-table {
+#summary-table {
     table-layout: fixed;
-} */
+    width: 100%;
+    /* Forces the table to match the parent's width */
+    border-collapse: collapse;
+    /* Prevents double borders from adding extra width */
+    word-wrap: break-word;
+    /* Ensures long text doesn't push the table wider */
+
+}
 
 #summary-table td {
     border: none
@@ -102,7 +109,7 @@ select>option {
     align-items: center;
     color: var(--hive-yellow);
     width: 100%;
-    max-width: 800px;
+    max-width: 600px;
 }
 
 .dropdown-button {
@@ -116,17 +123,13 @@ select>option {
 
 .dropdown-table {
     width: 100%;
-    max-width: 800px;
+    max-width: 780px;
     table-layout: fixed;
     /* border: 2px solid var(--hive-yellow); */
     border-collapse: collapse;
     /* Removes space between cells */
     padding: 0;
 }
-
-
-.dropdown-table div {}
-
 
 .dropdown-subdiv {
     max-height: 0;

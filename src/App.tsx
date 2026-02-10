@@ -131,9 +131,13 @@ function App() {
   }
   function splitTax(ammount: number, hours: number[]) {
     let daily = round(ammount / (hours[4] / hours[0]), 2);
+    daily = Number.isNaN(daily) ? 0 : daily;
     let weekly = round(ammount / (hours[4] / hours[1]), 2);
+    weekly = Number.isNaN(weekly) ? 0 : weekly;
     let fortnightly = round(ammount / (hours[4] / hours[2]), 2);
+    fortnightly = Number.isNaN(fortnightly) ? 0 : fortnightly;
     let monthly = round(ammount / (hours[4] / hours[3]), 2);
+    monthly = Number.isNaN(monthly) ? 0 : monthly;
     return [daily, weekly, fortnightly, monthly, round(ammount, 2)]
   }
   function calculateTax(salary: number, superSum: number, taxBands: Record<number, number[]>, hours: number[]): any {
@@ -244,6 +248,7 @@ function App() {
     // Find the relevant band and calculate repayments
     // Highest bracket
     if (repaymentIncome >= 179286) {
+
       return repaymentIncome * 0.10;
     }
     for (const [threshold, value] of Object.entries(loanYear)) {
@@ -273,6 +278,7 @@ function App() {
     // Calculate super ammount
     if (salaryIncludesSuper) {
       superSalary = round(superSalary / (1 + (superPercentage / 100)), 2);
+
       superSum = round(superSalary * (superPercentage / 100), 2);
       // Cap to concessional limit
       if (superSum > 30000) {
@@ -282,6 +288,7 @@ function App() {
     }
     else {
       superSum = round((salarySum * (superPercentage / 100)), 2);
+
       // Cap to concessional limits
       if (superSum > 30000) {
         superSum = 30000
@@ -289,10 +296,8 @@ function App() {
     }
     // Add bonus
     if (hasBonus) {
-      salarySum += bonus;
+      salarySum += Number(bonus);
     }
-
-
     // Student Loans
     let currentRepayments = hasStudentLoan ? calculateStudentLoan(salarySum, studentRates['2526']) : 0;
     setStudentLoanContribution(currentRepayments);
@@ -323,7 +328,7 @@ function App() {
       taxableIncomePeriods.push(salaryPeriods[i]);
     }
     if (hasBonus) {
-      taxableIncomePeriods[4] += bonus;
+      taxableIncomePeriods[4] += Number(bonus);
     }
     //  { id: 'base-pay', label: 'Base Pay', value: 4500, color: '#71972c' },
     // { id: 'bonus', label: 'Bonus', value: 500, color: '#5f7e25' },
@@ -333,11 +338,12 @@ function App() {
 
     //     { id: 'employer-cont', label: 'Employer', color: '#33a2c6', value: 600 },
     // { id: 'voluntary', label: 'Voluntary', value: 200, color: '#226e88' },
+    const basePay = postTaxPay[4] - (hasBonus ? Number(bonus) : 0);
     let payrollData = [{
       id: 'take-home',
       label: 'Pay',
       color: '#71972c',
-      subCategories: [{ id: 'base-pay', label: 'Base Pay', value: postTaxPay[4] - (hasBonus ? bonus : 0), color: '#71972c' }],
+      subCategories: [{ id: 'base-pay', label: 'Base Pay', value: basePay, color: '#71972c' }],
     },
     {
       id: 'tax',
@@ -352,7 +358,7 @@ function App() {
       subCategories: [{ id: 'employer-cont', label: 'Employer contribution', color: '#33a2c6', value: superSplit[4] }],
     }]
     if (hasBonus) {
-      payrollData[0].subCategories.push({ id: 'bonus', label: 'Bonus', value: bonus, color: '#5f7e25' });
+      payrollData[0].subCategories.push({ id: 'bonus', label: 'Bonus', value: Number(bonus), color: '#5f7e25' });
     }
     if (taxSplit['293'] > 0) {
       payrollData[1].subCategories.push({ id: '293', label: 'Division 293', value: taxSplit['293'], color: '#ea5a21' });
@@ -378,7 +384,7 @@ function App() {
       // bonusSplit: bonusPeriods
     };
   }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod]);
-
+  console.log(financialData['payrollData'])
   return (
     <>
       <div className='global-div'>
@@ -404,6 +410,8 @@ function App() {
                     styling='large-dark'
                     monetary={true}
                     rounding={2}
+                    min={0}
+                    max={null}
                   />
                   <SelectField
                     id="pay-cycle"
@@ -436,6 +444,8 @@ function App() {
                                 styling='large-dark'
                                 monetary={false}
                                 rounding={2}
+                                min={0}
+                                max={24}
                               />
                             </td>
                             <td>
@@ -447,6 +457,8 @@ function App() {
                                 styling='large-dark'
                                 monetary={false}
                                 rounding={1}
+                                min={0}
+                                max={hoursPeriod == 'Week' ? 7 : (hoursPeriod == 'Fortnight' ? 14 : (hoursPeriod == 'Month' ? 31 : 365))}
                               />
                             </td>
                             <td>
@@ -486,6 +498,8 @@ function App() {
                               styling='large-dark'
                               monetary={true}
                               rounding={2}
+                              min={0}
+                              max={null}
                             />
                           </td>
 
@@ -542,7 +556,7 @@ function App() {
                     items={{
                       "#Taxable Income": financialData['taxableIncomeSplit'],
                       "Base salary": financialData['incomeSplit'],
-                      "Bonus pay": hasBonus ? ['-', '-', '-', '-', bonus] : null,
+                      "Bonus pay": hasBonus ? ['-', '-', '-', '-', "$" + Number(bonus)] : null,
                       "#Superannuation": financialData['superSplit'],
                       "#Total Taxes": Array.isArray(financialData['taxSplit']['totalTax']) ? financialData['taxSplit']['totalTax'] : [financialData['taxSplit']['totalTax']],
                       "Income Tax": Array.isArray(financialData['taxSplit']['incomeTax']) ? financialData['taxSplit']['incomeTax'] : [financialData['taxSplit']['incomeTax']],

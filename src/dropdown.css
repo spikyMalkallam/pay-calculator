@@ -202,6 +202,54 @@ select>option {
     margin: 5px 5px 5px 10px;
 }
 
+.coloured-dot-Basesalary {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #71972c;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-Bonuspay {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #5f7e25;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-IncomeTax {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #ea9f21;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-MedicareLevy {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #81d100;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-Division293 {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #ea5a21;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-StudentLoan {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #d100b5;
+    margin: 5px 5px 5px 0px;
+}
+
 .income-table {
     width: 100%;
     /* background-color: var(--background-grey); */
@@ -260,6 +308,9 @@ select>option {
     transition: background-color 0.3s ease;
     user-select: none;
     background-color: var(--background-grey);
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .income-table-amount {

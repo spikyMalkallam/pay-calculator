@@ -181,7 +181,7 @@ export function IncomeTable({ label, items, totals }: IncomeProps) {
                             <tr key={key} className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>
                                 <td>
 
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-name"}><div className={"coloured-dot-" + key.replace(" ", "").split("#")[1]}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
                                 </td>
                                 <td>
                                     <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{typeof value[1] == 'number' ? '$' + value[1] : value[1]}</div>

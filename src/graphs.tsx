@@ -34,8 +34,9 @@ export function DonutChart({ data }: GraphProps) {
 export function TaxBandBar({ title, earnings, barWidth, lowerLimit, upperLimit, taxBands }: TaxBandBarProps) {
     const bandsArray = Object.keys(taxBands).map(k => parseFloat(k)).sort((a, b) => a - b);
     let linePositions: number[] = bandsArray.map(band => ((band - lowerLimit) / (upperLimit - lowerLimit)) * barWidth);
-
+    earnings = earnings > upperLimit ? upperLimit : earnings;
     let scaledEarnings = ((earnings - lowerLimit) / (upperLimit - lowerLimit)) * barWidth;
+    scaledEarnings = scaledEarnings < 0 ? 0 : scaledEarnings;
     const gradientStyle = {
         width: barWidth,
         background: `linear-gradient(to right, 
@@ -45,6 +46,7 @@ export function TaxBandBar({ title, earnings, barWidth, lowerLimit, upperLimit, 
     #e28a15 ${linePositions[3]}px 100%
   )`
     };
+
     return (
         <div className='background-gradient' style={gradientStyle}>
             <h2 className='band-header' style={{ left: barWidth / 2.4 }}>{title}</h2>
@@ -117,7 +119,7 @@ export default function PayrollPieChart({ data }: PayrollPieProps) {
 
     return (
         <Box sx={{ maxWidth: 400, height: 200, textAlign: 'center' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center', width: 400, height: 300 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: 400, height: 350 }}>
                 <PieChart
                     series={[
                         {

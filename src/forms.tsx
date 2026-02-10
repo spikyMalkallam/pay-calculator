@@ -8,6 +8,8 @@ type InputProps = {
     styling: string;
     monetary: boolean;
     rounding: number;
+    min: number;
+    max: number | null;
 }
 type SelectProps = {
     id: string;
@@ -18,7 +20,7 @@ type SelectProps = {
     styling: string;
 }
 
-export function InputField({ id, label, value, setFunc, styling, monetary }: InputProps) {
+export function InputField({ id, label, value, setFunc, styling, monetary, min, max }: InputProps) {
     const internalLabel = id.toLowerCase().replace(" ", "-");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +41,16 @@ export function InputField({ id, label, value, setFunc, styling, monetary }: Inp
         // NOTE: If you use .toFixed() here, it returns a string. 
         // If setFunc expects a number, use parseFloat().
         const numericValue = parseFloat(rawValue);
-        const finalValue = isNaN(numericValue) ? 0 : numericValue;
-
+        let finalValue = isNaN(numericValue) ? 0 : numericValue.toFixed(2);
+        // Cap values
+        if (max !== null) {
+            if (Number(finalValue) > max) {
+                finalValue = max;
+            }
+        }
+        else if (Number(finalValue) < min) {
+            finalValue = min;
+        }
         setFunc(finalValue);
 
         // 4. Restore Cursor Position

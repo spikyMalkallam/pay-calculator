@@ -458,7 +458,7 @@ function App() {
                                 monetary={false}
                                 rounding={1}
                                 min={0}
-                                max={hoursPeriod == 'Week' ? 7 : (hoursPeriod == 'Fortnight' ? 14 : (hoursPeriod == 'Month' ? 31 : 365))}
+                                max={hoursPeriod == 'Week' ? 5 : (hoursPeriod == 'Fortnight' ? 10 : (hoursPeriod == 'Month' ? 23 : 276))}
                               />
                             </td>
                             <td>
@@ -546,31 +546,32 @@ function App() {
             </tbody>
           </table>
         </div >
-        <div id='summary-div'>
-          <table id='summary-table'>
-            <tbody>
-              <tr>
-                <td className='big-table-cell' colSpan={2}>
-                  <IncomeTable
-                    label=''
-                    items={{
-                      "#Taxable Income": financialData['taxableIncomeSplit'],
-                      "Base salary": financialData['incomeSplit'],
-                      "Bonus pay": hasBonus ? ['-', '-', '-', '-', "$" + Number(bonus)] : null,
-                      "#Superannuation": financialData['superSplit'],
-                      "#Total Taxes": Array.isArray(financialData['taxSplit']['totalTax']) ? financialData['taxSplit']['totalTax'] : [financialData['taxSplit']['totalTax']],
-                      "Income Tax": Array.isArray(financialData['taxSplit']['incomeTax']) ? financialData['taxSplit']['incomeTax'] : [financialData['taxSplit']['incomeTax']],
-                      "LITO": financialData['taxSplit']['lito'] != null ? Array.isArray(financialData['taxSplit']['lito']) ? financialData['taxSplit']['lito'] : [financialData['taxSplit']['lito']] : null,
-                      "Student Loan": hasStudentLoan ? ['-', '-', '-', '-', studentLoanContribution] : null,
-                      "Medicare Levy": Array.isArray(financialData['taxSplit']['medicare']) ? financialData['taxSplit']['medicare'] : [financialData['taxSplit']['medicare']],
-                      "Division 293": financialData['taxSplit']['293'] != 0 ? ['-', '-', '-', '-', financialData['taxSplit']['293']] : null,
-                    }}
-                    totals={financialData['postTax']} />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
+        <div id='summary-div' >
+          <div>
+            <table id='summary-table'>
+              <tbody>
+                <tr>
+                  <td colSpan={2}>
+                    <IncomeTable
+                      label=''
+                      items={{
+                        "#Taxable Income": financialData['taxableIncomeSplit'],
+                        "Base salary": financialData['incomeSplit'],
+                        "Bonus pay": hasBonus ? ['-', '-', '-', '-', "$" + Number(bonus)] : null,
+                        "#Superannuation": financialData['superSplit'],
+                        "#Total Taxes": Array.isArray(financialData['taxSplit']['totalTax']) ? financialData['taxSplit']['totalTax'] : [financialData['taxSplit']['totalTax']],
+                        "Income Tax": Array.isArray(financialData['taxSplit']['incomeTax']) ? financialData['taxSplit']['incomeTax'] : [financialData['taxSplit']['incomeTax']],
+                        "LITO": financialData['taxSplit']['lito'] != null ? Array.isArray(financialData['taxSplit']['lito']) ? financialData['taxSplit']['lito'] : [financialData['taxSplit']['lito']] : null,
+                        "Student Loan": hasStudentLoan ? ['-', '-', '-', '-', studentLoanContribution] : null,
+                        "Medicare Levy": Array.isArray(financialData['taxSplit']['medicare']) ? financialData['taxSplit']['medicare'] : [financialData['taxSplit']['medicare']],
+                        "Division 293": financialData['taxSplit']['293'] != 0 ? ['-', '-', '-', '-', financialData['taxSplit']['293']] : null,
+                      }}
+                      totals={financialData['postTax']} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div id='chart-section'>
             <PayrollPieChart data={financialData['payrollData']} />
             {/* <DonutChart data={donutIncomeSummary} /> */}

@@ -48,21 +48,23 @@ export function TaxBandBar({ title, earnings, barWidth, lowerLimit, upperLimit, 
     };
 
     return (
-        <div className='background-gradient' style={gradientStyle}>
-            <h2 className='band-header' style={{ left: barWidth / 2.4 }}>{title}</h2>
-            <div className='overlay-bar' style={{ width: barWidth - scaledEarnings, left: scaledEarnings < 0 ? 0 : scaledEarnings }}></div>
-            {linePositions.map((pos, index) => (
-                <div
-                    key={index}
-                    className='vertical-line'
-                    style={{ left: pos }}
-                >
-                    <span className='tax-band-info'>${bandsArray[index]}</span>
-                    <br />
-                    <span className='tax-band-info'>{(taxBands[bandsArray[index]]?.[0]) * 100}%</span>
-                </div>
-            ))}
-            <div className='tax-band-arrow' style={{ left: (scaledEarnings < 0 ? 0 : scaledEarnings) - 15 }}><IoMdArrowDropup /></div>
+        <div className='tax-band-bar'>
+            <div className='background-gradient' style={gradientStyle}>
+                <h2 className='band-header' style={{ left: barWidth / 2.4 }}>{title}</h2>
+                <div className='overlay-bar' style={{ width: barWidth - scaledEarnings, left: scaledEarnings < 0 ? 0 : scaledEarnings }}></div>
+                {linePositions.map((pos, index) => (
+                    <div
+                        key={index}
+                        className='vertical-line'
+                        style={{ left: pos }}
+                    >
+                        <span className='tax-band-info'>${bandsArray[index]}</span>
+                        <br />
+                        <span className='tax-band-info'>{(taxBands[bandsArray[index]]?.[0]) * 100}%</span>
+                    </div>
+                ))}
+                <div className='tax-band-arrow' style={{ left: (scaledEarnings < 0 ? 0 : scaledEarnings) - 15 }}><IoMdArrowDropup /></div>
+            </div>
         </div>
     );
 }
@@ -118,8 +120,8 @@ export default function PayrollPieChart({ data }: PayrollPieProps) {
     const outerRadius = 130;
 
     return (
-        <Box sx={{ maxWidth: 400, height: 200, textAlign: 'center' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center', width: 400, height: 350 }}>
+        <Box sx={{ maxWidth: 350, height: 200, textAlign: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: 350, height: 350 }}>
                 <PieChart
                     series={[
                         {

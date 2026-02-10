@@ -58,6 +58,16 @@ body {
   .global-div {
     flex-direction: column;
   }
+
+  body {
+    overflow-y: scroll;
+  }
+
+  .summary-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 #income-div,

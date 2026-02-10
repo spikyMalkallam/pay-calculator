@@ -116,6 +116,7 @@ select>option {
 
 .dropdown-table {
     width: 100%;
+    max-width: 800px;
     table-layout: fixed;
     /* border: 2px solid var(--hive-yellow); */
     border-collapse: collapse;

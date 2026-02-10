@@ -1,10 +1,13 @@
 .background-gradient {
-    position: relative;
+    position: absolute;
     height: 100px;
     /* This may be overridden by inline styles in TSX */
     margin-top: 150px;
     margin-right: 40px;
+}
 
+.tax-band-bar {
+    position: relative;
 }
 
 .overlay-bar {

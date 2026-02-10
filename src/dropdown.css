@@ -153,30 +153,6 @@ select>option {
     font-size: 20px;
 }
 
-/* .coloured-dot-Taxable {
-    width: 12px;
-    height: 12px;
-    border-radius: 20px;
-    background-color: #71972c;
-    margin: 5px 5px 5px 10px;
-}
-
-.coloured-dot-Superannuation {
-    width: 12px;
-    height: 12px;
-    border-radius: 20px;
-    background-color: #33a2c6;
-    margin: 5px 5px 5px 10px;
-}
-
-.coloured-dot-Tax {
-    width: 12px;
-    height: 12px;
-    border-radius: 20px;
-    background-color: #ea9f21;
-    margin: 5px 5px 5px 10px;
-} */
-
 .coloured-dot-TaxableIncome {
     width: 20px;
     height: 60px;
@@ -247,6 +223,14 @@ select>option {
     height: 40px;
     border-radius: 20px;
     background-color: #d100b5;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-LITO {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #815912;
     margin: 5px 5px 5px 0px;
 }
 

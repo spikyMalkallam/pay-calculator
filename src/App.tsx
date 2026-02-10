@@ -384,7 +384,6 @@ function App() {
       // bonusSplit: bonusPeriods
     };
   }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod]);
-  console.log(financialData['payrollData'])
   return (
     <>
       <div className='global-div'>

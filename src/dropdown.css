@@ -109,7 +109,13 @@ select>option {
     align-items: center;
     color: var(--hive-yellow);
     width: 100%;
-    max-width: 600px;
+    max-width: 550px;
+}
+
+@media (max-width: 1520px) {
+    .dropdown {
+        max-width: 600px;
+    }
 }
 
 .dropdown-button {

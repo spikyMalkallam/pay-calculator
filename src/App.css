@@ -35,7 +35,7 @@ body {
   /* background-color: rgb(255, 255, 255); */
   /* color: rgb(0, 0, 0); */
   text-align: center;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 /* td {
@@ -43,7 +43,7 @@ body {
 } */
 .global-div {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex-direction: row;
   /* Allows summary to move below income on mobile */
   gap: 20px;
@@ -80,13 +80,25 @@ body {
 
 }
 
-#income-div,
+#income-div {
+  flex: 1 1 auto;
+  /* Let it grow and shrink naturally */
+  width: 90%;
+  /* Gives a little "breathing room" on the sides */
+  max-width: 600px;
+  /* Prevents it from getting too wide on desktop */
+  min-width: 0;
+  /* Keeps the flexbox "shrink" behavior active */
+  box-sizing: border-box;
+  /* Ensures padding doesn't break the width */
+}
+
 #summary-div {
   flex: 1 1 auto;
   /* Let it grow and shrink naturally */
   width: 90%;
   /* Gives a little "breathing room" on the sides */
-  max-width: 700px;
+  max-width: 1400px;
   /* Prevents it from getting too wide on desktop */
   min-width: 0;
   /* Keeps the flexbox "shrink" behavior active */
@@ -122,6 +134,10 @@ button:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#salary-cell {
+  max-width: 300px;
 }
 
 #resetButton {

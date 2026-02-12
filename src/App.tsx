@@ -406,7 +406,7 @@ function App() {
                     label='Salary'
                     value={salary}
                     setFunc={(val) => { setSalary(val); }}
-                    styling='large-dark'
+                    styling='large'
                     monetary={true}
                     rounding={2}
                     min={0}
@@ -425,8 +425,62 @@ function App() {
                       "Daily": "Daily",
                       "Hourly": "Hourly"
                     }}
-                    styling='large-dark'
+                    styling='large'
                   />
+
+                  {/* <ToggleDropdownTab
+                    label='Bonus Pay'
+                    contents={<table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <InputField
+                              label={bonusFrequency + ' bonus'}
+                              id='bonus-amount'
+                              value={bonus}
+                              setFunc={(val) => { setBonus(val); }}
+                              styling='large'
+                              monetary={true}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+
+                          <td>
+                            <SelectField
+                              label="Bonus Frequency"
+                              id="bonus-frequency"
+                              value={bonusFrequency}
+                              setFunc={setBonusFrequency}
+                              items={{
+                                "Annually": "Annual"
+                              }}
+                              styling='large'
+                            />
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>}
+                    toggleFunc={setHasBonus}
+                    expandedVar={hasBonus}
+                  /> */}
+
+                  <div>
+                    <SwitchToggle
+                      label="Salary includes Superannuation"
+                      description={'Super Guarantee of $' + round(financialData['superAmount'], 0) + ' paid on top of your $' + round(financialData['totalSalary'], 0) + ' annual salary'}
+                      setFunc={setSalaryIncludesSuper}
+                    />
+                    <span></span>
+                  </div>
+                  <br></br>
+                  <div><SwitchToggle
+                    label="Student loan"
+                    description='HELP (HECS), VSL, TSL, SSL, SFSS'
+                    setFunc={setHasStudentLoan}
+                  /></div>
                   <ToggleDropdownTab
                     label={'Part-time hours'}
                     contents={
@@ -440,7 +494,7 @@ function App() {
                                 id='work-hours'
                                 value={dailyHours}
                                 setFunc={setDailyHours}
-                                styling='large-dark'
+                                styling='large'
                                 monetary={false}
                                 rounding={2}
                                 min={0}
@@ -453,7 +507,7 @@ function App() {
                                 id='days-per-period'
                                 value={daysPerPeriod}
                                 setFunc={setDaysPerPeriod}
-                                styling='large-dark'
+                                styling='large'
                                 monetary={false}
                                 rounding={1}
                                 min={0}
@@ -472,7 +526,7 @@ function App() {
                                   "Month": "Month",
                                   "Year": "Year",
                                 }}
-                                styling='large-dark'
+                                styling='large'
                               />
                             </td>
                           </tr>
@@ -482,60 +536,34 @@ function App() {
                     toggleFunc={setHasPartTimeHours}
                     expandedVar={hasPartTimeHours}
                   />
-
                   <ToggleDropdownTab
-                    label='Bonus Pay'
-                    contents={<table className='dropdown-table'>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <InputField
-                              label={bonusFrequency + ' bonus'}
-                              id='bonus-amount'
-                              value={bonus}
-                              setFunc={(val) => { setBonus(val); }}
-                              styling='large-dark'
-                              monetary={true}
-                              rounding={2}
-                              min={0}
-                              max={null}
-                            />
-                          </td>
-
-                          <td>
-                            <SelectField
-                              label="Bonus Frequency"
-                              id="bonus-frequency"
-                              value={bonusFrequency}
-                              setFunc={setBonusFrequency}
-                              items={{
-                                "Annually": "Annual"
-                              }}
-                              styling='large-dark'
-                            />
-                          </td>
-                        </tr>
-
-                      </tbody>
-                    </table>}
-                    toggleFunc={setHasBonus}
-                    expandedVar={hasBonus}
+                    label={'Novated Leasing PLACEHOLDER'}
+                    contents={<></>
+                    }
+                    toggleFunc={setHasPartTimeHours}
+                    expandedVar={hasPartTimeHours}
                   />
-
-                  <div>
-                    <SwitchToggle
-                      label="Salary includes Superannuation"
-                      description={'Super Guarantee of $' + round(financialData['superAmount'], 0) + ' paid on top of your $' + round(financialData['totalSalary'], 0) + ' annual salary'}
-                      setFunc={setSalaryIncludesSuper}
-                    />
-                    <span></span>
-                  </div>
-                  <br></br>
-                  <div><SwitchToggle
-                    label="Student loan"
-                    description='HELP (HECS), VSL, TSL, SSL, SFSS'
-                    setFunc={setHasStudentLoan}
-                  /></div>
+                  <ToggleDropdownTab
+                    label={'Tax Deductables PLACEHOLDER'}
+                    contents={<></>
+                    }
+                    toggleFunc={setHasPartTimeHours}
+                    expandedVar={hasPartTimeHours}
+                  />
+                  <ToggleDropdownTab
+                    label={'Financial Loans PLACEHOLDER'}
+                    contents={<></>
+                    }
+                    toggleFunc={setHasPartTimeHours}
+                    expandedVar={hasPartTimeHours}
+                  />
+                  <ToggleDropdownTab
+                    label={'Salary Sacrifice PLACEHOLDER'}
+                    contents={<></>
+                    }
+                    toggleFunc={setHasPartTimeHours}
+                    expandedVar={hasPartTimeHours}
+                  />
                 </td>
               </tr>
 

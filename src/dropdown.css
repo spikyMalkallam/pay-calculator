@@ -41,7 +41,7 @@
 }
 
 #summary-table td {
-    border: none
+    border: none;
 }
 
 .summary-tab {
@@ -297,7 +297,7 @@ select>option {
 
 .income-table-name {
     text-align: left;
-    padding: 12px 15px;
+    padding: 5px 15px;
     color: rgb(255, 255, 255);
     font-size: 20px;
     transition: background-color 0.3s ease;

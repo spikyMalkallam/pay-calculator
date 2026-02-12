@@ -390,14 +390,14 @@ function App() {
         <div id='income-div'>
 
           <table>
-            <thead>
+            {/* <thead>
               <tr>
                 <td>
                   <div style={{ textAlign: 'center' }}>Enter your salary, adjust the settings and see the results in the summary below.</div>
                   <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
                 </td>
               </tr>
-            </thead>
+            </thead> */}
             <tbody>
               <tr className='big-table-row'>
                 <td className='big-table-cell'>
@@ -428,6 +428,22 @@ function App() {
                     styling='large'
                   />
 
+
+
+                  <div>
+                    <SwitchToggle
+                      label="Salary includes Superannuation"
+                      description={'Super Guarantee of $' + round(financialData['superAmount'], 0) + ' paid on top of your $' + round(financialData['totalSalary'], 0) + ' annual salary'}
+                      setFunc={setSalaryIncludesSuper}
+                    />
+                    <span></span>
+                  </div>
+                  <br></br>
+                  <div><SwitchToggle
+                    label="Student loan"
+                    description='HELP (HECS), VSL, TSL, SSL, SFSS'
+                    setFunc={setHasStudentLoan}
+                  /></div>
                   <ToggleDropdownTab
                     label='Bonus Pay'
                     contents={<table className='dropdown-table'>
@@ -466,21 +482,6 @@ function App() {
                     toggleFunc={setHasBonus}
                     expandedVar={hasBonus}
                   />
-
-                  <div>
-                    <SwitchToggle
-                      label="Salary includes Superannuation"
-                      description={'Super Guarantee of $' + round(financialData['superAmount'], 0) + ' paid on top of your $' + round(financialData['totalSalary'], 0) + ' annual salary'}
-                      setFunc={setSalaryIncludesSuper}
-                    />
-                    <span></span>
-                  </div>
-                  <br></br>
-                  <div><SwitchToggle
-                    label="Student loan"
-                    description='HELP (HECS), VSL, TSL, SSL, SFSS'
-                    setFunc={setHasStudentLoan}
-                  /></div>
                   <ToggleDropdownTab
                     label={'Part-time hours'}
                     contents={
@@ -568,7 +569,9 @@ function App() {
               </tr>
 
               <tr>
-
+                <td>
+                  <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
+                </td>
               </tr>
             </tbody>
           </table>

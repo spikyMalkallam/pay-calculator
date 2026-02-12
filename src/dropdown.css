@@ -103,11 +103,12 @@ select>option {
 }
 
 .dropdown {
-    background-color: black;
+    padding: 10px 0px 5px 0px;
+    background-color: #00000000;
     display: flex;
     justify-content: left;
     align-items: center;
-    color: var(--hive-yellow);
+    color: black;
     width: 100%;
     max-width: 550px;
 }
@@ -127,6 +128,12 @@ select>option {
     margin-right: 10px;
 }
 
+.income-table td,
+.dropdown-table td {
+    padding: 0;
+    vertical-align: middle;
+}
+
 .dropdown-table {
     width: 100%;
     max-width: 780px;
@@ -141,9 +148,8 @@ select>option {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
-    background-color: var(--background-grey);
+    background-color: #00000000;
     color: white;
-
 }
 
 .dropdown-sub-rows {

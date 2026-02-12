@@ -48,7 +48,7 @@ export function InputField({ id, label, value, setFunc, styling, monetary, min, 
         // NOTE: If you use .toFixed() here, it returns a string. 
         // If setFunc expects a number, use parseFloat().
         const numericValue = parseFloat(rawValue);
-        let finalValue = isNaN(numericValue) ? 0 : numericValue.toFixed(2);
+        let finalValue = isNaN(numericValue) ? '0' : numericValue.toFixed(2);
 
         if (!monetary) {
             if (selectionStart !== null) {
@@ -58,11 +58,11 @@ export function InputField({ id, label, value, setFunc, styling, monetary, min, 
         // Cap values
         if (max !== null) {
             if (Number(finalValue) > max) {
-                finalValue = max;
+                finalValue = max.toFixed(2);
             }
         }
         else if (Number(finalValue) < min) {
-            finalValue = min;
+            finalValue = min.toFixed(2);
         }
         setFunc(finalValue);
 

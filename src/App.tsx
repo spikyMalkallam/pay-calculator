@@ -303,7 +303,7 @@ function App() {
     }
     // Student Loans
     let currentRepayments = hasStudentLoan ? calculateStudentLoan(salarySum, studentRates['2526']) : 0;
-    currentRepayments = round(currentRepayments, 2).toFixed(2);
+    currentRepayments = currentRepayments;
     setStudentLoanContribution(currentRepayments);
 
     // Tax
@@ -324,7 +324,7 @@ function App() {
       '293': currentTax['div293']
     };
     // Remove Tax
-    let postTaxPay: number[] = []
+    let postTaxPay: any[] = []
     for (let i = 0; i < 5; i++) {
       postTaxPay.push((round(salaryPeriods[i] - taxSplit["totalTax"][i], 2)).toFixed(2));
     }
@@ -337,7 +337,7 @@ function App() {
       taxableIncomePeriods[4] += Number(bonus);
     }
     for (let i = 0; i < 5; i++) {
-      taxableIncomePeriods[i] = '$' + taxableIncomePeriods[i].toFixed(2);
+      taxableIncomePeriods[i] = '$' + Number(taxableIncomePeriods[i]).toFixed(2);
     }
     const basePay = postTaxPay[4] - (hasBonus ? Number(bonus) : 0);
     let payrollData = [{
@@ -569,7 +569,7 @@ function App() {
                         "#Total Taxes": Array.isArray(financialData['taxSplit']['totalTax']) ? financialData['taxSplit']['totalTax'] : [financialData['taxSplit']['totalTax']],
                         "Income Tax": Array.isArray(financialData['taxSplit']['incomeTax']) ? financialData['taxSplit']['incomeTax'] : [financialData['taxSplit']['incomeTax']],
                         "LITO": financialData['taxSplit']['lito'] != null ? Array.isArray(financialData['taxSplit']['lito']) ? financialData['taxSplit']['lito'] : [financialData['taxSplit']['lito']] : null,
-                        "Student Loan": hasStudentLoan ? ['-', '-', '-', '-', '$' + studentLoanContribution] : null,
+                        "Student Loan": hasStudentLoan ? ['-', '-', '-', '-', '$' + round(studentLoanContribution, 2).toFixed(2)] : null,
                         "Medicare Levy": Array.isArray(financialData['taxSplit']['medicare']) ? financialData['taxSplit']['medicare'] : [financialData['taxSplit']['medicare']],
                         "Division 293": financialData['taxSplit']['293'] != 0 ? ['-', '-', '-', '-', '$' + round(financialData['taxSplit']['293'], 2).toFixed(2)] : null,
                       }}

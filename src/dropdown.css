@@ -262,6 +262,7 @@ select>option {
     border-collapse: collapse;
     /* Removes space between cells */
     padding: 0;
+    min-width: 724px;
 }
 
 .income-table-header {

@@ -573,7 +573,7 @@ function App() {
           </div>
           <div id='chart-section'>
 
-            <PayrollPieChart data={financialData['payrollData']} />
+            <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
             {/* <DonutChart data={donutIncomeSummary} /> */}
             <TaxBandBar title={'Tax Bands'} earnings={financialData['incomeSplit'][4]} barWidth={600} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />
 

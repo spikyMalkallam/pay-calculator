@@ -74,7 +74,8 @@ body {
   #chart-section {
     display: flex;
     flex-direction: column;
-
+    align-items: center;
+    flex-wrap: nowrap;
     /* border: 2px solid green; */
   }
 
@@ -120,9 +121,12 @@ button:focus {
   display: flex;
   /* flex-direction: row; */
   /* border: 2px solid green; */
-  width: 60vw;
+  width: 100%;
   max-width: 1600px;
   overflow: visible;
+  justify-content: left;
+  flex-wrap: wrap;
+  gap: 330px;
 }
 
 .big-table-row {
@@ -131,9 +135,10 @@ button:focus {
 }
 
 .big-table-cell {
+  margin-left: 4%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 
 #salary-cell {

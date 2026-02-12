@@ -44,7 +44,8 @@ export function TaxBandBar({ title, earnings, barWidth, lowerLimit, upperLimit, 
     #eea727 ${linePositions[1]}px ${linePositions[2]}px, 
     #e48f18 ${linePositions[2]}px ${linePositions[3]}px, 
     #e28a15 ${linePositions[3]}px 100%
-  )`
+  )`,
+        left: -(barWidth / 2)
     };
 
     return (
@@ -88,9 +89,10 @@ export interface MainCategory {
 
 type PayrollPieProps = {
     data: MainCategory[];
+    title: string;
 }
 
-export default function PayrollPieChart({ data }: PayrollPieProps) {
+export default function PayrollPieChart({ data, title }: PayrollPieProps) {
     // 2. Data Processing
     const totalValue = data.reduce(
         (acc, cat) => acc + cat.subCategories.reduce((sum, sub) => sum + sub.value, 0),
@@ -120,7 +122,8 @@ export default function PayrollPieChart({ data }: PayrollPieProps) {
     const outerRadius = 130;
 
     return (
-        <Box sx={{ maxWidth: 350, height: 350, textAlign: 'center' }}>
+        <Box sx={{ maxWidth: 350, height: 380, textAlign: 'center' }}>
+            <h2 style={{ margin: '0px' }}>{title}</h2>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: 350, height: 350 }}>
                 <PieChart
                     series={[
@@ -163,6 +166,6 @@ export default function PayrollPieChart({ data }: PayrollPieProps) {
                 >
                 </PieChart>
             </Box>
-        </Box>
+        </Box >
     );
 }

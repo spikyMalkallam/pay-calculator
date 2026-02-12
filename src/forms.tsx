@@ -28,9 +28,16 @@ export function InputField({ id, label, value, setFunc, styling, monetary, min, 
         const selectionStart = input.selectionStart; // Capture cursor position
         let rawValue = input.value;
 
+        function replaceAt(string: string, index: number): string {
+            let replacement = string.substring(index, index + 1);
+            console.log(string.substring(0, index + 1) + replacement + string.substring(index + 1 + replacement.length))
+            return string.substring(0, index) + replacement + string.substring(index + 1 + replacement.length);
+        }
+
         // 1. Filter characters
         rawValue = rawValue.replace(/[^\d.]/g, '');
-
+        console.log(rawValue);
+        console.log(selectionStart)
         // 2. Handle multiple decimals
         const parts = rawValue.split('.');
         if (parts.length > 2) {
@@ -42,6 +49,12 @@ export function InputField({ id, label, value, setFunc, styling, monetary, min, 
         // If setFunc expects a number, use parseFloat().
         const numericValue = parseFloat(rawValue);
         let finalValue = isNaN(numericValue) ? 0 : numericValue.toFixed(2);
+
+        if (!monetary) {
+            if (selectionStart !== null) {
+                finalValue = replaceAt(finalValue, selectionStart - 1);
+            }
+        }
         // Cap values
         if (max !== null) {
             if (Number(finalValue) > max) {

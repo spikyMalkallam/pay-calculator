@@ -271,7 +271,10 @@ function App() {
   const financialData = useMemo(() => {
     let yearlyHours = calculateYearlyHours(dailyHours, daysPerPeriod, hoursPeriod);
     let salaryPeriods = calculateSalaryPeriods(salary, payCycle, yearlyHours);
-
+    let displaySalary = []
+    for (let i = 0; i < 5; i++) {
+      displaySalary.push('$' + salaryPeriods[i].toFixed(2));
+    }
     let salarySum = salaryPeriods[4];
     let superSum = 0;
     let superSalary = salaryPeriods[4];
@@ -300,6 +303,7 @@ function App() {
     }
     // Student Loans
     let currentRepayments = hasStudentLoan ? calculateStudentLoan(salarySum, studentRates['2526']) : 0;
+    currentRepayments = round(currentRepayments, 2).toFixed(2);
     setStudentLoanContribution(currentRepayments);
 
     // Tax
@@ -307,7 +311,9 @@ function App() {
 
     currentTax['HECS'] = currentRepayments;
     // LITO
-    currentTax['totalTaxSplit'][4] = Number(currentTax['totalTaxSplit'][4]) - Number(currentTax['LITO']);
+    const adjustedLITO = Number(currentTax['LITO']) > Number(currentTax['totalTaxSplit'][4]) ? Number(currentTax['totalTaxSplit'][4]) : Number(currentTax['LITO']);
+
+    currentTax['totalTaxSplit'][4] = Number(currentTax['totalTaxSplit'][4]) - adjustedLITO;
     // 293
     currentTax['totalTaxSplit'][4] = Number(currentTax['totalTaxSplit'][4]) + Number(currentTax['div293']);
     let taxSplit = {
@@ -320,7 +326,7 @@ function App() {
     // Remove Tax
     let postTaxPay: number[] = []
     for (let i = 0; i < 5; i++) {
-      postTaxPay.push(round(salaryPeriods[i] - taxSplit["totalTax"][i], 2));
+      postTaxPay.push((round(salaryPeriods[i] - taxSplit["totalTax"][i], 2)).toFixed(2));
     }
     let superSplit = splitTax(superSum, yearlyHours);
     let taxableIncomePeriods = [];
@@ -330,36 +336,39 @@ function App() {
     if (hasBonus) {
       taxableIncomePeriods[4] += Number(bonus);
     }
+    for (let i = 0; i < 5; i++) {
+      taxableIncomePeriods[i] = '$' + taxableIncomePeriods[i].toFixed(2);
+    }
     const basePay = postTaxPay[4] - (hasBonus ? Number(bonus) : 0);
     let payrollData = [{
       id: 'take-home',
       label: 'Pay',
       color: '#71972c',
-      subCategories: [{ id: 'base-pay', label: 'Base Pay', value: basePay, color: '#71972c' }],
+      subCategories: [{ id: 'base-pay', label: 'Base Pay', value: Number(basePay), color: '#71972c' }],
     },
     {
       id: 'tax',
       label: 'Tax',
       color: '#ea9f21',
-      subCategories: [{ id: 'income-tax', label: 'Income Tax', value: taxSplit['incomeTax'][4], color: '#ea9f21' }],
+      subCategories: [{ id: 'income-tax', label: 'Income Tax', value: Number(taxSplit['incomeTax'][4]), color: '#ea9f21' }],
     },
     {
       id: 'super',
       label: 'Super',
       color: '#33a2c6',
-      subCategories: [{ id: 'employer-cont', label: 'Employer contribution', color: '#33a2c6', value: superSplit[4] }],
+      subCategories: [{ id: 'employer-cont', label: 'Employer contribution', color: '#33a2c6', value: Number(superSplit[4]) }],
     }]
     if (hasBonus) {
       payrollData[0].subCategories.push({ id: 'bonus', label: 'Bonus', value: Number(bonus), color: '#5f7e25' });
     }
     if (taxSplit['293'] > 0) {
-      payrollData[1].subCategories.push({ id: '293', label: 'Division 293', value: taxSplit['293'], color: '#ea5a21' });
+      payrollData[1].subCategories.push({ id: '293', label: 'Division 293', value: Number(taxSplit['293']), color: '#ea5a21' });
     }
     if (taxSplit['medicare'][4] > 0) {
-      payrollData[1].subCategories.push({ id: 'medicare', label: 'Medicare Levy', value: taxSplit['medicare'][4], color: '#81d100' });
+      payrollData[1].subCategories.push({ id: 'medicare', label: 'Medicare Levy', value: Number(taxSplit['medicare'][4]), color: '#81d100' });
     }
     if (hasStudentLoan && currentTax['HECS'] > 0) {
-      payrollData[1].subCategories.push({ id: 'student-loan', label: 'Student Loan', value: currentTax['HECS'], color: '#d100b5' });
+      payrollData[1].subCategories.push({ id: 'student-loan', label: 'Student Loan', value: Number(currentTax['HECS']), color: '#d100b5' });
     }
     return {
       totalSalary: salaryPeriods[4],
@@ -372,7 +381,8 @@ function App() {
       incomeSplit: salaryPeriods,
       taxSplit: taxSplit,
       superSplit: superSplit,
-      payrollData: payrollData
+      payrollData: payrollData,
+      displaySalary: displaySalary
       // bonusSplit: bonusPeriods
     };
   }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod]);
@@ -505,6 +515,7 @@ function App() {
                                 monetary={false}
                                 rounding={1}
                                 min={0}
+                                // max={null}
                                 max={hoursPeriod == 'Week' ? 5 : (hoursPeriod == 'Fortnight' ? 10 : (hoursPeriod == 'Month' ? 23 : 276))}
                               />
                             </td>
@@ -552,15 +563,15 @@ function App() {
                       label=''
                       items={{
                         "#Taxable Income": financialData['taxableIncomeSplit'],
-                        "Base salary": financialData['incomeSplit'],
+                        "Base salary": financialData['displaySalary'],
                         "Bonus pay": hasBonus ? ['-', '-', '-', '-', "$" + Number(bonus)] : null,
                         "#Superannuation": financialData['superSplit'],
                         "#Total Taxes": Array.isArray(financialData['taxSplit']['totalTax']) ? financialData['taxSplit']['totalTax'] : [financialData['taxSplit']['totalTax']],
                         "Income Tax": Array.isArray(financialData['taxSplit']['incomeTax']) ? financialData['taxSplit']['incomeTax'] : [financialData['taxSplit']['incomeTax']],
                         "LITO": financialData['taxSplit']['lito'] != null ? Array.isArray(financialData['taxSplit']['lito']) ? financialData['taxSplit']['lito'] : [financialData['taxSplit']['lito']] : null,
-                        "Student Loan": hasStudentLoan ? ['-', '-', '-', '-', studentLoanContribution] : null,
+                        "Student Loan": hasStudentLoan ? ['-', '-', '-', '-', '$' + studentLoanContribution] : null,
                         "Medicare Levy": Array.isArray(financialData['taxSplit']['medicare']) ? financialData['taxSplit']['medicare'] : [financialData['taxSplit']['medicare']],
-                        "Division 293": financialData['taxSplit']['293'] != 0 ? ['-', '-', '-', '-', financialData['taxSplit']['293']] : null,
+                        "Division 293": financialData['taxSplit']['293'] != 0 ? ['-', '-', '-', '-', '$' + round(financialData['taxSplit']['293'], 2).toFixed(2)] : null,
                       }}
                       totals={financialData['postTax']} />
                   </td>

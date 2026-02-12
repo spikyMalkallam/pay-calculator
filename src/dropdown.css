@@ -128,7 +128,7 @@ select>option {
     margin-right: 10px;
 }
 
-.income-table td,
+
 .dropdown-table td {
     padding: 0;
     vertical-align: middle;
@@ -338,10 +338,11 @@ select>option {
 .income-table-takehome-row {
     background-color: var(--hive-yellow);
     color: black;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
     text-align: center;
     text-align: left;
+
 }
 
 .income-table-takehome-cell {

@@ -330,14 +330,6 @@ function App() {
     if (hasBonus) {
       taxableIncomePeriods[4] += Number(bonus);
     }
-    //  { id: 'base-pay', label: 'Base Pay', value: 4500, color: '#71972c' },
-    // { id: 'bonus', label: 'Bonus', value: 500, color: '#5f7e25' },
-
-    // { id: 'income-tax', label: 'Income Tax', value: 1200, color: '#ea9f21' },
-    //     { id: 'medicare', label: 'Medicare', value: 300, color: '#a6e631' },
-
-    //     { id: 'employer-cont', label: 'Employer', color: '#33a2c6', value: 600 },
-    // { id: 'voluntary', label: 'Voluntary', value: 200, color: '#226e88' },
     const basePay = postTaxPay[4] - (hasBonus ? Number(bonus) : 0);
     let payrollData = [{
       id: 'take-home',
@@ -384,6 +376,7 @@ function App() {
       // bonusSplit: bonusPeriods
     };
   }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod]);
+
   return (
     <>
       <div className='global-div'>
@@ -537,40 +530,13 @@ function App() {
                     toggleFunc={setHasPartTimeHours}
                     expandedVar={hasPartTimeHours}
                   />
-                  <ToggleDropdownTab
-                    label={'Novated Leasing PLACEHOLDER'}
-                    contents={<></>
-                    }
-                    toggleFunc={setHasPartTimeHours}
-                    expandedVar={hasPartTimeHours}
-                  />
-                  <ToggleDropdownTab
-                    label={'Tax Deductables PLACEHOLDER'}
-                    contents={<></>
-                    }
-                    toggleFunc={setHasPartTimeHours}
-                    expandedVar={hasPartTimeHours}
-                  />
-                  <ToggleDropdownTab
-                    label={'Financial Loans PLACEHOLDER'}
-                    contents={<></>
-                    }
-                    toggleFunc={setHasPartTimeHours}
-                    expandedVar={hasPartTimeHours}
-                  />
-                  <ToggleDropdownTab
-                    label={'Salary Sacrifice PLACEHOLDER'}
-                    contents={<></>
-                    }
-                    toggleFunc={setHasPartTimeHours}
-                    expandedVar={hasPartTimeHours}
-                  />
                 </td>
               </tr>
 
               <tr>
                 <td>
                   <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
+                  {financialData['taxSplit']['293'] > 0 ? (<div style={{ textAlign: 'center', fontStyle: 'italic' }}>Division 293 tax applies when taxable income + super contribution exceeds $250,000</div>) : (<></>)}
                 </td>
               </tr>
             </tbody>
@@ -606,7 +572,7 @@ function App() {
 
             <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
             {/* <DonutChart data={donutIncomeSummary} /> */}
-            <TaxBandBar title={'Tax Bands'} earnings={financialData['incomeSplit'][4]} barWidth={600} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />
+            <TaxBandBar title={'Tax Bands'} earnings={financialData['incomeSplit'][4]} barWidth={(500)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />
 
           </div>
         </div >

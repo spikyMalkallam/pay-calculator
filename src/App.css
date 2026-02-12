@@ -54,7 +54,7 @@ body {
   padding: 10px;
 }
 
-@media (max-width: 1520px) {
+@media (width < 1520px) {
   .global-div {
     flex-direction: column;
     align-items: center;
@@ -77,6 +77,9 @@ body {
     align-items: center;
     flex-wrap: nowrap;
     /* border: 2px solid green; */
+    /* flex-direction: row; */
+    /* border: 2px solid green; */
+    gap: 0px;
   }
 
 }
@@ -118,6 +121,12 @@ button:focus {
 
 }
 
+@media (width > 1520px) {
+  #chart-section {
+    gap: 250px;
+  }
+}
+
 #chart-section {
   display: flex;
   /* flex-direction: row; */
@@ -127,7 +136,7 @@ button:focus {
   overflow: visible;
   justify-content: left;
   flex-wrap: wrap;
-  gap: 330px;
+
 }
 
 .big-table-row {

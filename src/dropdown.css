@@ -258,7 +258,7 @@ select>option {
     color: rgb(255, 255, 255);
     font-size: 20px;
     transition: background-color 0.3s ease;
-    user-select: none;
+    /* user-select: none; */
     border-collapse: collapse;
     /* Removes space between cells */
     padding: 0;

@@ -62,9 +62,9 @@ body {
     /* width: 900px; */
   }
 
-  body {
+  /* body {
     overflow-y: scroll;
-  }
+  } */
 
   .summary-div {
     display: flex;

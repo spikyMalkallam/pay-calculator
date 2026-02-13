@@ -13,10 +13,26 @@
 }
 
 #root {
-  max-width: 1920px;
+  width: 100%;
   height: auto;
   margin-top: 0px;
+  display: flex;
 }
+
+.global-div {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  /* Allows summary to move below income on mobile */
+  gap: 20px;
+  width: 100%;
+
+  /* Optional: keeps it from getting too wide on ultrawide monitors */
+  margin: 0 auto;
+  padding: 10px;
+  max-width: 1920px;
+}
+
 
 body {
   margin: 0;
@@ -42,18 +58,7 @@ body {
 /* td {
   border: 2px solid pink;
 } */
-.global-div {
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  /* Allows summary to move below income on mobile */
-  gap: 20px;
-  width: 100%;
 
-  /* Optional: keeps it from getting too wide on ultrawide monitors */
-  margin: 0 auto;
-  padding: 10px;
-}
 
 @media (width < 1520px) {
   .global-div {
@@ -81,34 +86,23 @@ body {
     /* flex-direction: row; */
     /* border: 2px solid green; */
     gap: 0px;
+
   }
 
 }
 
 #income-div {
   flex: 1 1 auto;
-  /* Let it grow and shrink naturally */
-  width: 90%;
-  /* Gives a little "breathing room" on the sides */
   max-width: 600px;
-  /* Prevents it from getting too wide on desktop */
   min-width: 0;
-  /* Keeps the flexbox "shrink" behavior active */
   box-sizing: border-box;
-  /* Ensures padding doesn't break the width */
 }
 
 #summary-div {
   flex: 1 1 auto;
-  /* Let it grow and shrink naturally */
-  width: 90%;
-  /* Gives a little "breathing room" on the sides */
   max-width: 1400px;
-  /* Prevents it from getting too wide on desktop */
   min-width: 0;
-  /* Keeps the flexbox "shrink" behavior active */
   box-sizing: border-box;
-  /* Ensures padding doesn't break the width */
 }
 
 input:focus,
@@ -133,7 +127,7 @@ button:focus {
   /* flex-direction: row; */
   /* border: 2px solid green; */
   width: 100%;
-  max-width: 1600px;
+  max-width: 1000px;
   overflow: visible;
   justify-content: left;
   flex-wrap: wrap;

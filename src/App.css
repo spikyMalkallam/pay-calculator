@@ -35,7 +35,7 @@ body {
   /* background-color: rgb(255, 255, 255); */
   /* color: rgb(0, 0, 0); */
   text-align: center;
-  overflow: hidden;
+  overflow: visible;
   /* overflow: scroll; */
 }
 
@@ -62,9 +62,9 @@ body {
     /* width: 900px; */
   }
 
-  /* body {
-    overflow-y: scroll;
-  } */
+  body {
+    overflow: visible;
+  }
 
   .summary-div {
     display: flex;

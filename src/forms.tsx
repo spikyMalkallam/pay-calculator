@@ -1,5 +1,5 @@
 import './forms.css'
-
+import { displayMoney } from './functions';
 type InputProps = {
     id: string;
     label: string;
@@ -36,34 +36,36 @@ export function InputField({ id, label, value, setFunc, styling, monetary, min, 
 
         // 1. Filter characters
         rawValue = rawValue.replace(/[^\d.]/g, '');
-        console.log(rawValue);
-        console.log(selectionStart)
+        // console.log(rawValue);
         // 2. Handle multiple decimals
         const parts = rawValue.split('.');
         if (parts.length > 2) {
             rawValue = parts[0] + '.' + parts.slice(1).join('');
         }
-
+        else if (parts.length == 2) {
+            rawValue = parts[0] + '.' + parts[1].substring(0, 2);
+        }
         // 3. Logic for numeric conversion 
         // NOTE: If you use .toFixed() here, it returns a string. 
         // If setFunc expects a number, use parseFloat().
         const numericValue = parseFloat(rawValue);
-        let finalValue = isNaN(numericValue) ? '0' : numericValue.toFixed(2);
+        let finalValue = isNaN(numericValue) ? 0 : numericValue;
 
         if (!monetary) {
             if (selectionStart !== null) {
-                finalValue = replaceAt(finalValue, selectionStart - 1);
+                finalValue = Number(replaceAt(String(finalValue), selectionStart - 1));
             }
         }
         // Cap values
         if (max !== null) {
             if (Number(finalValue) > max) {
-                finalValue = max.toFixed(2);
+                finalValue = max;
             }
         }
         else if (Number(finalValue) < min) {
-            finalValue = min.toFixed(2);
+            finalValue = min;
         }
+        // const formatted = new Intl.NumberFormat().format(Number(finalValue))
         setFunc(finalValue);
 
         // 4. Restore Cursor Position
@@ -85,7 +87,7 @@ export function InputField({ id, label, value, setFunc, styling, monetary, min, 
                 id={`${internalLabel}-input`}
                 className={`${styling}-form ${internalLabel}`}
                 // 4. Format the display only: Add $ and commas for the user
-                value={(monetary ? '$' : '') + value.toLocaleString()}
+                value={(monetary ? displayMoney(value) : value)}
                 onChange={handleChange}
             />
         </div>

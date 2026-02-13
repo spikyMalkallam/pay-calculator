@@ -184,16 +184,16 @@ export function IncomeTable({ label, items, totals }: IncomeProps) {
                                     <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
                                 </td>
                                 <td>
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{typeof value[1] == 'number' ? '$' + value[1] : value[1]}</div>
+                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{value[1]}</div>
                                 </td>
                                 <td>
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{typeof value[2] == 'number' ? '$' + value[2] : value[2]}</div>
+                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{value[2]}</div>
                                 </td>
                                 <td>
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{typeof value[3] == 'number' ? '$' + value[3] : value[3]}</div>
+                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{value[3]}</div>
                                 </td>
                                 <td>
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{typeof value[4] == 'number' ? '$' + value[4] : value[4]}</div>
+                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{value[4]}</div>
                                 </td>
                             </tr>
                         )

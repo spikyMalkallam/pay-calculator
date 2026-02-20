@@ -17,6 +17,8 @@ type ToggleDropdownProps = {
     contents: any;
     toggleFunc: () => void;
     expandedVar: any;
+    infoTag: any;
+    desc: string;
 }
 
 type SummaryProps = {
@@ -37,7 +39,7 @@ type SummmaryTabProps = {
 type IncomeProps = {
     label: string;
     items: Record<string, any[] | null>;
-    totals: number[];
+    totals: string[];
 }
 
 export function DropdownTab({ label, contents, toggleFunc, openIcon, closeIcon }: DropdownProps) {
@@ -84,14 +86,16 @@ export function SummaryTab({ label, daily, weekly, fortnightly, monthly, yearly 
     )
 }
 
-export function ToggleDropdownTab({ label, contents, toggleFunc, expandedVar }: ToggleDropdownProps) {
+export function ToggleDropdownTab({ label, desc, contents, toggleFunc, expandedVar, infoTag }: ToggleDropdownProps) {
     return (
         <>
             <div className={'dropdown' + ' ' + label}> {<SwitchToggle
                 label={label}
-                description=''
+                description={desc}
                 setFunc={toggleFunc}
-            />}</div >
+                infoTag={null}
+            />}  {infoTag}</div >
+
             <div className={'dropdown-subdiv' + (expandedVar ? " expanded" : '') + ' ' + label}>
                 {contents}
             </div>
@@ -202,10 +206,10 @@ export function IncomeTable({ label, items, totals }: IncomeProps) {
                 }
                 <tr className="income-table-takehome-row">
                     <td className="income-table-takehome-label">Take-home pay</td>
-                    <td className="income-table-takehome-cell">{'$' + totals[1] + label}</td>
-                    <td className="income-table-takehome-cell">{'$' + totals[2]}</td>
-                    <td className="income-table-takehome-cell">{'$' + totals[3]}</td>
-                    <td className="income-table-takehome-cell">{'$' + totals[4]}</td>
+                    <td className="income-table-takehome-cell">{totals[1]}</td>
+                    <td className="income-table-takehome-cell">{totals[2]}</td>
+                    <td className="income-table-takehome-cell">{totals[3]}</td>
+                    <td className="income-table-takehome-cell">{totals[4]}</td>
                 </tr>
             </tbody>
         </table>

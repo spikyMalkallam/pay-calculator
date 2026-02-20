@@ -2,12 +2,13 @@
     position: absolute;
     height: 100px;
     /* This may be overridden by inline styles in TSX */
-    margin-top: 150px;
-    margin-right: 40px;
+    /* margin-top: 150px;
+    margin-right: 40px; */
 }
 
 .tax-band-bar {
     position: relative;
+    margin-top: 5px;
 }
 
 .overlay-bar {
@@ -43,6 +44,7 @@
 }
 
 .band-header {
-    top: -150px;
-    position: absolute;
+    margin-bottom: 130px;
+    text-align: center;
+    position: static;
 }

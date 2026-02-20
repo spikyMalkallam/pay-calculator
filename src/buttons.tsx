@@ -4,9 +4,10 @@ type SwitchProps = {
     label: string;
     description: string;
     setFunc: () => void;
+    infoTag: any;
 };
 
-export function SwitchToggle({ label, description, setFunc }: SwitchProps) {
+export function SwitchToggle({ label, description, setFunc, infoTag }: SwitchProps) {
     return (
         <table>
             <tbody>
@@ -19,7 +20,7 @@ export function SwitchToggle({ label, description, setFunc }: SwitchProps) {
                     </td>
 
                     <td className='switch-title'>
-                        <span>{label}</span>
+                        <span>{label}</span> {infoTag}
                     </td>
                 </tr>
                 <tr>

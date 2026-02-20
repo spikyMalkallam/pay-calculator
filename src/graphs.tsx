@@ -34,37 +34,38 @@ export function DonutChart({ data }: GraphProps) {
 export function TaxBandBar({ title, earnings, barWidth, lowerLimit, upperLimit, taxBands }: TaxBandBarProps) {
     const bandsArray = Object.keys(taxBands).map(k => parseFloat(k)).sort((a, b) => a - b);
     let linePositions: number[] = bandsArray.map(band => ((band - lowerLimit) / (upperLimit - lowerLimit)) * barWidth);
+
     earnings = earnings > upperLimit ? upperLimit : earnings;
     let scaledEarnings = ((earnings - lowerLimit) / (upperLimit - lowerLimit)) * barWidth;
     scaledEarnings = scaledEarnings < 0 ? 0 : scaledEarnings;
-    const gradientStyle = {
+
+    const gradientStyle: React.CSSProperties = {
         width: barWidth,
+        position: 'relative', // Changed from absolute or inherited
+        margin: '0 auto',     // Centers the bar within the .tax-band-bar div
         background: `linear-gradient(to right, 
-    #f2ba2e ${linePositions[0]}px ${linePositions[1]}px, 
-    #eea727 ${linePositions[1]}px ${linePositions[2]}px, 
-    #e48f18 ${linePositions[2]}px ${linePositions[3]}px, 
-    #e28a15 ${linePositions[3]}px 100%
-  )`,
-        left: -(barWidth / 2)
+            #f2ba2e ${linePositions[0]}px ${linePositions[1]}px, 
+            #eea727 ${linePositions[1]}px ${linePositions[2]}px, 
+            #e48f18 ${linePositions[2]}px ${linePositions[3]}px, 
+            #e28a15 ${linePositions[3]}px 100%
+        )`,
     };
 
     return (
-        <div className='tax-band-bar'>
+        <div className='tax-band-bar' style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h2 className='band-header'>{title}</h2>
             <div className='background-gradient' style={gradientStyle}>
-                <h2 className='band-header' style={{ left: barWidth / 2.4 }}>{title}</h2>
                 <div className='overlay-bar' style={{ width: barWidth - scaledEarnings, left: scaledEarnings < 0 ? 0 : scaledEarnings }}></div>
                 {linePositions.map((pos, index) => (
-                    <div
-                        key={index}
-                        className='vertical-line'
-                        style={{ left: pos }}
-                    >
+                    <div key={index} className='vertical-line' style={{ left: pos }}>
                         <span className='tax-band-info'>${bandsArray[index]}</span>
                         <br />
                         <span className='tax-band-info'>{(taxBands[bandsArray[index]]?.[0]) * 100}%</span>
                     </div>
                 ))}
-                <div className='tax-band-arrow' style={{ left: (scaledEarnings < 0 ? 0 : scaledEarnings) - 15 }}><IoMdArrowDropup /></div>
+                <div className='tax-band-arrow' style={{ left: (scaledEarnings < 0 ? 0 : scaledEarnings) - 15 }}>
+                    <IoMdArrowDropup />{earnings}
+                </div>
             </div>
         </div>
     );

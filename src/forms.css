@@ -12,7 +12,11 @@
     height: 100px;
     margin-bottom: 10px;
     background-color: grey;
-    max-width: 550px;
+    max-width: 600px;
+}
+
+.large-form-box-header.work-hours p {
+    min-width: 133px;
 }
 
 .large-dark-form-box {

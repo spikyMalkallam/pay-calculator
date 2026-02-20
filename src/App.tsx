@@ -7,6 +7,9 @@ import { SwitchToggle } from './buttons'
 import { TaxBandBar } from './graphs';
 import PayrollPieChart from './graphs';
 import { displayMoney } from './functions';
+import Tooltip, { type TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
+import { AiFillInfoCircle } from "react-icons/ai";
 
 function App() {
   function round(num: number, fractionDigits: number): number {
@@ -35,18 +38,21 @@ function App() {
 
     }
   }
-  const [salary, setSalary] = useState(60000.00)
+  const [salary, setSalary] = useState(40.00)
   // 0: 1: 2: 3: 4: 5: 6:
-  const [payCycle, setPayCycle] = useState('Annual')
+  const [payCycle, setPayCycle] = useState('Hourly')
   const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
   const [hasStudentLoan, setHasStudentLoan] = useToggle()
   const [bonus, setBonus] = useState(0)
   const [bonusFrequency, setBonusFrequency] = useState('Annual')
   // const [medicareLevy, setMedicareLevy] = useState(0)
+  const [hasPretaxDeduction, setHasPretaxDeduction] = useToggle()
+  const [pretaxDeductionAmount, setPretaxDeductionAmount] = useState(0)
   const [hasBonus, setHasBonus] = useToggle()
+  const [pretaxSavings, setPretaxSavings] = useState('')
   // const [bonusTax, setBonusTax] = useState(0)
   // const [incomeTax, setIncomeTax] = useState(0)
-  const [hasPartTimeHours, setHasPartTimeHours] = useToggle()
+  // const [hasPartTimeHours, setHasPartTimeHours] = useToggle()
   const twentyTwoTwentySix = { 18200: [0.16, 0], 45000: [0.30, 4288], 135000: [0.37, 31288], 190000: [0.45, 51638] }
   const studentTwentyFiveTwentySix = { 67000: [0.15, 0], 125000: [0.17, 8700], 179286: [0.1, 17928] }
   const taxRates = { "2226": twentyTwoTwentySix }
@@ -95,39 +101,38 @@ function App() {
     let fortnightlyHours = 0;
     let monthlyHours = 0;
     let yearlyHours = 0;
-    if (hasPartTimeHours == false) {
-      return [7.6, 38, 76, 164.6666, 1976]
+    // if (hasPartTimeHours == false) {
+    //   return [7.6, 38, 76, 164.6666, 1976]
+    // }
+    if (period == 'Week') {
+      dailyHours = perDay;
+      weeklyHours = perDay * daysPer;
+      fortnightlyHours = (perDay * daysPer) * 2;
+      monthlyHours = (perDay * daysPer) * 4.3333;
+      yearlyHours = (perDay * daysPer) * 52;
     }
-    else {
-      if (period == 'Week') {
-        dailyHours = perDay;
-        weeklyHours = perDay * daysPer;
-        fortnightlyHours = (perDay * daysPer) * 2;
-        monthlyHours = (perDay * daysPer) * 4.3333;
-        yearlyHours = (perDay * daysPer) * 52;
-      }
-      else if (period == 'Fortnight') {
-        dailyHours = perDay;
-        weeklyHours = (perDay * daysPer) / 2;
-        fortnightlyHours = perDay * daysPer;
-        monthlyHours = (perDay * daysPer) * 2.16665;
-        yearlyHours = (perDay * daysPer) * 26;
-      }
-      else if (period == 'Month') {
-        dailyHours = perDay;
-        weeklyHours = (perDay * daysPer) / 4.3333;
-        fortnightlyHours = (perDay * daysPer) / 2.16665;
-        monthlyHours = perDay * daysPer;
-        yearlyHours = (perDay * daysPer) * 12;
-      }
-      else if (period == 'Year') {
-        dailyHours = perDay;
-        weeklyHours = (perDay * daysPer) / 52;
-        fortnightlyHours = (perDay * daysPer) / 26;
-        monthlyHours = (perDay * daysPer) / 12;
-        yearlyHours = perDay * daysPer;
-      }
+    else if (period == 'Fortnight') {
+      dailyHours = perDay;
+      weeklyHours = (perDay * daysPer) / 2;
+      fortnightlyHours = perDay * daysPer;
+      monthlyHours = (perDay * daysPer) * 2.16665;
+      yearlyHours = (perDay * daysPer) * 26;
     }
+    else if (period == 'Month') {
+      dailyHours = perDay;
+      weeklyHours = (perDay * daysPer) / 4.3333;
+      fortnightlyHours = (perDay * daysPer) / 2.16665;
+      monthlyHours = perDay * daysPer;
+      yearlyHours = (perDay * daysPer) * 12;
+    }
+    else if (period == 'Year') {
+      dailyHours = perDay;
+      weeklyHours = (perDay * daysPer) / 52;
+      fortnightlyHours = (perDay * daysPer) / 26;
+      monthlyHours = (perDay * daysPer) / 12;
+      yearlyHours = perDay * daysPer;
+    }
+
     return [dailyHours, weeklyHours, fortnightlyHours, monthlyHours, yearlyHours];
   }
   function splitTax(ammount: number, hours: number[]): number[] {
@@ -145,7 +150,7 @@ function App() {
     let taxAmount = 0;
     let currentTaxRate = 0;
     let currentThreshold = 0;
-    let grossEarnings = salary - (hasBonus ? bonus : 0);
+    let grossEarnings = salary - (hasBonus ? bonus : 0); // Apply pre-tax here no seperate variable for pre-tax so we can compare with and without
     let lito = 0;
     let div293 = [0, 0, 0, 0, 0];
     let bandCount = 0;
@@ -242,6 +247,17 @@ function App() {
 
     }
   }
+  const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />))
+    (({ theme }) => ({
+      [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 550,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+      },
+    }));
   function calculateStudentLoan(repaymentIncome: number, loanYear: Record<number, number[]>): number {
     let repaymentAmount = 0;
     let currentRepaymentRate = 0;
@@ -304,8 +320,18 @@ function App() {
     // setStudentLoanContribution(currentRepayments);
 
     // Tax
-    let currentTax = calculateTax(salaryPeriods[4], superSum, taxRates['2226'], yearlyHours);
-
+    let preTaxDeduct: number = hasPretaxDeduction ? Number(pretaxDeductionAmount) : 0;
+    let currentTax = calculateTax(salaryPeriods[4] - preTaxDeduct, superSum, taxRates['2226'], yearlyHours);
+    let undeductedTax: number[] = [];
+    let taxDeductionDiff = [];
+    if (hasPretaxDeduction) {
+      undeductedTax = calculateTax(salaryPeriods[4], superSum, taxRates['2226'], yearlyHours)['totalTaxSplit'];
+      taxDeductionDiff = currentTax['totalTaxSplit'].map((val: number, i: number) =>
+        round(undeductedTax[i] - val, 2)
+      );
+      setPretaxSavings(displayMoney(taxDeductionDiff[4]))
+      // console.log(pretaxSavings)
+    }
     currentTax['HECS'] = currentRepayments;
     // LITO
     const adjustedLITO = Number(currentTax['LITO']) > Number(currentTax['totalTaxSplit'][4]) ? Number(currentTax['totalTaxSplit'][4]) : Number(currentTax['LITO']);
@@ -325,11 +351,13 @@ function App() {
     for (let i = 0; i < 5; i++) {
       postTaxPay.push((round(salaryPeriods[i] - taxSplit["totalTax"][i], 2)).toFixed(2));
     }
+    postTaxPay[4] = postTaxPay[4] - (hasPretaxDeduction ? pretaxDeductionAmount : 0);
     let superSplit = splitTax(superSum, yearlyHours);
     let taxableIncomePeriods = [];
     for (let i = 0; i < 5; i++) {
       taxableIncomePeriods.push(salaryPeriods[i]);
     }
+    taxableIncomePeriods[4] = taxableIncomePeriods[4] - preTaxDeduct;
     if (hasBonus) {
       taxableIncomePeriods[4] += Number(bonus);
     }
@@ -379,7 +407,7 @@ function App() {
       studentLoanContribution: studentLoanContribution,
       // bonusSplit: bonusPeriods
     };
-  }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod]);
+  }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasPretaxDeduction, pretaxDeductionAmount]);
 
   return (
     <>
@@ -424,24 +452,205 @@ function App() {
                     }}
                     styling='large'
                   />
-
-
-
-                  <div>
-                    <SwitchToggle
-                      label="Salary includes Superannuation"
-                      description={'Super Guarantee of $' + round(financialData['superAmount'], 0) + ' paid on top of your $' + round(financialData['totalSalary'], 0) + ' annual salary'}
-                      setFunc={setSalaryIncludesSuper}
-                    />
-                    <span></span>
-                  </div>
-                  <br></br>
+                  {payCycle == 'Hourly' ?
+                    <table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <InputField
+                              label='Hours per day'
+                              id='work-hours'
+                              value={dailyHours}
+                              setFunc={setDailyHours}
+                              styling='large'
+                              monetary={false}
+                              rounding={2}
+                              min={0}
+                              max={24}
+                            />
+                          </td>
+                          <td>
+                            <InputField
+                              label='Days per'
+                              id='days-per-period'
+                              value={daysPerPeriod}
+                              setFunc={setDaysPerPeriod}
+                              styling='large'
+                              monetary={false}
+                              rounding={1}
+                              min={0}
+                              // max={null}
+                              max={hoursPeriod == 'Week' ? 5 : (hoursPeriod == 'Fortnight' ? 10 : (hoursPeriod == 'Month' ? 23 : 276))}
+                            />
+                          </td>
+                          <td>
+                            <SelectField
+                              label="Period"
+                              id="week-or-fortnight"
+                              value={hoursPeriod}
+                              setFunc={setHoursPeriod}
+                              items={{
+                                "Week": "Week",
+                                "Fortnight": "Fortnight",
+                                "Month": "Month",
+                                "Year": "Year",
+                              }}
+                              styling='large'
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    : null}
                   <div><SwitchToggle
                     label="Student loan"
                     description='HELP (HECS), VSL, TSL, SSL, SFSS'
                     setFunc={setHasStudentLoan}
+                    infoTag={<HtmlTooltip
+                      title={
+                        <>
+                          <b>Repayment brackets</b>
+                          <ul style={{ 'textAlign': 'left' }}>
+                            <li><b>$0 - $67,000:</b> Nil</li>
+                            <li><b>$67,001 - $125,000:</b> 15c for each $1 over $67,000</li>
+                            <li><b>$125,001 -$179,285:</b> $8,700 plus 17c for each $1 over $125,000</li>
+                            <li><b>$179,286 and over:</b> 10% of your total repayment income</li>
+                          </ul>
+                        </>
+                      }
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: 'offset',
+                              options: {
+                                offset: [210, -90],
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    >
+                      <AiFillInfoCircle />
+                    </HtmlTooltip>}
                   /></div>
+                  <br></br>
+                  <div>
+                    <SwitchToggle
+                      label="Salary includes Superannuation"
+                      description={'Super Guarantee of $' + round(financialData['superAmount'], 0) + (salaryIncludesSuper ? ' is included in your $' : ' paid on top of your $') + round(financialData['totalSalary'], 0) + ' annual salary (12%)'}
+                      setFunc={setSalaryIncludesSuper}
+                      infoTag={null}
+                    />
+
+                  </div>
+                  <h2 style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/01/recruitmentHive_H_small.svg' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2>
                   <ToggleDropdownTab
+                    label='Novated Lease'
+                    desc='Lease a car and pay it off before tax'
+                    contents={<><table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <InputField
+                              label={"Deduction amount"}
+                              id='pretax-deduction-amount'
+                              value={pretaxDeductionAmount}
+                              setFunc={(val) => { setPretaxDeductionAmount(val); }}
+                              styling='large'
+                              monetary={true}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className='pretax-savings'>
+                              {pretaxSavings} in income tax savings
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    </>}
+                    toggleFunc={setHasPretaxDeduction}
+                    expandedVar={hasPretaxDeduction}
+                    infoTag={null}
+                  />
+                  <ToggleDropdownTab
+                    label='Super Salary Sacrifice'
+                    desc='Lower your income tax by making voluntary super contributions'
+                    contents={<><table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <InputField
+                              label={"Deduction amount"}
+                              id='pretax-deduction-amount'
+                              value={pretaxDeductionAmount}
+                              setFunc={(val) => { setPretaxDeductionAmount(val); }}
+                              styling='large'
+                              monetary={true}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className='pretax-savings'>
+                              {pretaxSavings} in income tax savings
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    </>}
+                    toggleFunc={setHasPretaxDeduction}
+                    expandedVar={hasPretaxDeduction}
+                    infoTag={null}
+                  />
+                  <ToggleDropdownTab
+                    label='Work deductables'
+                    desc='Subtract your work expenses from your taxable income'
+                    contents={<><table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <InputField
+                              label={"Deduction amount"}
+                              id='pretax-deduction-amount'
+                              value={pretaxDeductionAmount}
+                              setFunc={(val) => { setPretaxDeductionAmount(val); }}
+                              styling='large'
+                              monetary={true}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className='pretax-savings'>
+                              {pretaxSavings} in income tax savings
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    </>}
+                    toggleFunc={setHasPretaxDeduction}
+                    expandedVar={hasPretaxDeduction}
+                    infoTag={null}
+                  />
+                  {/* <ToggleDropdownTab
                     label='Bonus Pay'
                     contents={<table className='dropdown-table'>
                       <tbody>
@@ -478,70 +687,23 @@ function App() {
                     </table>}
                     toggleFunc={setHasBonus}
                     expandedVar={hasBonus}
-                  />
-                  <ToggleDropdownTab
+                  /> */}
+                  {/* <ToggleDropdownTab
                     label={'Part-time hours'}
                     contents={
                       // Weekly, Fortnightly, Monthly, Annually calculator
-                      <table className='dropdown-table'>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <InputField
-                                label='Hours per day'
-                                id='work-hours'
-                                value={dailyHours}
-                                setFunc={setDailyHours}
-                                styling='large'
-                                monetary={false}
-                                rounding={2}
-                                min={0}
-                                max={24}
-                              />
-                            </td>
-                            <td>
-                              <InputField
-                                label='Days per'
-                                id='days-per-period'
-                                value={daysPerPeriod}
-                                setFunc={setDaysPerPeriod}
-                                styling='large'
-                                monetary={false}
-                                rounding={1}
-                                min={0}
-                                // max={null}
-                                max={hoursPeriod == 'Week' ? 5 : (hoursPeriod == 'Fortnight' ? 10 : (hoursPeriod == 'Month' ? 23 : 276))}
-                              />
-                            </td>
-                            <td>
-                              <SelectField
-                                label="Period"
-                                id="week-or-fortnight"
-                                value={hoursPeriod}
-                                setFunc={setHoursPeriod}
-                                items={{
-                                  "Week": "Week",
-                                  "Fortnight": "Fortnight",
-                                  "Month": "Month",
-                                  "Year": "Year",
-                                }}
-                                styling='large'
-                              />
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      
                     }
                     toggleFunc={setHasPartTimeHours}
                     expandedVar={hasPartTimeHours}
-                  />
+                  /> */}
                 </td>
               </tr>
 
               <tr>
                 <td>
-                  <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
-                  {financialData['taxSplit']['293'][4] > 0 ? (<div style={{ textAlign: 'center', fontStyle: 'italic' }}>Division 293 tax applies when taxable income + super contribution exceeds $250,000</div>) : (<></>)}
+
+                  {/* {financialData['taxSplit']['293'][4] > 0 ? (<div style={{ textAlign: 'center', fontStyle: 'italic' }}>Division 293 tax applies when taxable income + super contribution exceeds $250,000</div>) : (<></>)} */}
                 </td>
               </tr>
             </tbody>
@@ -557,29 +719,32 @@ function App() {
                       label=''
                       items={{
                         "#Taxable Income": financialData['taxablebaseSalarySplit'].map(displayMoney),
-                        "Base salary": financialData['baseSalarySplit'].map(displayMoney),
-                        "Bonus pay": hasBonus ? ['-', '-', '-', '-', displayMoney(bonus)] : null,
+                        // "Base salary": financialData['baseSalarySplit'].map(displayMoney),
+                        // "Bonus pay": hasBonus ? ['-', '-', '-', '-', displayMoney(bonus)] : null,
                         "#Superannuation": financialData['superSplit'].map(displayMoney),
                         "#Total Taxes": financialData['taxSplit']['totalTax'].map(displayMoney),
-                        "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
-                        "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
-                        "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
-                        "Medicare Levy": Array.isArray(financialData['taxSplit']['medicare']) ? financialData['taxSplit']['medicare'] : [financialData['taxSplit']['medicare']],
-                        "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
+                        // "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
+                        // "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
+                        // "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
+                        // "Medicare Levy": Array.isArray(financialData['taxSplit']['medicare']) ? financialData['taxSplit']['medicare'] : [financialData['taxSplit']['medicare']],
+                        // "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
                       }}
-                      totals={financialData['postTax']} />
+                      totals={financialData['postTax'].map(displayMoney)} />
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div id='chart-section'>
-
-            <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
+            <div className='chart-block'>
+              <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
+            </div>
             {/* <DonutChart data={donutIncomeSummary} /> */}
-            <TaxBandBar title={'Tax Bands'} earnings={financialData['baseSalarySplit'][4]} barWidth={(500)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />
-
+            <div className='chart-block'>
+              <TaxBandBar title={'Tax Bands'} earnings={financialData['taxablebaseSalarySplit'][4]} barWidth={(600)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />
+            </div>
           </div>
+          <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
         </div >
 
       </div >

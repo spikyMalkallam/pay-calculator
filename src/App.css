@@ -55,6 +55,7 @@ animation-name: loadingAnimation;
   animation-duration: 1s;
   animation-iteration-count: 1;
   margin: 0px 5px 0px 5px;
+
 }
 
 body {
@@ -207,4 +208,46 @@ button:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.hive-shine {
+  text-decoration: none;
+  display: inline-block;
+  margin: 15px 0px 5px 0px;
+  /* 1. Setup the gradient (Shine is at 50%) */
+  background: linear-gradient(120deg,
+      var(--hive-yellow) 30%,
+      #ffffff 50%,
+      var(--hive-yellow) 70%);
+
+  /* 2. Make it wide enough to hide the shine on both sides */
+  background-size: 300% 100%;
+
+  /* 3. Clip to text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* 4. Start position (shine hidden to the right) */
+  background-position: 100% 0;
+
+  animation: shine-sweep 1.5s linear 1;
+}
+
+/* 5. Trigger the animation on hover */
+.hive-shine:hover {
+  animation: shine-sweep 1.5s linear infinite;
+}
+
+/* 6. The "Swish" Logic */
+@keyframes shine-sweep {
+  0% {
+    background-position: 100% 0;
+    /* Shine starts off-screen right */
+  }
+
+  100% {
+    background-position: -100% 0;
+    /* Shine finishes off-screen left */
+  }
 }

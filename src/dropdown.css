@@ -12,6 +12,16 @@
     min-width: 0;
 }
 
+.income-table-takehome-cell {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.income-table-takehome-label {
+    padding: 12px 15px;
+    text-align: left;
+}
+
 .dropdown-container .dropdown-label {
     text-align: left;
     padding: 12px 15px;
@@ -89,8 +99,41 @@
     width: 100%;
 }
 
+.dropdown {
+    padding: 10px 0px 0px 0px;
+    background-color: #00000000;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: black;
+    width: 100%;
+    max-width: 1067px;
+}
+
+@media (max-width: 1520px) {
+    .dropdown {
+        max-width: 600px;
+    }
+}
+
+.dropdown-subdiv {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    background-color: #00000000;
+    color: white;
+}
+
 .dropdown-subdiv.expanded {
     max-height: 500px;
+}
+
+.expand-subdiv-vertical.expanded {
+    max-height: 500px;
+}
+
+.expand-subdiv-horizontal.expanded {
+    max-width: 500px;
 }
 
 .finance-dropdown-amount {
@@ -102,7 +145,8 @@ select>option {
     color: var(--hive-yellow);
 }
 
-.dropdown {
+.expand {
+    position: relative;
     padding: 10px 0px 5px 0px;
     background-color: #00000000;
     display: flex;
@@ -111,21 +155,31 @@ select>option {
     color: black;
     width: 100%;
     max-width: 550px;
+    margin: 20px 0px 20px 0px;
 }
 
+
 @media (max-width: 1520px) {
-    .dropdown {
+    .expand {
         max-width: 600px;
     }
 }
 
 .dropdown-button {
-    background-color: black;
-    color: var(--hive-yellow);
+    /* display: flex; */
+    background-color: grey;
+    color: white;
     transition: background-color 0.2s, color 0.2s;
     border: none;
     border-radius: 0px;
-    margin-right: 10px;
+    height: 70px;
+    width: 20px;
+    padding: 5px;
+    font-size: 10px;
+}
+
+.dropdown-button div {
+    margin: 0px;
 }
 
 .switch-desc {
@@ -148,12 +202,30 @@ select>option {
     padding: 0;
 }
 
-.dropdown-subdiv {
+.expand-subdiv-horizontal {
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.3s ease-in-out;
+    background-color: #00000000;
+    color: white;
+    position: absolute;
+    margin: 30px 0px 0px 55px;
+    white-space: nowrap;
+}
+
+.expand-subdiv-vertical {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
     background-color: #00000000;
     color: white;
+    position: absolute;
+    margin: 30px 0px 0px 55px;
+    white-space: nowrap;
+}
+
+.expand-subdiv p {
+    position: absolute;
 }
 
 .dropdown-sub-rows {
@@ -255,6 +327,49 @@ select>option {
     margin: 5px 5px 5px 0px;
 }
 
+/* 1. Reset all table spacing */
+.income-table,
+.sub-table-header,
+.income-table td {
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0;
+    border-spacing: 0;
+}
+
+/* 2. Remove the padding from the wrapper div */
+.dropdown.row-drop {
+    padding: 0;
+    /* Changed from 10px */
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    /* Ensures button and table are same height */
+}
+
+/* 3. Ensure the inner table takes up all remaining space */
+.sub-table-header {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+/* 4. Fix the button alignment */
+.dropdown-button {
+    flex-shrink: 0;
+    /* Prevents button from squishing */
+    height: auto;
+    /* Lets it fill the row height */
+    align-self: stretch;
+}
+
+/* 5. Force the cells to align with the headers */
+.income-table-header td,
+.sub-table-header td {
+    width: 20%;
+    /* Assuming 5 columns: 100/5 = 20% */
+}
+
 .income-table {
     width: 100%;
     /* background-color: var(--background-grey); */
@@ -267,6 +382,26 @@ select>option {
     /* Removes space between cells */
     padding: 0;
     min-width: 724px;
+}
+
+.dropdown.row-drop {
+    width: 100%;
+    /* background-color: var(--background-grey); */
+    text-align: left;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    /* user-select: none; */
+    border-collapse: collapse;
+    /* Removes space between cells */
+    padding: 0;
+    min-width: 1000px;
+}
+
+.sub-table-header td {
+    width: 200px;
+    /* justify-content: center; */
+    /* align-items: center; */
 }
 
 .income-table-header {
@@ -348,14 +483,4 @@ select>option {
     text-align: center;
     text-align: left;
 
-}
-
-.income-table-takehome-cell {
-    padding: 12px 15px;
-    text-align: center;
-}
-
-.income-table-takehome-label {
-    padding: 12px 15px;
-    text-align: left;
 }

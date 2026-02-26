@@ -3,13 +3,12 @@ import './dropdown.css'
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 import useToggle from "./hooks/useToggle";
 import { SwitchToggle } from './buttons'
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 
 type DropdownProps = {
     label: string;
     contents: any;
-    toggleFunc: () => void;
-    openIcon: any;
-    closeIcon: any;
+    subContents: any;
 }
 
 type ToggleDropdownProps = {
@@ -40,16 +39,25 @@ type IncomeProps = {
     label: string;
     items: Record<string, any[] | null>;
     totals: string[];
+    oldTax: string[];
 }
 
-export function DropdownTab({ label, contents, toggleFunc, openIcon, closeIcon }: DropdownProps) {
+export function DropdownTab({ label, contents, subContents }: DropdownProps) {
     const [expanded, setExpanded] = useToggle()
 
     return (
         <>
-            <div className={'dropdown' + ' ' + label}> <button className={'dropdown-button' + (expanded ? " expanded" : '') + ' ' + label} onClick={() => { toggleFunc(); setExpanded(); }}>{expanded ? closeIcon : openIcon}</button>{label}</div>
-            <div className={'dropdown-subdiv' + (expanded ? " expanded" : '') + ' ' + label}>
-                {contents}
+            <div className={'dropdown row-drop ' + label} style={{ display: 'flex' }}>
+                <button
+                    className={'dropdown-button' + (expanded ? " expanded" : '')}
+                    onClick={setExpanded}
+                >
+                    {expanded ? <AiOutlineDown /> : <AiOutlineUp />}
+                </button>
+                <div style={{ flexGrow: 1 }}>{contents}</div>
+            </div>
+            <div className={'dropdown-subdiv' + (expanded ? " expanded" : '')}>
+                {subContents}
             </div>
         </>
     )
@@ -86,19 +94,49 @@ export function SummaryTab({ label, daily, weekly, fortnightly, monthly, yearly 
     )
 }
 
-export function ToggleDropdownTab({ label, desc, contents, toggleFunc, expandedVar, infoTag }: ToggleDropdownProps) {
+export function ToggleDropdownTab({ label, contents, toggleFunc, expandedVar }: ToggleDropdownProps) {
     return (
         <>
-            <div className={'dropdown' + ' ' + label}> {<SwitchToggle
+            <div className={'dropdown' + ' ' + label}> {<DropdownTab label='' contents={contents} subContents={contents} />}</div >
+            <div className={'dropdown-subdiv' + (expandedVar ? " expanded" : '') + ' ' + label}>
+                {contents}
+            </div>
+        </>
+    )
+}
+
+export function ToggleExpandVerticalTab({ label, desc, contents, toggleFunc, expandedVar, infoTag }: ToggleDropdownProps) {
+    return (
+        <>
+            <div className={'expand' + ' ' + label.replace(' ', '')}> {<SwitchToggle
                 label={label}
                 description={desc}
                 setFunc={toggleFunc}
                 infoTag={null}
-            />}  {infoTag}</div >
+            />}  {infoTag}
 
-            <div className={'dropdown-subdiv' + (expandedVar ? " expanded" : '') + ' ' + label}>
-                {contents}
-            </div>
+                <div className={'expand-subdiv-vertical' + (expandedVar ? " expanded" : '') + ' ' + label}>
+                    {contents}
+                </div>
+            </div >
+        </>
+    )
+}
+
+export function ToggleExpandHorizontalTab({ label, desc, contents, toggleFunc, expandedVar, infoTag }: ToggleDropdownProps) {
+    return (
+        <>
+            <div className={'expand' + ' ' + label.replace(' ', '')}> {<SwitchToggle
+                label={label}
+                description={desc}
+                setFunc={toggleFunc}
+                infoTag={null}
+            />}  {infoTag}
+
+                <div className={'expand-subdiv-horizontal' + (expandedVar ? " expanded" : '') + ' ' + label}>
+                    {contents}
+                </div>
+            </div >
         </>
     )
 }
@@ -155,7 +193,7 @@ export function DropdownSummaryInformation({ label, total, items }: SummaryProps
     )
 }
 
-export function IncomeTable({ label, items, totals }: IncomeProps) {
+export function IncomeTable({ label, items, totals, oldTax }: IncomeProps) {
     return (
         <table className="income-table">
             <thead >
@@ -178,32 +216,40 @@ export function IncomeTable({ label, items, totals }: IncomeProps) {
                 </tr>
             </thead>
             <tbody>
+                <td colSpan={5}>
+                    {Object.entries(items).map(([key, value]: [string, any]) => {
 
-                {Object.entries(items).map(([key, value]: [string, any]) => {
-                    if (value != null) {
-                        return (
-                            <tr key={key} className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>
-                                <td>
+                        if (value != null) {
+                            return (
+                                <DropdownTab label="row-drop"
+                                    contents={
+                                        <table className="sub-table-header">
+                                            <tbody>
+                                                <tr key={key} className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>
+                                                    <td>
+                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[1]}</del><br></br> {value[1]}</>) : value[1]}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[2]}</del><br></br> {value[2]}</>) : value[2]}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[3]}</del><br></br> {value[3]}</>) : value[3]}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[4]}</del><br></br> {value[4]}</>) : value[4]}</div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>}
+                                    subContents={<h1>AH</h1>} /> //Object.entries(items).map(([key, value]: [string, any]) => { })
 
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
-                                </td>
-                                <td>
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{value[1]}</div>
-                                </td>
-                                <td>
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{value[2]}</div>
-                                </td>
-                                <td>
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{value[3]}</div>
-                                </td>
-                                <td>
-                                    <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{value[4]}</div>
-                                </td>
-                            </tr>
-                        )
-                    }
-                })
-                }
+                            )
+                        }
+                    })
+                    }</td>
                 <tr className="income-table-takehome-row">
                     <td className="income-table-takehome-label">Take-home pay</td>
                     <td className="income-table-takehome-cell">{totals[1]}</td>

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import './App.css'
-import { IncomeTable, ToggleDropdownTab } from './dropdown'
+import { IncomeTable, ToggleExpandHorizontalTab, ToggleExpandVerticalTab, DropdownTab } from './dropdown'
 import useToggle from './hooks/useToggle'
 import { InputField, SelectField } from './forms'
 import { SwitchToggle } from './buttons'
@@ -9,7 +9,12 @@ import PayrollPieChart from './graphs';
 import { displayMoney } from './functions';
 import Tooltip, { type TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
-import { AiFillInfoCircle } from "react-icons/ai";
+import { AiFillInfoCircle, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+
+type IncomeTableRowProps = {
+  values: number[];
+  subrow: any[];
+}
 
 function App() {
   function round(num: number, fractionDigits: number): number {
@@ -20,13 +25,25 @@ function App() {
       case "Annual": {
         return 1;
       }
+      case "Year": {
+        return 1;
+      }
       case "Monthly": {
+        return 12;
+      }
+      case "Month": {
         return 12;
       }
       case "Fortnightly": {
         return 26;
       }
+      case "Fortnight": {
+        return 26;
+      }
       case "Weekly": {
+        return 52;
+      }
+      case "Week": {
         return 52;
       }
       case "Daily": {
@@ -49,7 +66,17 @@ function App() {
   const [hasPretaxDeduction, setHasPretaxDeduction] = useToggle()
   const [pretaxDeductionAmount, setPretaxDeductionAmount] = useState(0)
   const [hasBonus, setHasBonus] = useToggle()
-  const [pretaxSavings, setPretaxSavings] = useState('')
+  const [pretaxSavings, setPretaxSavings] = useState<string[]>([])
+  const [hasNovatedLease, setHasNovatedLease] = useToggle()
+  const [novatedLeaseEletric, setNovatedLeaseEletric] = useToggle()
+  const [novatedLeaseAmount, setNovatedLeaseAmount] = useState(0)
+  const [novatedCarValue, setNovatedCarValue] = useState(0)
+  const [novatedLeasePeriod, setNovatedLeasePeriod] = useState('Week');
+  const [hasSuperSalarySacrifise, setHasSuperSalarySacrifise] = useToggle()
+  const [voluntarySuperAmmount, setVoluntarySuperAmmount] = useState(0)
+  const [hasWorkDeductions, setHasWorkDeductions] = useToggle()
+  const [workDeductablesAmount, setWorkDeductablesAmount] = useState(0)
+  const [maximiseSuper, setMaximiseSuper] = useToggle()
   // const [bonusTax, setBonusTax] = useState(0)
   // const [incomeTax, setIncomeTax] = useState(0)
   // const [hasPartTimeHours, setHasPartTimeHours] = useToggle()
@@ -231,7 +258,17 @@ function App() {
     let taxDiff = (bonusTax - taxAmount) * stringToNumFreq(bonusFrequency);
     // Select the lesser
     bonus * 0.47 > taxDiff ? bonusTax = taxDiff : bonusTax = bonus * 0.47;
-
+    // Fringe Benefits Tax
+    let fbt = 0;
+    if (hasNovatedLease) {
+      if (novatedLeaseEletric) {
+        fbt = 0;
+      }
+      else {
+        fbt = novatedCarValue * 0.2 * 2.0802 * 0.47;
+      }
+    }
+    // console.log(fbt);
     // return taxAmount;
     return {
       'incomeTax': incomeTax,
@@ -243,8 +280,8 @@ function App() {
       'totalTaxSplit': totalTaxSplit,
       'incomeTaxSplit': incomeTaxSplit,
       'medicareSplit': medicareSplit,
-      'litoSplit': litoSplit
-
+      'litoSplit': litoSplit,
+      'fringe-benefits-tax': fbt
     }
   }
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -304,12 +341,34 @@ function App() {
     }
     else {
       superSum = round((salarySum * (superPercentage / 100)), 2);
-
       // Cap to concessional limits
       if (superSum > 30000) {
         superSum = 30000
       }
+
     }
+    let pretaxDeductionAmount = 0;
+    // Voluntary Super
+    let superContribution = 0;
+    let concessional = 0;
+    if (hasSuperSalarySacrifise) {
+      if (maximiseSuper) {
+        superContribution = 30000 - superSum;
+        setVoluntarySuperAmmount(superContribution)
+      }
+      else {
+        superContribution = voluntarySuperAmmount;
+      }
+      superSum += superContribution;
+      if (superSum - 30000 >= 0) {
+        concessional = round(-((superSum - 30000) - superContribution), 2)
+      }
+      else {
+        concessional = superContribution;
+      }
+    }
+    else { concessional = 0; }
+    pretaxDeductionAmount += concessional;
     // Add bonus
     if (hasBonus) {
       salarySum += Number(bonus);
@@ -319,19 +378,45 @@ function App() {
     let studentLoanContribution = [0, 0, 0, 0, currentRepayments];
     // setStudentLoanContribution(currentRepayments);
 
-    // Tax
-    let preTaxDeduct: number = hasPretaxDeduction ? Number(pretaxDeductionAmount) : 0;
-    let currentTax = calculateTax(salaryPeriods[4] - preTaxDeduct, superSum, taxRates['2226'], yearlyHours);
-    let undeductedTax: number[] = [];
-    let taxDeductionDiff = [];
-    if (hasPretaxDeduction) {
-      undeductedTax = calculateTax(salaryPeriods[4], superSum, taxRates['2226'], yearlyHours)['totalTaxSplit'];
-      taxDeductionDiff = currentTax['totalTaxSplit'].map((val: number, i: number) =>
-        round(undeductedTax[i] - val, 2)
-      );
-      setPretaxSavings(displayMoney(taxDeductionDiff[4]))
-      // console.log(pretaxSavings)
+    // Calculate Pre-Tax Savings
+    if (hasWorkDeductions) {
+      pretaxDeductionAmount += workDeductablesAmount;
     }
+    // Add Pre-Tax Novated Lease
+    let preTaxNovated = 0;
+    let postTaxNovated = 0;
+    if (hasNovatedLease) {
+      if (novatedLeaseEletric) {
+        preTaxNovated = novatedLeaseAmount * stringToNumFreq(novatedLeasePeriod);
+        pretaxDeductionAmount += novatedLeaseAmount * stringToNumFreq(novatedLeasePeriod);
+      }
+      else {
+        console.log('Petrol')
+      }
+    }
+    console.log(novatedLeaseAmount * stringToNumFreq(novatedLeasePeriod))
+    //let preTaxDeduct: number = hasPretaxDeduction ? Number(pretaxDeductionAmount) : 0;
+    let currentTax = calculateTax(salaryPeriods[4] - pretaxDeductionAmount, superSum, taxRates['2226'], yearlyHours);
+    let numUndeductedTax: number[] = [];
+    let undeductedTax: string[] = [];
+    let taxDeductionDiff = [];
+
+    if (pretaxDeductionAmount > 0) {
+      numUndeductedTax = calculateTax(salaryPeriods[4], superSum, taxRates['2226'], yearlyHours)['totalTaxSplit'];
+      taxDeductionDiff = currentTax['totalTaxSplit'].map((val: number, i: number) =>
+        round(numUndeductedTax[i] - val, 2)
+      );
+      if (!taxDeductionDiff.every((item: number) => item === 0)) {
+        undeductedTax = numUndeductedTax.map(displayMoney);
+      }
+      taxDeductionDiff = taxDeductionDiff.map(displayMoney);
+      setPretaxSavings(taxDeductionDiff);
+
+    }
+    else {
+      undeductedTax = [];
+    }
+
     currentTax['HECS'] = currentRepayments;
     // LITO
     const adjustedLITO = Number(currentTax['LITO']) > Number(currentTax['totalTaxSplit'][4]) ? Number(currentTax['totalTaxSplit'][4]) : Number(currentTax['LITO']);
@@ -351,13 +436,13 @@ function App() {
     for (let i = 0; i < 5; i++) {
       postTaxPay.push((round(salaryPeriods[i] - taxSplit["totalTax"][i], 2)).toFixed(2));
     }
-    postTaxPay[4] = postTaxPay[4] - (hasPretaxDeduction ? pretaxDeductionAmount : 0);
+    postTaxPay[4] = postTaxPay[4] - pretaxDeductionAmount;
     let superSplit = splitTax(superSum, yearlyHours);
     let taxableIncomePeriods = [];
     for (let i = 0; i < 5; i++) {
       taxableIncomePeriods.push(salaryPeriods[i]);
     }
-    taxableIncomePeriods[4] = taxableIncomePeriods[4] - preTaxDeduct;
+    taxableIncomePeriods[4] = taxableIncomePeriods[4] - pretaxDeductionAmount;
     if (hasBonus) {
       taxableIncomePeriods[4] += Number(bonus);
     }
@@ -392,6 +477,7 @@ function App() {
     if (hasStudentLoan && currentTax['HECS'] > 0) {
       payrollData[1].subCategories.push({ id: 'student-loan', label: 'Student Loan', value: Number(currentTax['HECS']), color: '#d100b5' });
     }
+
     return {
       totalSalary: salaryPeriods[4],
       superAmount: superSum,
@@ -405,9 +491,13 @@ function App() {
       superSplit: superSplit,
       payrollData: payrollData,
       studentLoanContribution: studentLoanContribution,
+      undeductedTax: undeductedTax,
+      fringeBenefitsTax: currentTax['fringe-benefits-tax'],
+      pretaxDeductionAmount: pretaxDeductionAmount,
+      preTaxNovated: preTaxNovated,
       // bonusSplit: bonusPeriods
     };
-  }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasPretaxDeduction, pretaxDeductionAmount]);
+  }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasPretaxDeduction, pretaxDeductionAmount, novatedCarValue, novatedLeasePeriod, novatedLeaseEletric, novatedLeaseAmount, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease]);
 
   return (
     <>
@@ -415,14 +505,6 @@ function App() {
         <div id='income-div'>
 
           <table>
-            {/* <thead>
-              <tr>
-                <td>
-                  <div style={{ textAlign: 'center' }}>Enter your salary, adjust the settings and see the results in the summary below.</div>
-                  <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
-                </td>
-              </tr>
-            </thead> */}
             <tbody>
               <tr className='big-table-row'>
                 <td className='big-table-cell'>
@@ -458,7 +540,7 @@ function App() {
                         <tr>
                           <td>
                             <InputField
-                              label='Hours per day'
+                              label='Hours'
                               id='work-hours'
                               value={dailyHours}
                               setFunc={setDailyHours}
@@ -471,7 +553,7 @@ function App() {
                           </td>
                           <td>
                             <InputField
-                              label='Days per'
+                              label='Days'
                               id='days-per-period'
                               value={daysPerPeriod}
                               setFunc={setDaysPerPeriod}
@@ -485,7 +567,7 @@ function App() {
                           </td>
                           <td>
                             <SelectField
-                              label="Period"
+                              label="each"
                               id="week-or-fortnight"
                               value={hoursPeriod}
                               setFunc={setHoursPeriod}
@@ -538,61 +620,98 @@ function App() {
                   <div>
                     <SwitchToggle
                       label="Salary includes Superannuation"
-                      description={'Super Guarantee of $' + round(financialData['superAmount'], 0) + (salaryIncludesSuper ? ' is included in your $' : ' paid on top of your $') + round(financialData['totalSalary'], 0) + ' annual salary (12%)'}
+                      description={'Super Guarantee of $' + round(financialData['superAmount'], 0) + (salaryIncludesSuper ? ' is included in your $' : ' paid on top of your $') + round(financialData['totalSalary'], 0) + ' annual salary'}
                       setFunc={setSalaryIncludesSuper}
                       infoTag={null}
                     />
 
                   </div>
-                  <h2 style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/01/recruitmentHive_H_small.svg' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2>
-                  <ToggleDropdownTab
+                  <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/01/recruitmentHive_H_small.svg' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2>
+                  <ToggleExpandHorizontalTab
                     label='Novated Lease'
                     desc='Lease a car and pay it off before tax'
                     contents={<><table className='dropdown-table'>
                       <tbody>
+                        <tr><td colSpan={2} style={{ background: 'grey' }}><SwitchToggle
+                          label="Electric Car, or eligible zero or low emissions vehicle"
+                          description={''}
+                          setFunc={setNovatedLeaseEletric}
+                          infoTag={null}
+                        /></td></tr>
                         <tr>
-                          <td>
+                          {novatedLeaseEletric ? <><td>
                             <InputField
-                              label={"Deduction amount"}
+                              label={"Novated Lease"}
                               id='pretax-deduction-amount'
-                              value={pretaxDeductionAmount}
-                              setFunc={(val) => { setPretaxDeductionAmount(val); }}
-                              styling='large'
+                              value={novatedLeaseAmount}
+                              setFunc={(val) => { setNovatedLeaseAmount(val); }}
+                              styling='medium'
                               monetary={true}
                               rounding={2}
                               min={0}
                               max={null}
                             />
                           </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div className='pretax-savings'>
-                              {pretaxSavings} in income tax savings
-                            </div>
-                          </td>
+                            <td>
+                              <SelectField
+                                label="Frequency"
+                                id="week-or-fortnight"
+                                value={novatedLeasePeriod}
+                                setFunc={setNovatedLeasePeriod}
+                                items={{
+                                  "Week": "Week",
+                                  "Fortnight": "Fortnight",
+                                  "Month": "Month",
+                                  "Year": "Year",
+                                }}
+                                styling='medium'
+                              />
+                            </td></> : <td colSpan={2}>
+                            <InputField
+                              label={"Value of Car"}
+                              id='value-of-novated-car'
+                              value={novatedCarValue}
+                              setFunc={(val) => { setNovatedCarValue(val); }}
+                              styling='medium'
+                              monetary={true}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>}
+
                         </tr>
                       </tbody>
                     </table>
 
                     </>}
-                    toggleFunc={setHasPretaxDeduction}
-                    expandedVar={hasPretaxDeduction}
+                    toggleFunc={setHasNovatedLease}
+                    expandedVar={hasNovatedLease}
                     infoTag={null}
                   />
-                  <ToggleDropdownTab
+                  <ToggleExpandHorizontalTab
                     label='Super Salary Sacrifice'
                     desc='Lower your income tax by making voluntary super contributions'
                     contents={<><table className='dropdown-table'>
                       <tbody>
                         <tr>
+                          <td style={{ background: 'grey' }}>
+                            <SwitchToggle
+                              label="Contribute up to concessional cap"
+                              description={''}
+                              setFunc={setMaximiseSuper}
+                              infoTag={null}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
                           <td>
                             <InputField
-                              label={"Deduction amount"}
-                              id='pretax-deduction-amount'
-                              value={pretaxDeductionAmount}
-                              setFunc={(val) => { setPretaxDeductionAmount(val); }}
-                              styling='large'
+                              label={"Voluntary Super contribution"}
+                              id='super-sacrifice--amount'
+                              value={voluntarySuperAmmount}
+                              setFunc={(val) => { setVoluntarySuperAmmount(val); }}
+                              styling='medium'
                               monetary={true}
                               rounding={2}
                               min={0}
@@ -600,22 +719,16 @@ function App() {
                             />
                           </td>
                         </tr>
-                        <tr>
-                          <td>
-                            <div className='pretax-savings'>
-                              {pretaxSavings} in income tax savings
-                            </div>
-                          </td>
-                        </tr>
+
                       </tbody>
                     </table>
 
                     </>}
-                    toggleFunc={setHasPretaxDeduction}
-                    expandedVar={hasPretaxDeduction}
+                    toggleFunc={setHasSuperSalarySacrifise}
+                    expandedVar={hasSuperSalarySacrifise}
                     infoTag={null}
                   />
-                  <ToggleDropdownTab
+                  <ToggleExpandHorizontalTab
                     label='Work deductables'
                     desc='Subtract your work expenses from your taxable income'
                     contents={<><table className='dropdown-table'>
@@ -623,11 +736,11 @@ function App() {
                         <tr>
                           <td>
                             <InputField
-                              label={"Deduction amount"}
-                              id='pretax-deduction-amount'
-                              value={pretaxDeductionAmount}
-                              setFunc={(val) => { setPretaxDeductionAmount(val); }}
-                              styling='large'
+                              label={"Deductable amount"}
+                              id='work-deductables-amount'
+                              value={workDeductablesAmount}
+                              setFunc={(val) => { setWorkDeductablesAmount(val); }}
+                              styling='medium'
                               monetary={true}
                               rounding={2}
                               min={0}
@@ -635,21 +748,16 @@ function App() {
                             />
                           </td>
                         </tr>
-                        <tr>
-                          <td>
-                            <div className='pretax-savings'>
-                              {pretaxSavings} in income tax savings
-                            </div>
-                          </td>
-                        </tr>
+
                       </tbody>
                     </table>
 
                     </>}
-                    toggleFunc={setHasPretaxDeduction}
-                    expandedVar={hasPretaxDeduction}
+                    toggleFunc={setHasWorkDeductions}
+                    expandedVar={hasWorkDeductions}
                     infoTag={null}
                   />
+
                   {/* <ToggleDropdownTab
                     label='Bonus Pay'
                     contents={<table className='dropdown-table'>
@@ -723,12 +831,9 @@ function App() {
                         // "Bonus pay": hasBonus ? ['-', '-', '-', '-', displayMoney(bonus)] : null,
                         "#Superannuation": financialData['superSplit'].map(displayMoney),
                         "#Total Taxes": financialData['taxSplit']['totalTax'].map(displayMoney),
-                        // "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
-                        // "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
-                        // "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
-                        // "Medicare Levy": Array.isArray(financialData['taxSplit']['medicare']) ? financialData['taxSplit']['medicare'] : [financialData['taxSplit']['medicare']],
-                        // "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
+
                       }}
+                      oldTax={financialData['undeductedTax']}
                       totals={financialData['postTax'].map(displayMoney)} />
                   </td>
                 </tr>
@@ -736,12 +841,16 @@ function App() {
             </table>
           </div>
           <div id='chart-section'>
+            <div className='pretax-savings'>
+              {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
+            </div>
             <div className='chart-block'>
               <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
             </div>
+
             {/* <DonutChart data={donutIncomeSummary} /> */}
             <div className='chart-block'>
-              <TaxBandBar title={'Tax Bands'} earnings={financialData['taxablebaseSalarySplit'][4]} barWidth={(600)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} />
+              {/* <TaxBandBar title={'Tax Bands'} earnings={financialData['taxablebaseSalarySplit'][4]} barWidth={(600)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} /> */}
             </div>
           </div>
           <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>

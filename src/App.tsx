@@ -1,20 +1,20 @@
 import { useState, useMemo } from 'react'
 import './App.css'
-import { IncomeTable, ToggleExpandHorizontalTab, ToggleExpandVerticalTab, DropdownTab } from './dropdown'
+import { IncomeTable, ToggleExpandHorizontalTab, } from './dropdown'
 import useToggle from './hooks/useToggle'
 import { InputField, SelectField } from './forms'
 import { SwitchToggle } from './buttons'
-import { TaxBandBar } from './graphs';
+// import { TaxBandBar } from './graphs';
 import PayrollPieChart from './graphs';
 import { displayMoney } from './functions';
 import Tooltip, { type TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
-import { AiFillInfoCircle, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { AiFillInfoCircle } from "react-icons/ai";
 
-type IncomeTableRowProps = {
-  values: number[];
-  subrow: any[];
-}
+// type IncomeTableRowProps = {
+//   values: number[];
+//   subrow: any[];
+// }
 
 function App() {
   function round(num: number, fractionDigits: number): number {
@@ -60,12 +60,12 @@ function App() {
   const [payCycle, setPayCycle] = useState('Hourly')
   const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
   const [hasStudentLoan, setHasStudentLoan] = useToggle()
-  const [bonus, setBonus] = useState(0)
-  const [bonusFrequency, setBonusFrequency] = useState('Annual')
+  // const [bonus, setBonus] = useState(0)
+  // const [bonusFrequency, setBonusFrequency] = useState('Annual')
   // const [medicareLevy, setMedicareLevy] = useState(0)
-  const [hasPretaxDeduction, setHasPretaxDeduction] = useToggle()
-  const [pretaxDeductionAmount, setPretaxDeductionAmount] = useState(0)
-  const [hasBonus, setHasBonus] = useToggle()
+  // const [hasPretaxDeduction, setHasPretaxDeduction] = useToggle()
+  // const [pretaxDeductionAmount, setPretaxDeductionAmount] = useState(0)
+  // const [hasBonus, setHasBonus] = useToggle()
   const [pretaxSavings, setPretaxSavings] = useState<string[]>([])
   const [hasNovatedLease, setHasNovatedLease] = useToggle()
   const [novatedLeaseEletric, setNovatedLeaseEletric] = useToggle()
@@ -177,7 +177,7 @@ function App() {
     let taxAmount = 0;
     let currentTaxRate = 0;
     let currentThreshold = 0;
-    let grossEarnings = salary - (hasBonus ? bonus : 0); // Apply pre-tax here no seperate variable for pre-tax so we can compare with and without
+    let grossEarnings = salary - 0//(hasBonus ? bonus : 0); // Apply pre-tax here no seperate variable for pre-tax so we can compare with and without
     let lito = 0;
     let div293 = [0, 0, 0, 0, 0];
     let bandCount = 0;
@@ -237,11 +237,11 @@ function App() {
     // Calculate bonus tax, using the below page:
     // https://www.ato.gov.au/tax-rates-and-codes/schedule-5-tax-table-for-back-payments-commissions-bonuses-and-similar-payments/working-out-the-withholding-amount
     let bonusTax = 0;
-    if (hasBonus) {
-      taxAmount += round(bonusTax, 2);
-      // setBonusTax(bonusTax)
-    }
-    let adjustedSalary = grossEarnings + round(bonus / stringToNumFreq(bonusFrequency), 0)
+    // if (hasBonus) {
+    //   taxAmount += round(bonusTax, 2);
+    //   // setBonusTax(bonusTax)
+    // }
+    let adjustedSalary = grossEarnings// + round(bonus / stringToNumFreq(bonusFrequency), 0)
     for (const [threshold, value] of Object.entries(taxBands)) {
       if (adjustedSalary >= Number(threshold)) {
         // Add tax from lower brackets
@@ -255,9 +255,9 @@ function App() {
       bonusTax += (adjustedSalary - currentThreshold) * currentTaxRate
       break;
     }
-    let taxDiff = (bonusTax - taxAmount) * stringToNumFreq(bonusFrequency);
+    //let taxDiff = (bonusTax - taxAmount) * stringToNumFreq(bonusFrequency);
     // Select the lesser
-    bonus * 0.47 > taxDiff ? bonusTax = taxDiff : bonusTax = bonus * 0.47;
+    //bonus * 0.47 > taxDiff ? bonusTax = taxDiff : bonusTax = bonus * 0.47;
     // Fringe Benefits Tax
     let fbt = 0;
     if (hasNovatedLease) {
@@ -370,9 +370,9 @@ function App() {
     else { concessional = 0; }
     pretaxDeductionAmount += concessional;
     // Add bonus
-    if (hasBonus) {
-      salarySum += Number(bonus);
-    }
+    // if (hasBonus) {
+    //   salarySum += Number(bonus);
+    // }
     // Student Loans
     let currentRepayments = hasStudentLoan ? calculateStudentLoan(salarySum, studentRates['2526']) : 0;
     let studentLoanContribution = [0, 0, 0, 0, currentRepayments];
@@ -384,7 +384,7 @@ function App() {
     }
     // Add Pre-Tax Novated Lease
     let preTaxNovated = 0;
-    let postTaxNovated = 0;
+    // let postTaxNovated = 0;
     if (hasNovatedLease) {
       if (novatedLeaseEletric) {
         preTaxNovated = novatedLeaseAmount * stringToNumFreq(novatedLeasePeriod);
@@ -443,10 +443,10 @@ function App() {
       taxableIncomePeriods.push(salaryPeriods[i]);
     }
     taxableIncomePeriods[4] = taxableIncomePeriods[4] - pretaxDeductionAmount;
-    if (hasBonus) {
-      taxableIncomePeriods[4] += Number(bonus);
-    }
-    const basePay = postTaxPay[4] - (hasBonus ? Number(bonus) : 0);
+    // if (hasBonus) {
+    //   taxableIncomePeriods[4] += Number(bonus);
+    // }
+    const basePay = postTaxPay[4] //- (hasBonus ? Number(bonus) : 0);
     let payrollData = [{
       id: 'take-home',
       label: 'Pay',
@@ -465,9 +465,9 @@ function App() {
       color: '#33a2c6',
       subCategories: [{ id: 'employer-cont', label: 'Employer contribution', color: '#33a2c6', value: Number(superSplit[4]) }],
     }]
-    if (hasBonus) {
-      payrollData[0].subCategories.push({ id: 'bonus', label: 'Bonus', value: Number(bonus), color: '#5f7e25' });
-    }
+    // if (hasBonus) {
+    //   payrollData[0].subCategories.push({ id: 'bonus', label: 'Bonus', value: Number(bonus), color: '#5f7e25' });
+    // }
     if (taxSplit['293'][4] > 0) {
       payrollData[1].subCategories.push({ id: '293', label: 'Division 293', value: Number(taxSplit['293'][4]), color: '#ea5a21' });
     }
@@ -497,8 +497,8 @@ function App() {
       preTaxNovated: preTaxNovated,
       // bonusSplit: bonusPeriods
     };
-  }, [salary, payCycle, bonus, hasBonus, superPercentage, salaryIncludesSuper, bonusFrequency, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasPretaxDeduction, pretaxDeductionAmount, novatedCarValue, novatedLeasePeriod, novatedLeaseEletric, novatedLeaseAmount, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease]);
-
+  }, [salary, payCycle, superPercentage, salaryIncludesSuper, , hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, novatedCarValue, novatedLeasePeriod, novatedLeaseEletric, novatedLeaseAmount, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease]);
+  //bonus hasBonus bonusFrequency hasPretaxDeduction pretaxDeductionAmount
   return (
     <>
       <div className='global-div'>

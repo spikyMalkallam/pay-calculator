@@ -94,7 +94,7 @@ export function SummaryTab({ label, daily, weekly, fortnightly, monthly, yearly 
     )
 }
 
-export function ToggleDropdownTab({ label, contents, toggleFunc, expandedVar }: ToggleDropdownProps) {
+export function ToggleDropdownTab({ label, contents, expandedVar }: ToggleDropdownProps) {
     return (
         <>
             <div className={'dropdown' + ' ' + label}> {<DropdownTab label='' contents={contents} subContents={contents} />}</div >
@@ -193,7 +193,7 @@ export function DropdownSummaryInformation({ label, total, items }: SummaryProps
     )
 }
 
-export function IncomeTable({ label, items, totals, oldTax }: IncomeProps) {
+export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
     return (
         <table className="income-table">
             <thead >

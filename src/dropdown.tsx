@@ -218,36 +218,64 @@ export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
             <tbody>
                 <td colSpan={5}>
                     {Object.entries(items).map(([key, value]: [string, any]) => {
+                        let row = value[0]
+                        let subrows = value[1]
+                        let renderedSubRows = Object.entries(subrows).map(([key, subValue]: [string, any]) => {
+                            if (subValue != null) {
+                                return (
+                                    <table className="sub-sub-table-header">
+                                        <tbody>
+                                            <tr key={key} className={"income-table-category"}>
+                                                <td>
+                                                    <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                                </td>
+                                                <td>
+                                                    <div className={"income-table-category"}>{subValue[1]}</div>
+                                                </td>
+                                                <td>
+                                                    <div className={"income-table-category"}>{subValue[2]}</div>
+                                                </td>
+                                                <td>
+                                                    <div className={"income-table-category"}>{subValue[3]}</div>
+                                                </td>
+                                                <td>
+                                                    <div className={"income-table-category"}>{subValue[4]}</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                )
+                            }
+                            console.log(subValue)
+                        })
+                        console.log(renderedSubRows)
+                        return (
+                            <DropdownTab label="row-drop"
+                                contents={
+                                    <table className="sub-table-header">
+                                        <tbody>
+                                            <tr key={key} className={"income-table-header-category"}>
+                                                <td>
+                                                    <div className={"income-table-header-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                                </td>
+                                                <td>
+                                                    <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[1]}</del><br></br> {row[1]}</>) : row[1]}</div>
+                                                </td>
+                                                <td>
+                                                    <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[2]}</del><br></br> {row[2]}</>) : row[2]}</div>
+                                                </td>
+                                                <td>
+                                                    <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[3]}</del><br></br> {row[3]}</>) : row[3]}</div>
+                                                </td>
+                                                <td>
+                                                    <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[4]}</del><br></br> {row[4]}</>) : row[4]}</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>}
+                                subContents={renderedSubRows} /> //Object.entries(items).map(([key, value]: [string, any]) => { })
 
-                        if (value != null) {
-                            return (
-                                <DropdownTab label="row-drop"
-                                    contents={
-                                        <table className="sub-table-header">
-                                            <tbody>
-                                                <tr key={key} className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[1]}</del><br></br> {value[1]}</>) : value[1]}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[2]}</del><br></br> {value[2]}</>) : value[2]}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[3]}</del><br></br> {value[3]}</>) : value[3]}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[4]}</del><br></br> {value[4]}</>) : value[4]}</div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>}
-                                    subContents={<h1>AH</h1>} /> //Object.entries(items).map(([key, value]: [string, any]) => { })
-
-                            )
-                        }
+                        )
                     })
                     }</td>
                 <tr className="income-table-takehome-row">

@@ -11,10 +11,10 @@ import Tooltip, { type TooltipProps, tooltipClasses } from '@mui/material/Toolti
 import { styled } from '@mui/material/styles';
 import { AiFillInfoCircle } from "react-icons/ai";
 
-// type IncomeTableRowProps = {
-//   values: number[];
-//   subrow: any[];
-// }
+type IncomeTableRowProps = {
+  values: number[];
+  subrow: any[];
+}
 
 function App() {
   function round(num: number, fractionDigits: number): number {
@@ -826,11 +826,17 @@ function App() {
                     <IncomeTable
                       label=''
                       items={{
-                        "#Taxable Income": financialData['taxablebaseSalarySplit'].map(displayMoney),
+                        "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), { "Base salary": financialData['baseSalarySplit'].map(displayMoney) }],
                         // "Base salary": financialData['baseSalarySplit'].map(displayMoney),
                         // "Bonus pay": hasBonus ? ['-', '-', '-', '-', displayMoney(bonus)] : null,
-                        "#Superannuation": financialData['superSplit'].map(displayMoney),
-                        "#Total Taxes": financialData['taxSplit']['totalTax'].map(displayMoney),
+                        "#Superannuation": [financialData['superSplit'].map(displayMoney), {}],
+                        "#Total Taxes": [financialData['taxSplit']['totalTax'].map(displayMoney), {
+                          "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
+                          "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
+                          "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
+                          "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
+                          "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
+                        }],
 
                       }}
                       oldTax={financialData['undeductedTax']}

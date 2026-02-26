@@ -216,7 +216,7 @@ export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
                 </tr>
             </thead>
             <tbody>
-                <td colSpan={5}>
+                <td colSpan={5} className="big-income-cell">
                     {Object.entries(items).map(([key, value]: [string, any]) => {
                         let row = value[0]
                         let subrows = value[1]

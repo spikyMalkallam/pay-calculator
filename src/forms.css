@@ -12,7 +12,13 @@
     height: 100px;
     margin-bottom: 10px;
     background-color: grey;
-    max-width: 550px;
+    max-width: 600px;
+}
+
+
+
+.large-form-box-header.work-hours p {
+    min-width: 133px;
 }
 
 .large-dark-form-box {
@@ -46,7 +52,6 @@
     font-weight: bold;
     color: black;
     padding: 0px;
-
 }
 
 .large-dark-form-box-header {
@@ -83,4 +88,46 @@
     width: 90%;
     max-width: 600px;
     border-bottom: 2px solid var(--hive-yellow);
+}
+
+.medium-form {
+    margin: 2px 10px 10px 10px;
+    font-size: 20px;
+    background: none;
+    border: none;
+}
+
+.medium-form-box {
+    color: rgb(0, 0, 0);
+    text-align: left;
+    width: 100%;
+    height: 70px;
+    background-color: grey;
+    max-width: 500px;
+}
+
+.medium-form {
+    color: rgb(255, 255, 255);
+    margin: 2px 10px 10px 10px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    width: 90%;
+    max-width: 500px;
+    border-bottom: 2px solid var(--hive-yellow);
+}
+
+.medium-form-box p {
+    margin: 0px 0px 0px 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    padding: 0px;
+}
+
+.medium-form-box-header {
+    background-color: var(--hive-yellow);
+    height: 25px;
+    padding: 1px;
+    margin-bottom: 2px;
 }

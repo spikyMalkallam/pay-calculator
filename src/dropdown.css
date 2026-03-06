@@ -327,8 +327,40 @@ select>option {
     margin: 5px 5px 5px 0px;
 }
 
+.coloured-dot-EmployerContribution {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #35a0c4;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-VoluntaryContribution {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #256f88;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-NovatedLease.Pre-Tax.Payment {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #ffe600;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-NovatedLease.Employee.Contribution {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #ffe600;
+    margin: 5px 5px 5px 0px;
+}
+
 /* 1. Reset all table spacing */
-.income-table,
+.income-table td,
 .sub-table-header,
 .income-table-header td,
 .income-table-header-category td,
@@ -339,8 +371,8 @@ select>option {
     border-spacing: 0;
 }
 
-.income-table-takehome-row tr {
-    padding: 0;
+.income-table-takehome-row td {
+    padding: 10px;
 }
 
 .big-income-cell td {
@@ -462,6 +494,7 @@ select>option {
     align-items: center;
     gap: 4px;
     font-weight: bold;
+    margin-right: 0px;
     /* space between dot and text */
 }
 
@@ -497,6 +530,7 @@ select>option {
     text-align: center;
     width: 100%;
     margin: 0px;
+    padding: 0px 30px 0px 0px;
 }
 
 .income-table-takehome-row {

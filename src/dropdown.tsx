@@ -1,6 +1,6 @@
 import { useState } from "react";
 import './dropdown.css'
-import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import useToggle from "./hooks/useToggle";
 import { SwitchToggle } from './buttons'
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
@@ -154,7 +154,7 @@ export function DropdownSummaryInformation({ label, total, items }: SummaryProps
                                 <div className={"coloured-dot-header-" + label.split(" ")[0]}></div>
                             </td>
                             <td>
-                                <div className="dropdown-label">{(expanded ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />)} {label}</div>
+                                <div className="dropdown-label">{(expanded ? <AiFillCaretUp /> : <AiFillCaretDown />)} {label}</div>
                             </td>
                             <td>
                                 <div className="finance-dropdown-header-amount">${total}</div>
@@ -199,14 +199,14 @@ export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
             <thead >
                 <tr className="income-table-header">
                     <td>
-                        Component
+
                     </td>
                     <td>
                         Weekly
                     </td>
-                    <td>
+                    {/* <td>
                         Fortnightly
-                    </td>
+                    </td> */}
                     <td>
                         Monthly
                     </td>
@@ -232,9 +232,9 @@ export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
                                                 <td>
                                                     <div className={"income-table-category"}>{subValue[1]}</div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className={"income-table-category"}>{subValue[2]}</div>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <div className={"income-table-category"}>{subValue[3]}</div>
                                                 </td>
@@ -246,9 +246,7 @@ export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
                                     </table>
                                 )
                             }
-                            console.log(subValue)
                         })
-                        console.log(renderedSubRows)
                         return (
                             <DropdownTab label="row-drop"
                                 contents={
@@ -261,9 +259,9 @@ export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
                                                 <td>
                                                     <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[1]}</del><br></br> {row[1]}</>) : row[1]}</div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[2]}</del><br></br> {row[2]}</>) : row[2]}</div>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[3]}</del><br></br> {row[3]}</>) : row[3]}</div>
                                                 </td>
@@ -281,7 +279,7 @@ export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
                 <tr className="income-table-takehome-row">
                     <td className="income-table-takehome-label">Take-home pay</td>
                     <td className="income-table-takehome-cell">{totals[1]}</td>
-                    <td className="income-table-takehome-cell">{totals[2]}</td>
+                    {/* <td className="income-table-takehome-cell">{totals[2]}</td> */}
                     <td className="income-table-takehome-cell">{totals[3]}</td>
                     <td className="income-table-takehome-cell">{totals[4]}</td>
                 </tr>

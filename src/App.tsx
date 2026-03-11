@@ -479,11 +479,17 @@ function App() {
     };
     // Mortage
     const mortageData = calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
-    const mortageAnnualPayments = mortagePayFreq ? mortageData['weeklyRepaymentAmmount'] * 52 : mortageData['montlyRepaymentAmmount'] * 12
+    const mortageAnnualPayments = mortagePayFreq ? mortageData['weeklyRepaymentAmmount'] * 52 : mortageData['montlyRepaymentAmmount'] * 12;
+    const annualMortageSplit = splitTax(mortageAnnualPayments, yearlyHours);
     // Remove Tax and mortage
     let postTaxPay: any[] = []
     for (let i = 0; i < 5; i++) {
       postTaxPay.push((round(salaryPeriods[i] - taxSplit["totalTax"][i], 2)).toFixed(2));
+    }
+    // Gross Pay
+    let grossPay: any[] = []
+    for (let i = 0; i < 5; i++) {
+      grossPay.push(postTaxPay[i]);
     }
     // Remove mortage
     // console.log(mortageAnnualPayments)
@@ -491,7 +497,8 @@ function App() {
     // Subtract cost of novated lease
     // console.log(novatedLeasePostTax[4])
     // console.log(novatedLeasePreTax[4])
-    postTaxPay[4] = postTaxPay[4] - pretaxDeductionAmount //+ (novatedLeasePostTax[4] != 0 ? novatedLeasePostTax[4] : 0) + (novatedLeasePreTax[4] != 0 ? novatedLeasePreTax[4] : 0);
+    // console.log(novatedLeasePostTax[4])
+    postTaxPay[4] -= pretaxDeductionAmount + -(novatedLeasePostTax[4] != 0 ? novatedLeasePostTax[4] : 0) //+ (novatedLeasePreTax[4] != 0 ? novatedLeasePreTax[4] : 0);
     let superSplit = splitTax(superSum, yearlyHours);
     let taxableIncomePeriods = [];
     for (let i = 0; i < 5; i++) {
@@ -556,7 +563,8 @@ function App() {
       voluntaryContribution: [0, 0, 0, 0, superContribution],
       novatedPayments: [novatedLeasePreTax, novatedLeasePostTax],
       mortageData: mortageData,
-      grossSalary: postTaxPay,
+      grossSalary: grossPay,
+      annualMortageSplit: annualMortageSplit,
       // bonusSplit: bonusPeriods
     };
   }, [salary, payCycle, superPercentage, salaryIncludesSuper, , hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
@@ -567,7 +575,6 @@ function App() {
         <div id='income-div'>
           <table>
             <tbody>
-
               <tr className='big-table-row'>
                 <td className='big-table-cell'>
                   {/* <td className='big-table-cell'> */}
@@ -660,16 +667,11 @@ function App() {
                       </tbody>
                     </table>
                   </td>
-                  : null}
-
-              </tr>
-              <tr className='big-table-row'>
-                <td style={{ width: '33%' }}></td>
-                <td colSpan={2} className='big-table-cell'> <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/01/recruitmentHive_H_small.svg' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2></td>
+                  : <td className='big-table-cell'></td>}
               </tr>
               <tr className='big-table-row'>
                 <td className='big-table-cell'>
-                  <div><SwitchToggle
+                  <SwitchToggle
                     label="Student loan"
                     description='HELP (HECS), VSL, TSL, SSL, SFSS'
                     setFunc={setHasStudentLoan}
@@ -700,18 +702,74 @@ function App() {
                     >
                       <AiFillInfoCircle />
                     </HtmlTooltip>}
-                  /></div>
-                  <br></br>
-                  <div>
-                    <SwitchToggle
-                      label="Salary includes Superannuation"
-                      description={'Super Guarantee of $' + round(financialData['employerContribution'][4], 0) + (salaryIncludesSuper ? ' is included in your $' : ' paid on top of your $') + round(financialData['totalSalary'], 0) + ' annual salary'}
-                      setFunc={setSalaryIncludesSuper}
-                      infoTag={null}
-                    />
+                  />
+                </td>
+                <td colSpan={1} className='big-table-cell'>
+                  <SwitchToggle
+                    label="Salary includes Superannuation"
+                    description={'Super Guarantee of $' + round(financialData['employerContribution'][4], 0) + (salaryIncludesSuper ? ' is included in your $' : ' paid on top of your $') + round(financialData['totalSalary'], 0) + ' annual salary'}
+                    setFunc={setSalaryIncludesSuper}
+                    infoTag={null}
+                  />
+                </td>
+                <td colSpan={1} className='big-table-cell'></td>
+              </tr>
+              <tr>
+                <td colSpan={3}>
+                  <div className='pretax-savings'>
+                    {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
                   </div>
                 </td>
+              </tr>
 
+            </tbody>
+          </table>
+        </div >
+        <div id='summary-section'>
+          {/* <div id='summary-div'> */}
+
+          <table id='summary-table'>
+            <tbody>
+              <tr>
+                <td colSpan={2}>
+                  <IncomeTable
+                    label=''
+                    items={{
+                      "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
+                        "Base salary": financialData['baseSalarySplit'].map(displayMoney),
+                        // "Novated Lease Post-Tax Employee Contribution": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
+                        "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
+                      }],
+                      // "Base salary": financialData['baseSalarySplit'].map(displayMoney),
+                      // "Bonus pay": hasBonus ? ['-', '-', '-', '-', displayMoney(bonus)] : null,
+                      "#Superannuation": [financialData['superSplit'].map(displayMoney), {
+                        "Employer Contribution": financialData['employerContribution'].map(displayMoney),
+                        "Voluntary Contribution": financialData['voluntaryContribution'][4] != 0 ? financialData['voluntaryContribution'].map(displayMoney) : null
+                      }],
+                      "#Total Taxes": [financialData['taxSplit']['totalTax'].map(displayMoney), {
+                        "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
+                        "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
+                        "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
+                        "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
+                        "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
+                      }],
+
+                    }}
+                    oldTax={financialData['undeductedTax']}
+                    totals={financialData['postTax'].map(displayMoney)}
+                    totalItems={{
+                      "Gross Salary": financialData['grossSalary'].map(displayMoney),
+                      "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map(displayMoney) : null,
+                      "Novated Lease Post-Tax Employee Contribution": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
+                    }} />
+                </td>
+              </tr>
+              <tr className='big-table-row' style={{ width: '100%' }} >
+                <td colSpan={4} style={{ width: '100%' }}>
+                  <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/01/recruitmentHive_H_small.svg' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2>
+                </td>
+              </tr>
+              <tr className='big-table-row' style={{ width: '1200px' }}>
                 <td className='big-table-cell'>
                   <ToggleExpandVerticalTab
                     label='Work deductables'
@@ -742,6 +800,8 @@ function App() {
                     expandedVar={hasWorkDeductions}
                     infoTag={null}
                   />
+                </td>
+                <td>
                   <ToggleExpandVerticalTab
                     label='Mortage Repayments'
                     desc='Calculate your monthly and weekly repayments'
@@ -844,6 +904,8 @@ function App() {
                     expandedVar={hasNovatedLease}
                     infoTag={null}
                   />
+                </td>
+                <td>
                   <ToggleExpandVerticalTab
                     label='Super Salary Sacrifice'
                     desc='Lower your income tax by making voluntary super contributions'
@@ -883,14 +945,34 @@ function App() {
                     expandedVar={hasSuperSalarySacrifise}
                     infoTag={null}
                   />
-
-
                 </td>
 
+              </tr>
+            </tbody>
+          </table>
+
+          <div className='chart-block'>
+            <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
+
+            {hasMortage ? <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} /> : null}
+
+          </div>
+        </div>
+
+      </div >
+    </>
+  )
+}
+
+export default App
+
+{/* <TaxBandBar title={'Tax Bands'} earnings={financialData['taxablebaseSalarySplit'][4]} barWidth={(600)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} /> */ }
+{/* <DonutChart data={donutIncomeSummary} /> */ }
 
 
-
-                {/* <ToggleDropdownTab
+{/* <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div> */ }
+{/* </div > */ }
+{/* <ToggleDropdownTab
                     label='Bonus Pay'
                     contents={<table className='dropdown-table'>
                       <tbody>
@@ -928,7 +1010,7 @@ function App() {
                     toggleFunc={setHasBonus}
                     expandedVar={hasBonus}
                   /> */}
-                {/* <ToggleDropdownTab
+{/* <ToggleDropdownTab
                     label={'Part-time hours'}
                     contents={
                       // Weekly, Fortnightly, Monthly, Annually calculator
@@ -937,74 +1019,4 @@ function App() {
                     toggleFunc={setHasPartTimeHours}
                     expandedVar={hasPartTimeHours}
                   /> */}
-                {/* </td> */}
-              </tr>
-            </tbody>
-          </table>
-        </div >
-        <div id='summary-section'>
-          <div id='summary-div'>
-
-            <table id='summary-table'>
-              <tbody>
-                <tr>
-                  <td colSpan={2}>
-                    <IncomeTable
-                      label=''
-                      items={{
-                        "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
-                          "Base salary": financialData['baseSalarySplit'].map(displayMoney),
-                          // "Novated Lease Post-Tax Employee Contribution": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
-                          "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
-                        }],
-                        // "Base salary": financialData['baseSalarySplit'].map(displayMoney),
-                        // "Bonus pay": hasBonus ? ['-', '-', '-', '-', displayMoney(bonus)] : null,
-                        "#Superannuation": [financialData['superSplit'].map(displayMoney), {
-                          "Employer Contribution": financialData['employerContribution'].map(displayMoney),
-                          "Voluntary Contribution": financialData['voluntaryContribution'][4] != 0 ? financialData['voluntaryContribution'].map(displayMoney) : null
-                        }],
-                        "#Total Taxes": [financialData['taxSplit']['totalTax'].map(displayMoney), {
-                          "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
-                          "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
-                          "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
-                          "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
-                          "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
-                        }],
-
-                      }}
-                      oldTax={financialData['undeductedTax']}
-                      totals={financialData['postTax'].map(displayMoney)}
-                      totalItems={{
-                        "Gross Salary": financialData['grossSalary'].map(displayMoney),
-                        "Novated Lease Post-Tax Employee Contribution": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
-                      }} />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-
-            <div className='pretax-savings'>
-              {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
-            </div>
-
-
-            {/* <DonutChart data={donutIncomeSummary} /> */}
-
-
-            {/* <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div> */}
-          </div >
-          <div className='chart-block'>
-            <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
-            {/* <TaxBandBar title={'Tax Bands'} earnings={financialData['taxablebaseSalarySplit'][4]} barWidth={(600)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} /> */}
-            {hasMortage ? <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} /> : null}
-
-          </div>
-        </div>
-
-      </div >
-    </>
-  )
-}
-
-export default App
+{/* </td> */ }

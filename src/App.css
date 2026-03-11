@@ -133,7 +133,8 @@ button:focus {
 
 #summary-table {
   /* width: 60vw; */
-  max-width: 90%;
+  max-width: 70%;
+  margin: 0px 50px 0px 50px;
 
 }
 

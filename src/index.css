@@ -13,7 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 
   --hive-yellow: #fdc333;
-  --background-grey: #363636;
+  --yellow-tone-1: #ecb944;
+  --yellow-tone-5: #a69370;
+  --income-table-backing: #6d6d6d;
+  --income-subtable-backing: #3f3f3f;
+
+  --toggle-button-background: #363636;
+
   --tax-colour: #71972c;
   --super-colour: #33a2c6;
   --tax-colour: #ea9f21;

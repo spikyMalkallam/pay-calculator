@@ -1,14 +1,12 @@
 import { useState, useMemo } from 'react'
 import './App.css'
-import { IncomeTable, ToggleExpandHorizontalTab, } from './dropdown'
+import { IncomeTable, ToggleExpandHorizontalTab, ToggleExpandVerticalTab, MortageRepaymentTable } from './dropdown'
 import useToggle from './hooks/useToggle'
 import { InputField, SelectField } from './forms'
 import { SwitchToggle } from './buttons'
 // import { TaxBandBar } from './graphs';
 import PayrollPieChart from './graphs';
-import { displayMoney } from './functions';
-import Tooltip, { type TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
-import { styled } from '@mui/material/styles';
+import { displayMoney, round, PMT, NPER, HtmlTooltip } from './functions';
 import { AiFillInfoCircle } from "react-icons/ai";
 
 type IncomeTableRowProps = {
@@ -17,9 +15,7 @@ type IncomeTableRowProps = {
 }
 
 function App() {
-  function round(num: number, fractionDigits: number): number {
-    return Number(num.toFixed(fractionDigits));
-  }
+
   function stringToNumFreq(freq: string): number {
     switch (freq) {
       case "Annual": {
@@ -88,8 +84,16 @@ function App() {
   const taxRates = { "2226": twentyTwoTwentySix }
   const studentRates = { "2526": studentTwentyFiveTwentySix }
   const [dailyHours, setDailyHours] = useState(7.6);
-  const [daysPerPeriod, setDaysPerPeriod] = useState(5);
+  const [daysPerPeriod, setDaysPerPeriod] = useState('5');
   const [hoursPeriod, setHoursPeriod] = useState('Week');
+
+  const [mortageLoanAmmount, setMortageLoanAmmount] = useState(500000);
+  const [mortageInterestRate, setMortageInterestRate] = useState(5.25);
+  const [mortageTerm, setMortageTerm] = useState(20);
+  const [mortagePayFreq, setMortagePayFreq] = useToggle();
+  const [hasMortage, setHasMortage] = useToggle();
+
+
   let superPercentage = 12.00;
   function calculateSalaryPeriods(rate: number, period: string, hours: number[]) {
     let hourlyRate = 0;
@@ -175,6 +179,34 @@ function App() {
     let monthly = round(ammount / (hours[4] / hours[3]), 2);
     monthly = Number.isNaN(monthly) ? 0 : monthly;
     return [daily, weekly, fortnightly, monthly, round(ammount, 2)]
+  }
+  function calculateMortage(loanAmmount: number, loanInterestRate: number, loanTerm: number) {
+    const adjustedInterestRate = loanInterestRate / 100;
+    const montlyRepaymentAmmount = round(-PMT(adjustedInterestRate / 12, loanTerm * 12, -loanAmmount), 2);
+    const weeklyRepaymentAmmount = round(montlyRepaymentAmmount / 4, 2);
+    const weeklyPayedOffIn = round(NPER(adjustedInterestRate / 52, weeklyRepaymentAmmount, -loanAmmount) / 52, 2);
+    const weeklyTimeSaved = round(loanTerm - weeklyPayedOffIn, 2);
+    const monthlyTotalRepayments = round(montlyRepaymentAmmount * loanTerm * 12, 2);
+    const weeklyTotalRepayments = round(weeklyRepaymentAmmount * NPER(adjustedInterestRate / 52, weeklyRepaymentAmmount, -loanAmmount), 2);
+    const monthlyTotalInterest = round(monthlyTotalRepayments - loanAmmount, 2);
+    const weeklyTotalInterest = round(weeklyTotalRepayments - loanAmmount, 2);
+    const weeklyInterestSavings = round(monthlyTotalInterest - weeklyTotalInterest, 2);
+    const weeklyAnnualInterestSavings = round(weeklyInterestSavings / weeklyPayedOffIn, 2);
+    return (
+      {
+        'loanTerm': loanTerm,
+        'montlyRepaymentAmmount': montlyRepaymentAmmount,
+        'weeklyRepaymentAmmount': weeklyRepaymentAmmount,
+        'weeklyPayedOffIn': weeklyPayedOffIn,
+        'weeklyTimeSaved': weeklyTimeSaved,
+        'monthlyTotalRepayments': monthlyTotalRepayments,
+        'weeklyTotalRepayments': weeklyTotalRepayments,
+        'monthlyTotalInterest': monthlyTotalInterest,
+        'weeklyTotalInterest': weeklyTotalInterest,
+        'weeklyInterestSavings': weeklyInterestSavings,
+        'weeklyAnnualInterestSavings': weeklyAnnualInterestSavings
+      }
+    )
   }
   function calculateTax(salary: number, superSum: number, taxBands: Record<number, number[]>, hours: number[]): any {
     let taxAmount = 0;
@@ -287,8 +319,6 @@ function App() {
     const LeaseTerm = leaseDuration;
     // const InitialDeposit = AmountFinanced * 0.2;
     const ResidualValue = AmountFinanced * ResidualValues[leaseDuration];
-    // PMT helper
-    const PMT = (rate: number, nper: number, pv: number) => (rate * pv) / (1 - Math.pow(1 + rate, -nper));
     const MonthlyFinanceRepayment = PMT((AnnualLeaseInterestRate) / 12, (LeaseTerm) * 12, ((AmountFinanced) - (ResidualValue))) + ResidualValue * (AnnualLeaseInterestRate / 12);
     const MonthlyRunningCosts = 339.45; // Calculate later
     const LoanManagementFees = 20;
@@ -304,17 +334,7 @@ function App() {
 
     return [SalarySacrifise, EmployeeContributionPostTax];
   }
-  const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />))
-    (({ theme }) => ({
-      [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: '#f5f5f9',
-        color: 'rgba(0, 0, 0, 0.87)',
-        maxWidth: 550,
-        fontSize: theme.typography.pxToRem(12),
-        border: '1px solid #dadde9',
-      },
-    }));
+
   function calculateStudentLoan(repaymentIncome: number, loanYear: Record<number, number[]>): number {
     let repaymentAmount = 0;
     let currentRepaymentRate = 0;
@@ -341,9 +361,12 @@ function App() {
     return repaymentAmount;
   }
 
+  // const mortageData = useMemo(() => {
+  //   return calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
+  // }, [mortageLoanAmmount, mortageInterestRate, mortageTerm])
   // Add all components of the salary together
   const financialData = useMemo(() => {
-    let yearlyHours = calculateYearlyHours(dailyHours, daysPerPeriod, hoursPeriod);
+    let yearlyHours = calculateYearlyHours(dailyHours, parseFloat(daysPerPeriod), hoursPeriod);
     let salaryPeriods = calculateSalaryPeriods(salary, payCycle, yearlyHours);
     let salarySum = salaryPeriods[4];
     let superSum = 0;
@@ -406,7 +429,13 @@ function App() {
     let novatedLeasePostTax = [0, 0, 0, 0, 0];
     // Calculation Novated Lease
     if (hasNovatedLease) {
-      let novatedLeaseContributions = calculateNovatedLease(45000, false, 1);
+      let novatedLeaseContributions = [0, 0];
+      if (novatedLeaseExample == "Toyota Corolla") {
+        novatedLeaseContributions = calculateNovatedLease(39100, false, 1);
+      }
+      else if (novatedLeaseExample == "Polestar 2") {
+        novatedLeaseContributions = calculateNovatedLease(45000, false, 1);
+      }
       novatedLeasePreTax = splitTax(-novatedLeaseContributions[0], yearlyHours);
       novatedLeasePostTax = splitTax(-novatedLeaseContributions[1], yearlyHours);
       // console.log(novatedLeaseContributions);
@@ -448,12 +477,21 @@ function App() {
       "lito": currentTax['litoSplit'],
       '293': currentTax['div293']
     };
-    // Remove Tax
+    // Mortage
+    const mortageData = calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
+    const mortageAnnualPayments = mortagePayFreq ? mortageData['weeklyRepaymentAmmount'] * 52 : mortageData['montlyRepaymentAmmount'] * 12
+    // Remove Tax and mortage
     let postTaxPay: any[] = []
     for (let i = 0; i < 5; i++) {
       postTaxPay.push((round(salaryPeriods[i] - taxSplit["totalTax"][i], 2)).toFixed(2));
     }
-    postTaxPay[4] = postTaxPay[4] - pretaxDeductionAmount - (novatedLeasePostTax[4] != 0 ? novatedLeasePostTax[4] : 0);
+    // Remove mortage
+    // console.log(mortageAnnualPayments)
+    postTaxPay[4] -= (hasMortage ? mortageAnnualPayments : 0);
+    // Subtract cost of novated lease
+    // console.log(novatedLeasePostTax[4])
+    // console.log(novatedLeasePreTax[4])
+    postTaxPay[4] = postTaxPay[4] - pretaxDeductionAmount //+ (novatedLeasePostTax[4] != 0 ? novatedLeasePostTax[4] : 0) + (novatedLeasePreTax[4] != 0 ? novatedLeasePreTax[4] : 0);
     let superSplit = splitTax(superSum, yearlyHours);
     let taxableIncomePeriods = [];
     for (let i = 0; i < 5; i++) {
@@ -516,47 +554,63 @@ function App() {
       pretaxDeductionAmount: pretaxDeductionAmount,
       employerContribution: employerContribution,
       voluntaryContribution: [0, 0, 0, 0, superContribution],
-      novatedPayments: [novatedLeasePreTax, novatedLeasePostTax]
+      novatedPayments: [novatedLeasePreTax, novatedLeasePostTax],
+      mortageData: mortageData,
+      grossSalary: postTaxPay,
       // bonusSplit: bonusPeriods
     };
-  }, [salary, payCycle, superPercentage, salaryIncludesSuper, , hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease]);
+  }, [salary, payCycle, superPercentage, salaryIncludesSuper, , hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
   //bonus hasBonus bonusFrequency hasPretaxDeduction pretaxDeductionAmount
   return (
     <>
       <div className='global-div'>
         <div id='income-div'>
-
           <table>
             <tbody>
+
               <tr className='big-table-row'>
                 <td className='big-table-cell'>
+                  {/* <td className='big-table-cell'> */}
                   <InputField
                     id='Salary'
                     label='Salary'
                     value={salary}
                     setFunc={(val) => { setSalary(val); }}
                     styling='large'
-                    monetary={true}
+                    formatting={'monetary'}
                     rounding={2}
                     min={0}
                     max={null}
                   />
-                  <SelectField
-                    id="pay-cycle"
-                    label="Pay Cycle"
-                    value={payCycle}
-                    setFunc={setPayCycle}
-                    items={{
-                      "Annually": "Annual",
-                      "Monthly": "Monthly",
-                      "Fortnightly": "Fortnightly",
-                      "Weekly": "Weekly",
-                      "Daily": "Daily",
-                      "Hourly": "Hourly"
-                    }}
-                    styling='large'
-                  />
-                  {payCycle == 'Hourly' ?
+                </td>
+                <td className='big-table-cell'>
+                  <table className='dropdown-table'>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <SelectField
+                            id="pay-cycle"
+                            label="Pay Cycle"
+                            value={payCycle}
+                            setFunc={setPayCycle}
+                            items={{
+                              "Annually": "Annual",
+                              "Monthly": "Monthly",
+                              "Fortnightly": "Fortnightly",
+                              "Weekly": "Weekly",
+                              "Daily": "Daily",
+                              "Hourly": "Hourly"
+                            }}
+                            styling='large'
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+
+                {payCycle == 'Hourly' ?
+                  <td className='big-table-cell'>
                     <table className='dropdown-table'>
                       <tbody>
                         <tr>
@@ -567,7 +621,7 @@ function App() {
                               value={dailyHours}
                               setFunc={setDailyHours}
                               styling='large'
-                              monetary={false}
+                              formatting={'number'}
                               rounding={2}
                               min={0}
                               max={24}
@@ -580,7 +634,7 @@ function App() {
                               value={daysPerPeriod}
                               setFunc={setDaysPerPeriod}
                               styling='large'
-                              monetary={false}
+                              formatting={'number'}
                               rounding={1}
                               min={0}
                               // max={null}
@@ -605,7 +659,16 @@ function App() {
                         </tr>
                       </tbody>
                     </table>
-                    : null}
+                  </td>
+                  : null}
+
+              </tr>
+              <tr className='big-table-row'>
+                <td style={{ width: '33%' }}></td>
+                <td colSpan={2} className='big-table-cell'> <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/01/recruitmentHive_H_small.svg' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2></td>
+              </tr>
+              <tr className='big-table-row'>
+                <td className='big-table-cell'>
                   <div><SwitchToggle
                     label="Student loan"
                     description='HELP (HECS), VSL, TSL, SSL, SFSS'
@@ -646,10 +709,110 @@ function App() {
                       setFunc={setSalaryIncludesSuper}
                       infoTag={null}
                     />
-
                   </div>
-                  <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/01/recruitmentHive_H_small.svg' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2>
-                  <ToggleExpandHorizontalTab
+                </td>
+
+                <td className='big-table-cell'>
+                  <ToggleExpandVerticalTab
+                    label='Work deductables'
+                    desc='Subtract your work expenses from your taxable income'
+                    contents={<><table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <InputField
+                              label={"Deductable amount"}
+                              id='work-deductables-amount'
+                              value={workDeductablesAmount}
+                              setFunc={(val) => { setWorkDeductablesAmount(val); }}
+                              styling='medium'
+                              formatting={'monetary'}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+                    </>}
+                    toggleFunc={setHasWorkDeductions}
+                    expandedVar={hasWorkDeductions}
+                    infoTag={null}
+                  />
+                  <ToggleExpandVerticalTab
+                    label='Mortage Repayments'
+                    desc='Calculate your monthly and weekly repayments'
+                    contents={<><table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td style={{ background: 'var(--yellow-tone-5)' }} colSpan={2}>
+                            <SwitchToggle
+                              label="Weekly payments"
+                              description={''}
+                              setFunc={setMortagePayFreq}
+                              infoTag={null}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan={2}>
+                            <InputField
+                              label={"Loan Ammount"}
+                              id='mortage-loan-ammount'
+                              value={mortageLoanAmmount}
+                              setFunc={(val) => { setMortageLoanAmmount(val); }}
+                              styling='medium'
+                              formatting={'monetary'}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+
+                        </tr>
+                        <tr>
+                          <td colSpan={1}>
+                            <InputField
+                              label={"Annual Interest Rate"}
+                              id='mortage-loan-ammount'
+                              value={mortageInterestRate}
+                              setFunc={(val) => { setMortageInterestRate(val); }}
+                              styling='medium'
+                              formatting={'percentage'}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                          <td colSpan={1}>
+                            <InputField
+                              label={"Loan Term (years)"}
+                              id='mortage-loan-ammount'
+                              value={mortageTerm}
+                              setFunc={(val) => { setMortageTerm(val); }}
+                              styling='medium'
+                              formatting={'number'}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+                    </>}
+                    toggleFunc={setHasMortage}
+                    expandedVar={hasMortage}
+                    infoTag={null}
+                  />
+                </td>
+                <td className='big-table-cell'>
+                  <ToggleExpandVerticalTab
                     label='Novated Lease'
                     desc='Lease a car and pay it off before tax'
                     contents={<><table className='dropdown-table'>
@@ -681,13 +844,13 @@ function App() {
                     expandedVar={hasNovatedLease}
                     infoTag={null}
                   />
-                  <ToggleExpandHorizontalTab
+                  <ToggleExpandVerticalTab
                     label='Super Salary Sacrifice'
                     desc='Lower your income tax by making voluntary super contributions'
                     contents={<><table className='dropdown-table'>
                       <tbody>
                         <tr>
-                          <td style={{ background: 'grey' }}>
+                          <td style={{ background: 'var(--yellow-tone-5' }}>
                             <SwitchToggle
                               label="Contribute up to concessional cap"
                               description={''}
@@ -704,7 +867,7 @@ function App() {
                               value={voluntarySuperAmmount}
                               setFunc={(val) => { setVoluntarySuperAmmount(val); }}
                               styling='medium'
-                              monetary={true}
+                              formatting={'monetary'}
                               rounding={2}
                               min={0}
                               max={null}
@@ -720,37 +883,14 @@ function App() {
                     expandedVar={hasSuperSalarySacrifise}
                     infoTag={null}
                   />
-                  <ToggleExpandHorizontalTab
-                    label='Work deductables'
-                    desc='Subtract your work expenses from your taxable income'
-                    contents={<><table className='dropdown-table'>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <InputField
-                              label={"Deductable amount"}
-                              id='work-deductables-amount'
-                              value={workDeductablesAmount}
-                              setFunc={(val) => { setWorkDeductablesAmount(val); }}
-                              styling='medium'
-                              monetary={true}
-                              rounding={2}
-                              min={0}
-                              max={null}
-                            />
-                          </td>
-                        </tr>
 
-                      </tbody>
-                    </table>
 
-                    </>}
-                    toggleFunc={setHasWorkDeductions}
-                    expandedVar={hasWorkDeductions}
-                    infoTag={null}
-                  />
+                </td>
 
-                  {/* <ToggleDropdownTab
+
+
+
+                {/* <ToggleDropdownTab
                     label='Bonus Pay'
                     contents={<table className='dropdown-table'>
                       <tbody>
@@ -762,7 +902,7 @@ function App() {
                               value={bonus}
                               setFunc={(val) => { setBonus(val); }}
                               styling='large'
-                              monetary={true}
+                              formatting={'monetary'}
                               rounding={2}
                               min={0}
                               max={null}
@@ -788,7 +928,7 @@ function App() {
                     toggleFunc={setHasBonus}
                     expandedVar={hasBonus}
                   /> */}
-                  {/* <ToggleDropdownTab
+                {/* <ToggleDropdownTab
                     label={'Part-time hours'}
                     contents={
                       // Weekly, Fortnightly, Monthly, Annually calculator
@@ -797,20 +937,14 @@ function App() {
                     toggleFunc={setHasPartTimeHours}
                     expandedVar={hasPartTimeHours}
                   /> */}
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-
-                  {/* {financialData['taxSplit']['293'][4] > 0 ? (<div style={{ textAlign: 'center', fontStyle: 'italic' }}>Division 293 tax applies when taxable income + super contribution exceeds $250,000</div>) : (<></>)} */}
-                </td>
+                {/* </td> */}
               </tr>
             </tbody>
           </table>
         </div >
-        <div id='summary-div'>
-          <div>
+        <div id='summary-section'>
+          <div id='summary-div'>
+
             <table id='summary-table'>
               <tbody>
                 <tr>
@@ -820,7 +954,8 @@ function App() {
                       items={{
                         "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
                           "Base salary": financialData['baseSalarySplit'].map(displayMoney),
-                          "Novated Lease Employee Contribution": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
+                          // "Novated Lease Post-Tax Employee Contribution": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
+                          "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
                         }],
                         // "Base salary": financialData['baseSalarySplit'].map(displayMoney),
                         // "Bonus pay": hasBonus ? ['-', '-', '-', '-', displayMoney(bonus)] : null,
@@ -834,32 +969,38 @@ function App() {
                           "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
                           "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
                           "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
-                          "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
                         }],
 
                       }}
                       oldTax={financialData['undeductedTax']}
-                      totals={financialData['postTax'].map(displayMoney)} />
+                      totals={financialData['postTax'].map(displayMoney)}
+                      totalItems={{
+                        "Gross Salary": financialData['grossSalary'].map(displayMoney),
+                        "Novated Lease Post-Tax Employee Contribution": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
+                      }} />
                   </td>
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div id='chart-section'>
+
+
             <div className='pretax-savings'>
               {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
             </div>
-            <div className='chart-block'>
-              <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
-            </div>
+
 
             {/* <DonutChart data={donutIncomeSummary} /> */}
-            <div className='chart-block'>
-              {/* <TaxBandBar title={'Tax Bands'} earnings={financialData['taxablebaseSalarySplit'][4]} barWidth={(600)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} /> */}
-            </div>
+
+
+            {/* <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div> */}
+          </div >
+          <div className='chart-block'>
+            <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
+            {/* <TaxBandBar title={'Tax Bands'} earnings={financialData['taxablebaseSalarySplit'][4]} barWidth={(600)} lowerLimit={18200} upperLimit={250000} taxBands={taxRates['2226']} /> */}
+            {hasMortage ? <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} /> : null}
+
           </div>
-          <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
-        </div >
+        </div>
 
       </div >
     </>

@@ -50,18 +50,18 @@ export function DropdownTab({ label, contents, subContents, colour }: DropdownPr
 
     return (
         <>
-            <div className={'dropdown row-drop ' + label} style={{ display: 'flex' }}>
+            <div className={'dropdown row-drop ' + label} style={{ display: 'flex' }} onClick={setExpanded}>
                 <button
                     className={'dropdown-button ' + colour + (expanded ? " expanded" : '')}
-                    onClick={setExpanded}
+
                 >
                     {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
                 </button>
-                <div style={{ flexGrow: 1 }}>{contents}</div>
+                <div className='dropdown-contents-div' style={{ flexGrow: 1 }}>{contents}</div>
             </div>
             <div className={'dropdown-subdiv' + (expanded ? " expanded" : '')}>
                 {subContents}
-            </div>
+            </div >
         </>
     )
 }
@@ -217,9 +217,7 @@ export function DropdownSummaryInformation({ label, total, items }: SummaryProps
 }
 
 export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) {
-    // console.log(totalItems)
     let takehomeSubRows = Object.entries(totalItems).map(([key, subValue]: [string, any]) => {
-        // console.log(subValue)
         if (subValue != null) {
             return (
                 <div className={'dropdown row-drop '} style={{ display: 'flex' }}>
@@ -230,7 +228,7 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
                         <tbody>
                             <tr key={key} className={"income-table-category"}>
                                 <td>
-                                    <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                    <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div><span className="income-table-text">{(key[0] == '#' ? key.split('#')[1] : key)}</span></div>
                                 </td>
                                 <td>
                                     <div className={"income-table-category"}>{subValue[1]}</div>
@@ -258,6 +256,7 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
             <table className="income-table">
                 <thead >
                     <tr className="income-table-header">
+
                         <td style={{ width: '20px' }}></td>
                         <td>Weekly</td>
                         {/* <td>
@@ -284,7 +283,7 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
                                                     <tbody>
                                                         <tr key={key} className={"income-table-category"}>
                                                             <td>
-                                                                <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                                                <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div><span className="income-table-text">{(key[0] == '#' ? key.split('#')[1] : key)}</span></div>
                                                             </td>
                                                             <td>
                                                                 <div className={"income-table-category"}>{subValue[1]}</div>
@@ -314,7 +313,7 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
                                                 <tbody>
                                                     <tr key={key} className={"income-table-header-category"}>
                                                         <td>
-                                                            <div className={"income-table-header-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                                            <div className={"income-table-header-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div><span className="income-table-text">{(key[0] == '#' ? key.split('#')[1] : key)}</span></div>
                                                         </td>
                                                         <td>
                                                             <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[1]}</del><br></br> {row[1]}</>) : row[1]}</div>

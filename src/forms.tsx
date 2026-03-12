@@ -22,7 +22,7 @@ type SelectProps = {
 
 export function InputField({ id, label, value, setFunc, styling, formatting, min, max }: InputProps) {
     const internalLabel = id.toLowerCase().replace(" ", "-");
-
+    let oldValue = '';
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target;
         const selectionStart = input.selectionStart; // Capture cursor position
@@ -36,10 +36,12 @@ export function InputField({ id, label, value, setFunc, styling, formatting, min
 
         // 1. Filter characters
         rawValue = rawValue.replace(/[^\d.]/g, '');
-
+        console.log(oldValue)
+        console.log(selectionStart - 1)
+        console.log(oldValue[selectionStart - 1])
         // 2. Handle multiple decimals
         const parts = rawValue.split('.');
-        console.log(parts)
+        // console.log(parts)
         if (parts.length > 2) {
             rawValue = parts[0] + '.' + parts.slice(1).join('');
         }
@@ -70,7 +72,7 @@ export function InputField({ id, label, value, setFunc, styling, formatting, min
         }
         // const formatted = new Intl.NumberFormat().format(Number(finalValue))
         setFunc(finalValue);
-
+        oldValue = String(finalValue);
         // 4. Restore Cursor Position
         // We use requestAnimationFrame to wait for the next render cycle
         requestAnimationFrame(() => {

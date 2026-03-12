@@ -481,34 +481,50 @@ function App() {
     const mortageData = calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
     const mortageAnnualPayments = mortagePayFreq ? mortageData['weeklyRepaymentAmmount'] * 52 : mortageData['montlyRepaymentAmmount'] * 12;
     const annualMortageSplit = splitTax(mortageAnnualPayments, yearlyHours);
+
+    // Remove mortage
+    const mortageSplit = splitTax(mortageAnnualPayments, yearlyHours)
+    // Remove pretax
+    const pretaxDeductionSplit = splitTax(pretaxDeductionAmount, yearlyHours);
     // Remove Tax and mortage
-    let postTaxPay: any[] = []
+    let grossSalary: any[] = []
     for (let i = 0; i < 5; i++) {
-      postTaxPay.push((round(salaryPeriods[i] - taxSplit["totalTax"][i], 2)).toFixed(2));
+      grossSalary.push((round(salaryPeriods[i] - taxSplit["totalTax"][i] - pretaxDeductionSplit[i], 2)));
     }
+
     // Gross Pay
     let grossPay: any[] = []
     for (let i = 0; i < 5; i++) {
-      grossPay.push(postTaxPay[i]);
+      grossPay.push(grossSalary[i]);
     }
-    // Remove mortage
-    // console.log(mortageAnnualPayments)
-    postTaxPay[4] -= (hasMortage ? mortageAnnualPayments : 0);
-    // Subtract cost of novated lease
-    // console.log(novatedLeasePostTax[4])
-    // console.log(novatedLeasePreTax[4])
-    // console.log(novatedLeasePostTax[4])
-    postTaxPay[4] -= pretaxDeductionAmount + -(novatedLeasePostTax[4] != 0 ? novatedLeasePostTax[4] : 0) //+ (novatedLeasePreTax[4] != 0 ? novatedLeasePreTax[4] : 0);
+    // console.log(grossSalary)
+    // // Subtract cost of novated lease
+    // console.log(novatedLeasePostTax)
+    // Takehome pay
+    for (let i = 0; i < 5; i++) {
+
+      if (hasNovatedLease) {
+        grossSalary[i] += novatedLeasePostTax[i];
+        // console.log(grossSalary)
+        // console.log('--------')
+      }
+      if (hasMortage) {
+        grossSalary[i] -= mortageSplit[i];
+      }
+      // if (i == 4) {
+      //   console.log(pretaxDeductionSplit[i])
+      // }
+    }
     let superSplit = splitTax(superSum, yearlyHours);
     let taxableIncomePeriods = [];
     for (let i = 0; i < 5; i++) {
-      taxableIncomePeriods.push(salaryPeriods[i]);
-    }
-    taxableIncomePeriods[4] = taxableIncomePeriods[4] - pretaxDeductionAmount;
+      taxableIncomePeriods.push(salaryPeriods[i] - pretaxDeductionSplit[i]);
+    }// TODO Fix taxable income
+    // taxableIncomePeriods[4] = taxableIncomePeriods[4] - pretaxDeductionAmount;
     // if (hasBonus) {
     //   taxableIncomePeriods[4] += Number(bonus);
     // }
-    const basePay = postTaxPay[4] //- (hasBonus ? Number(bonus) : 0);
+    const basePay = grossSalary[4] //- (hasBonus ? Number(bonus) : 0);
     let payrollData = [{
       id: 'take-home',
       label: 'Pay',
@@ -547,7 +563,7 @@ function App() {
       totalSalary: salaryPeriods[4],
       superAmount: superSum,
       taxValues: currentTax,
-      postTax: postTaxPay,
+      postTax: grossSalary,
       repayments: currentRepayments,
       yearlyHours: yearlyHours,
       taxablebaseSalarySplit: taxableIncomePeriods,
@@ -573,7 +589,7 @@ function App() {
     <>
       <div className='global-div'>
         <div id='income-div'>
-          <table>
+          <table style={{ width: "100%" }}>
             <tbody>
               <tr className='big-table-row'>
                 <td className='big-table-cell'>
@@ -667,7 +683,7 @@ function App() {
                       </tbody>
                     </table>
                   </td>
-                  : <td className='big-table-cell'></td>}
+                  : <td style={{ width: '0px' }}></td>}
               </tr>
               <tr className='big-table-row'>
                 <td className='big-table-cell'>
@@ -760,11 +776,11 @@ function App() {
                     totalItems={{
                       "Gross Salary": financialData['grossSalary'].map(displayMoney),
                       "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map(displayMoney) : null,
-                      "Novated Lease Post-Tax Employee Contribution": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
+                      "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
                     }} />
                 </td>
               </tr>
-              <tr className='big-table-row' style={{ width: '100%' }} >
+              <tr className='big-table-row' style={{ width: '1400px' }} >
                 <td colSpan={4} style={{ width: '100%' }}>
                   <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/01/recruitmentHive_H_small.svg' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2>
                 </td>
@@ -801,7 +817,7 @@ function App() {
                     infoTag={null}
                   />
                 </td>
-                <td>
+                <td className='big-table-cell'>
                   <ToggleExpandVerticalTab
                     label='Mortage Repayments'
                     desc='Calculate your monthly and weekly repayments'
@@ -905,7 +921,7 @@ function App() {
                     infoTag={null}
                   />
                 </td>
-                <td>
+                <td className='big-table-cell'>
                   <ToggleExpandVerticalTab
                     label='Super Salary Sacrifice'
                     desc='Lower your income tax by making voluntary super contributions'

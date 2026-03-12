@@ -232,7 +232,7 @@ select>option {
 
 .dropdown-table {
     width: 100%;
-    max-width: 600px;
+    /* max-width: 600px; */
     table-layout: fixed;
     /* border: 2px solid var(--hive-yellow); */
     border-collapse: collapse;
@@ -397,7 +397,7 @@ select>option {
     margin: 5px 5px 5px 0px;
 }
 
-.coloured-dot-NovatedLease.Employee.Contribution {
+.coloured-dot-NovatedLease.Payment {
     width: 20px;
     height: 40px;
     border-radius: 20px;

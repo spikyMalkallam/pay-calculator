@@ -188,7 +188,7 @@ button:focus {
   /* margin-left: 4%; */
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   justify-content: baseline;
   margin: 10px 5px;
   /* align-items: center; */

@@ -1,14 +1,16 @@
 import { useState } from "react";
 import './dropdown.css'
-import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import useToggle from "./hooks/useToggle";
 import { SwitchToggle } from './buttons'
-import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { displayMoney, HtmlTooltip } from "./functions"
+import { AiFillInfoCircle } from "react-icons/ai";
 
 type DropdownProps = {
     label: string;
     contents: any;
     subContents: any;
+    colour: string;
 }
 
 type ToggleDropdownProps = {
@@ -40,19 +42,40 @@ type IncomeProps = {
     items: Record<string, any[] | null>;
     totals: string[];
     oldTax: string[];
+    totalItems: Record<string, any[] | null>;
 }
 
-export function DropdownTab({ label, contents, subContents }: DropdownProps) {
+export function DropdownTab({ label, contents, subContents, colour }: DropdownProps) {
     const [expanded, setExpanded] = useToggle()
 
     return (
         <>
             <div className={'dropdown row-drop ' + label} style={{ display: 'flex' }}>
                 <button
-                    className={'dropdown-button' + (expanded ? " expanded" : '')}
+                    className={'dropdown-button ' + colour + (expanded ? " expanded" : '')}
                     onClick={setExpanded}
                 >
-                    {expanded ? <AiOutlineDown /> : <AiOutlineUp />}
+                    {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
+                </button>
+                <div style={{ flexGrow: 1 }}>{contents}</div>
+            </div>
+            <div className={'dropdown-subdiv' + (expanded ? " expanded" : '')}>
+                {subContents}
+            </div>
+        </>
+    )
+}
+export function DropdownTab2({ label, contents, subContents, colour }: DropdownProps) {
+    const [expanded, setExpanded] = useToggle()
+
+    return (
+        <>
+            <div onClick={setExpanded} className={'dropdown row-drop ' + label} style={{ display: 'flex' }}>
+                <button
+                    className={'dropdown-button ' + colour + (expanded ? " expanded" : '')}
+
+                >
+                    {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
                 </button>
                 <div style={{ flexGrow: 1 }}>{contents}</div>
             </div>
@@ -97,7 +120,7 @@ export function SummaryTab({ label, daily, weekly, fortnightly, monthly, yearly 
 export function ToggleDropdownTab({ label, contents, expandedVar }: ToggleDropdownProps) {
     return (
         <>
-            <div className={'dropdown' + ' ' + label}> {<DropdownTab label='' contents={contents} subContents={contents} />}</div >
+            <div className={'dropdown' + ' ' + label}> {<DropdownTab label='' contents={contents} subContents={contents} colour="grey" />}</div >
             <div className={'dropdown-subdiv' + (expandedVar ? " expanded" : '') + ' ' + label}>
                 {contents}
             </div>
@@ -154,7 +177,7 @@ export function DropdownSummaryInformation({ label, total, items }: SummaryProps
                                 <div className={"coloured-dot-header-" + label.split(" ")[0]}></div>
                             </td>
                             <td>
-                                <div className="dropdown-label">{(expanded ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />)} {label}</div>
+                                <div className="dropdown-label">{(expanded ? <AiFillCaretUp /> : <AiFillCaretDown />)} {label}</div>
                             </td>
                             <td>
                                 <div className="finance-dropdown-header-amount">${total}</div>
@@ -193,69 +216,280 @@ export function DropdownSummaryInformation({ label, total, items }: SummaryProps
     )
 }
 
-export function IncomeTable({ items, totals, oldTax }: IncomeProps) {
+export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) {
+    // console.log(totalItems)
+    let takehomeSubRows = Object.entries(totalItems).map(([key, subValue]: [string, any]) => {
+        // console.log(subValue)
+        if (subValue != null) {
+            return (
+                <div className={'dropdown row-drop '} style={{ display: 'flex' }}>
+                    <button className="dropdown-spacer dark-grey">
+
+                    </button>
+                    <div style={{ flexGrow: 1 }}><table className="sub-sub-table-header">
+                        <tbody>
+                            <tr key={key} className={"income-table-category"}>
+                                <td>
+                                    <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                </td>
+                                <td>
+                                    <div className={"income-table-category"}>{subValue[1]}</div>
+                                </td>
+                                {/* <td>
+                                                    <div className={"income-table-category"}>{subValue[2]}</div>
+                                                </td> */}
+                                <td>
+                                    <div className={"income-table-category"}>{subValue[3]}</div>
+                                </td>
+                                <td>
+                                    <div className={"income-table-category"}>{subValue[4]}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table></div>
+                </div>
+
+            )
+        }
+    })
+
     return (
-        <table className="income-table">
-            <thead >
-                <tr className="income-table-header">
-                    <td>
-                        Component
-                    </td>
-                    <td>
-                        Weekly
-                    </td>
-                    <td>
+        <>
+            <table className="income-table">
+                <thead >
+                    <tr className="income-table-header">
+                        <td style={{ width: '20px' }}></td>
+                        <td>Weekly</td>
+                        {/* <td>
                         Fortnightly
+                    </td> */}
+                        <td>Monthly</td >
+                        <td>Annually</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colSpan={4} className="big-income-cell">
+                            {Object.entries(items).map(([key, value]: [string, any]) => {
+                                let row = value[0]
+                                let subrows = value[1]
+                                let renderedSubRows = Object.entries(subrows).map(([key, subValue]: [string, any]) => {
+                                    if (subValue != null) {
+                                        return (
+                                            <div className={'dropdown row-drop '} style={{ display: 'flex' }}>
+                                                <button className="dropdown-spacer dark-grey">
+
+                                                </button>
+                                                <div style={{ flexGrow: 1 }}><table className="sub-sub-table-header">
+                                                    <tbody>
+                                                        <tr key={key} className={"income-table-category"}>
+                                                            <td>
+                                                                <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div className={"income-table-category"}>{subValue[1]}</div>
+                                                            </td>
+                                                            {/* <td>
+                                                    <div className={"income-table-category"}>{subValue[2]}</div>
+                                                </td> */}
+                                                            <td>
+                                                                <div className={"income-table-category"}>{subValue[3]}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div className={"income-table-category"}>{subValue[4]}</div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table></div>
+                                            </div>
+
+                                        )
+                                    }
+                                })
+                                return (
+                                    <DropdownTab2 label="row-drop"
+                                        colour="grey"
+                                        contents={
+                                            <table className="sub-table-header">
+                                                <tbody>
+                                                    <tr key={key} className={"income-table-header-category"}>
+                                                        <td>
+                                                            <div className={"income-table-header-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
+                                                        </td>
+                                                        <td>
+                                                            <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[1]}</del><br></br> {row[1]}</>) : row[1]}</div>
+                                                        </td>
+                                                        {/* <td>
+                                                    <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[2]}</del><br></br> {row[2]}</>) : row[2]}</div>
+                                                </td> */}
+                                                        <td>
+                                                            <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[3]}</del><br></br> {row[3]}</>) : row[3]}</div>
+                                                        </td>
+                                                        <td>
+                                                            <div className={"income-table-header-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[4]}</del><br></br> {row[4]}</>) : row[4]}</div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>}
+                                        subContents={renderedSubRows} /> //Object.entries(items).map(([key, value]: [string, any]) => { })
+
+                                )
+                            })
+                            }</td>
+                    </tr>
+                </tbody>
+            </table >
+            {
+
+                <DropdownTab2 label="row-drop"
+                    colour="yellow"
+                    contents={
+                        <table className="income-takehome-table">
+                            <tbody>
+                                <tr className="income-table-takehome-row">
+                                    <td className="income-table-takehome label">Take-home pay</td>
+                                    <td className="income-table-takehome">{totals[1]}</td>
+                                    {/* <td className="income-table-takehome-cell">{totals[2]}</td> */}
+                                    <td className="income-table-takehome">{totals[3]}</td>
+                                    <td className="income-table-takehome">{totals[4]}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    } subContents={takehomeSubRows}
+                />
+            }
+
+        </>
+    )
+}
+
+type MortageProps = {
+    mortageData: Record<string, number>
+    monthlyPayment: boolean;
+}
+
+export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortageProps) {
+    // Excel helpers
+
+
+    return (
+        <table className="mortage-table">
+            <thead>
+                <tr className="mortage-table-header">
+                    <td className='unselected-freq'>
+                        Mortage Repayments
                     </td>
-                    <td>
+                    <td className={!monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
                         Monthly
                     </td>
-                    <td>
-                        Annually
+                    <td className={monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
+                        Weekly <HtmlTooltip
+                            title={
+                                <>
+                                    <b>Repayment brackets</b>
+                                    <ul style={{ 'textAlign': 'left' }}>
+                                        <li><b>$0 - $67,000:</b> Nil</li>
+                                        <li><b>$67,001 - $125,000:</b> 15c for each $1 over $67,000</li>
+                                        <li><b>$125,001 -$179,285:</b> $8,700 plus 17c for each $1 over $125,000</li>
+                                        <li><b>$179,286 and over:</b> 10% of your total repayment income</li>
+                                    </ul>
+                                </>
+                            }
+                            slotProps={{
+                                popper: {
+                                    modifiers: [
+                                        {
+                                            name: 'offset',
+                                            options: {
+                                                offset: [210, -90],
+                                            },
+                                        },
+                                    ],
+                                },
+                            }}
+                        >
+                            <AiFillInfoCircle />
+                        </HtmlTooltip>
                     </td>
                 </tr>
             </thead>
-            <tbody>
-                <td colSpan={5}>
-                    {Object.entries(items).map(([key, value]: [string, any]) => {
-
-                        if (value != null) {
-                            return (
-                                <DropdownTab label="row-drop"
-                                    contents={
-                                        <table className="sub-table-header">
-                                            <tbody>
-                                                <tr key={key} className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div>{(key[0] == '#' ? key.split('#')[1] : key)}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[1]}</del><br></br> {value[1]}</>) : value[1]}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[2]}</del><br></br> {value[2]}</>) : value[2]}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[3]}</del><br></br> {value[3]}</>) : value[3]}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div className={"income-table" + (key[0] == '#' ? '-header' : '') + "-category"}>{oldTax !== undefined && oldTax.length > 0 && key == '#Total Taxes' ? (<><del>{oldTax[4]}</del><br></br> {value[4]}</>) : value[4]}</div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>}
-                                    subContents={<h1>AH</h1>} /> //Object.entries(items).map(([key, value]: [string, any]) => { })
-
-                            )
-                        }
-                    })
-                    }</td>
-                <tr className="income-table-takehome-row">
-                    <td className="income-table-takehome-label">Take-home pay</td>
-                    <td className="income-table-takehome-cell">{totals[1]}</td>
-                    <td className="income-table-takehome-cell">{totals[2]}</td>
-                    <td className="income-table-takehome-cell">{totals[3]}</td>
-                    <td className="income-table-takehome-cell">{totals[4]}</td>
+            <tbody className="mortage-body">
+                <tr>
+                    <td>
+                        Repayment Ammount
+                    </td>
+                    <td className={!monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['montlyRepaymentAmmount'])}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['weeklyRepaymentAmmount'])}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Loan Paid Off In Years
+                    </td>
+                    <td className={!monthlyPayment ? 'selected-val' : ''}>
+                        {mortageData['loanTerm']}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {mortageData['weeklyPayedOffIn']}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Time Saved (years)
+                    </td>
+                    <td>
+                        {'-'}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {mortageData['weeklyTimeSaved']}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total Repayments
+                    </td>
+                    <td className={!monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['monthlyTotalRepayments'])}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['weeklyTotalRepayments'])}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total Interest Paid
+                    </td>
+                    <td className={!monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['monthlyTotalInterest'])}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['weeklyTotalInterest'])}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total Interest Savings over the loan term
+                    </td>
+                    <td>
+                        {'-'}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['weeklyInterestSavings'])}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Annual Interest Savings
+                    </td>
+                    <td>
+                        {'-'}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['weeklyAnnualInterestSavings'])}
+                    </td>
                 </tr>
             </tbody>
         </table>

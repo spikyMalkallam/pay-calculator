@@ -1,6 +1,6 @@
 :root {
     --hive-yellow: #fdc333;
-    --background-grey: #363636;
+    /* --toggle-button-background: #363636; */
     --tax-colour: #71972c;
     --super-colour: #33a2c6;
     --tax-colour: #ea9f21;
@@ -29,7 +29,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--background-grey);
+    background-color: var(--toggle-button-background);
     -webkit-transition: .4s;
     transition: .4s;
 }

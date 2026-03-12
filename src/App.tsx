@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import './App.css'
-import { IncomeTable, ToggleExpandHorizontalTab, ToggleExpandVerticalTab, MortageRepaymentTable } from './dropdown'
+import { IncomeTable, ToggleExpandVerticalTab, MortageRepaymentTable } from './dropdown'
 import useToggle from './hooks/useToggle'
 import { InputField, SelectField } from './forms'
 import { SwitchToggle } from './buttons'
@@ -9,54 +9,54 @@ import PayrollPieChart from './graphs';
 import { displayMoney, round, PMT, NPER, HtmlTooltip } from './functions';
 import { AiFillInfoCircle } from "react-icons/ai";
 
-type IncomeTableRowProps = {
-  values: number[];
-  subrow: any[];
-}
+// type IncomeTableRowProps = {
+//   values: number[];
+//   subrow: any[];
+// }
 
 function App() {
 
-  function stringToNumFreq(freq: string): number {
-    switch (freq) {
-      case "Annual": {
-        return 1;
-      }
-      case "Year": {
-        return 1;
-      }
-      case "Monthly": {
-        return 12;
-      }
-      case "Month": {
-        return 12;
-      }
-      case "Fortnightly": {
-        return 26;
-      }
-      case "Fortnight": {
-        return 26;
-      }
-      case "Weekly": {
-        return 52;
-      }
-      case "Week": {
-        return 52;
-      }
-      case "Daily": {
-        return 365;
-      }
-      default: {
-        return 0
-      }
+  // function stringToNumFreq(freq: string): number {
+  //   switch (freq) {
+  //     case "Annual": {
+  //       return 1;
+  //     }
+  //     case "Year": {
+  //       return 1;
+  //     }
+  //     case "Monthly": {
+  //       return 12;
+  //     }
+  //     case "Month": {
+  //       return 12;
+  //     }
+  //     case "Fortnightly": {
+  //       return 26;
+  //     }
+  //     case "Fortnight": {
+  //       return 26;
+  //     }
+  //     case "Weekly": {
+  //       return 52;
+  //     }
+  //     case "Week": {
+  //       return 52;
+  //     }
+  //     case "Daily": {
+  //       return 365;
+  //     }
+  //     default: {
+  //       return 0
+  //     }
 
-    }
-  }
-  const novatedLeaseExamples: Record<string, number[][]> = {
-    "Toyota Corolla": [[], []],
-    "Polestar 2": [[], []],
-    "Telsa Model 3": [[], []],
-    "Audi A1": [[], []]
-  }
+  //   }
+  // }
+  // const novatedLeaseExamples: Record<string, number[][]> = {
+  //   "Toyota Corolla": [[], []],
+  //   "Polestar 2": [[], []],
+  //   "Telsa Model 3": [[], []],
+  //   "Audi A1": [[], []]
+  // }
   const [salary, setSalary] = useState(40.00)
   // 0: 1: 2: 3: 4: 5: 6:
   const [payCycle, setPayCycle] = useState('Hourly')
@@ -310,6 +310,7 @@ function App() {
   const ResidualValues: Record<number, number> = { 1: 0.6563, 2: 0.5625, 3: 0.4688, 4: 0.3750, 5: 0.2813 }
   function calculateNovatedLease(purchasePrice: number, isEV: boolean, leaseDuration: number) {
     // const AnnualTravel = 10000;
+    console.log(isEV);
     const AnnualLeaseInterestRate = 0.08;
     const DealerDeliveryCharges = 1722.73;
     const gst = (purchasePrice + DealerDeliveryCharges) * 0.1;

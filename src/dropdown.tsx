@@ -3,8 +3,7 @@ import './dropdown.css'
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import useToggle from "./hooks/useToggle";
 import { SwitchToggle } from './buttons'
-import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
-import { displayMoney, NPER, PMT, round, HtmlTooltip } from "./functions"
+import { displayMoney, HtmlTooltip } from "./functions"
 import { AiFillInfoCircle } from "react-icons/ai";
 
 type DropdownProps = {

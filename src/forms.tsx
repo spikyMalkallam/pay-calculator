@@ -36,9 +36,7 @@ export function InputField({ id, label, value, setFunc, styling, formatting, min
 
         // 1. Filter characters
         rawValue = rawValue.replace(/[^\d.]/g, '');
-        console.log(oldValue)
-        console.log(selectionStart - 1)
-        console.log(oldValue[selectionStart - 1])
+
         // 2. Handle multiple decimals
         const parts = rawValue.split('.');
         // console.log(parts)

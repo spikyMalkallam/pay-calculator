@@ -31,6 +31,10 @@
     user-select: none;
 }
 
+.income-table-text {
+    user-select: text;
+}
+
 .summary-label {
     color: black;
     font-size: 25px;
@@ -137,6 +141,13 @@
     max-width: 500px;
 }
 
+.expand.WorkDeductables,
+.expand.MortageRepayments,
+.expand.NovatedLease,
+.expand.SuperSalary {
+    color: var(--hive-yellow);
+}
+
 .finance-dropdown-amount {
     text-align: right;
 }
@@ -204,6 +215,10 @@ select>option {
     background-color: var(--income-table-backing);
 }
 
+.black {
+    background-color: black;
+}
+
 .dark-grey {
     background-color: var(--income-subtable-backing);
 }
@@ -224,6 +239,10 @@ select>option {
     text-align: left;
 }
 
+.dropdown-contents-div {
+    background-color: black;
+    max-width: 100%;
+}
 
 .dropdown-table td {
     padding: 0;
@@ -373,7 +392,7 @@ select>option {
     margin: 5px 5px 5px 0px;
 }
 
-.coloured-dot-GrossSalary {
+.coloured-dot-NetSalary {
     width: 20px;
     height: 40px;
     border-radius: 20px;
@@ -393,7 +412,7 @@ select>option {
     width: 20px;
     height: 40px;
     border-radius: 20px;
-    background-color: #ffe600;
+    background-color: #ff7300;
     margin: 5px 5px 5px 0px;
 }
 
@@ -401,7 +420,23 @@ select>option {
     width: 20px;
     height: 40px;
     border-radius: 20px;
-    background-color: #ffe600;
+    background-color: #ff7300;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-WorkDeductables {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #00b300;
+    margin: 5px 5px 5px 0px;
+}
+
+.coloured-dot-MortageRepayments {
+    width: 20px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #a30101;
     margin: 5px 5px 5px 0px;
 }
 
@@ -445,9 +480,10 @@ select>option {
 .dropdown.row-drop {
     padding: 0;
     /* Changed from 10px */
-    display: flex;
+    /* display: flex; */
     width: 100%;
     align-items: stretch;
+    /* margin: 0px; */
     /* Ensures button and table are same height */
 }
 

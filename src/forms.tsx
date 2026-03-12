@@ -22,7 +22,6 @@ type SelectProps = {
 
 export function InputField({ id, label, value, setFunc, styling, formatting, min, max }: InputProps) {
     const internalLabel = id.toLowerCase().replace(" ", "-");
-    let oldValue = '';
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target;
         const selectionStart = input.selectionStart; // Capture cursor position
@@ -70,7 +69,6 @@ export function InputField({ id, label, value, setFunc, styling, formatting, min
         }
         // const formatted = new Intl.NumberFormat().format(Number(finalValue))
         setFunc(finalValue);
-        oldValue = String(finalValue);
         // 4. Restore Cursor Position
         // We use requestAnimationFrame to wait for the next render cycle
         requestAnimationFrame(() => {

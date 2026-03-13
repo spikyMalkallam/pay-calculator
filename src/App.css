@@ -55,7 +55,7 @@ animation-name: loadingAnimation;
   animation-name: spinAnimation;
   animation-duration: 1s;
   animation-iteration-count: 1;
-  margin: 0px 5px 0px 5px;
+  margin: auto 5px auto 5px;
 
 }
 
@@ -250,39 +250,48 @@ button:focus {
 .hive-shine {
   text-decoration: none;
   display: inline-block;
-  margin: 10px 0px 10px 0px;
+  margin: 5px 0px 0px 0px;
   color: var(--hive-yellow);
-
-  /* background: linear-gradient(120deg,
-      var(--hive-yellow) 30%,
-      #ffffff 50%,
-      var(--hive-yellow) 70%);
-
-  background-size: 300% 100%;
-
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-
-  background-position: 100% 0;
-
-  animation: shine-sweep 1.5s linear 1; */
 }
 
-/* 5. Trigger the animation on hover */
-.hive-shine:hover {
-  animation: shine-sweep 1.5s linear infinite;
+.hive-benefits-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* 6. The "Swish" Logic */
-@keyframes shine-sweep {
-  0% {
-    background-position: 100% 0;
-    /* Shine starts off-screen right */
-  }
+.hive-subheader {
+  text-decoration: none;
+  display: inline-block;
+  color: var(--hive-yellow);
+  font-style: italic;
+  font-size: 15px;
+  margin: 0px 0px 5px 0px;
+}
 
-  100% {
-    background-position: -100% 0;
-    /* Shine finishes off-screen left */
-  }
+.dropdown.row-drop.Benefits {
+  --c: #fdc333;
+  /* the border color */
+  --b: 10px;
+  /* the border thickness*/
+  --g: 5px;
+  /* the gap on hover */
+
+  padding: calc(var(--g));
+  --_g: #0000 25%, var(--c) 0;
+  background:
+    conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) var(--_i, 200%) 0 /200% var(--_i, var(--b)) no-repeat,
+    conic-gradient(at bottom var(--b) left var(--b), var(--_g)) 0 var(--_i, 200%)/var(--_i, var(--b)) 200% no-repeat;
+  transition: .3s, background-position .3s;
+  cursor: pointer;
+}
+
+.dropdown.row-drop.Benefits:hover {
+  --_i: 100%;
+  transition: .3s, background-size .3s .3s;
+}
+
+.dropdown.row-drop.Benefits.open {
+  --_i: 100%;
+  transition: .3s, background-size .3s .3s;
 }

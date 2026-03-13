@@ -142,7 +142,7 @@
 }
 
 .expand.WorkDeductables,
-.expand.MortageRepayments,
+.expand.AcceleratedMortage,
 .expand.NovatedLease,
 .expand.SuperSalary {
     color: var(--hive-yellow);

@@ -745,7 +745,15 @@ function App() {
           <DropdownTab
             colour='black'
             label={'Benefits'}
-            contents={<h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}><img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" /> Hive Benefits</h2>}
+            contents={
+              <div className='hive-benefits-div'>
+                <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}>
+                  <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
+                  Hive Benefits
+                </h2>
+                <span className='hive-subheader'>Our accounts team can offer you</span>
+              </div>
+            }
             subContents={<>
               <table style={{ backgroundColor: 'black' }}>
                 <tbody>
@@ -784,7 +792,7 @@ function App() {
                     </td>
                     <td className='benefits-table-cell'>
                       <ToggleExpandVerticalTab
-                        label='Mortage Repayments'
+                        label='Accelerated Mortage Repayments'
                         desc='Calculate your monthly and weekly repayments'
                         contents={<><table className='dropdown-table'>
                           <tbody>

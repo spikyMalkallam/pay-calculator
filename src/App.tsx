@@ -308,33 +308,33 @@ function App() {
     }
   }
   const ResidualValues: Record<number, number> = { 1: 0.6563, 2: 0.5625, 3: 0.4688, 4: 0.3750, 5: 0.2813 }
-  function calculateNovatedLease(purchasePrice: number, isEV: boolean, leaseDuration: number) {
-    // const AnnualTravel = 10000;
-    console.log(isEV);
-    const AnnualLeaseInterestRate = 0.08;
-    const DealerDeliveryCharges = 1722.73;
-    const gst = (purchasePrice + DealerDeliveryCharges) * 0.1;
-    const PurchaseStampDuty = 1179; // Figure out formula
-    const CarBaseValueForFBT = purchasePrice + DealerDeliveryCharges + gst;
-    const AmountFinanced = purchasePrice + DealerDeliveryCharges + PurchaseStampDuty;
-    const LeaseTerm = leaseDuration;
-    // const InitialDeposit = AmountFinanced * 0.2;
-    const ResidualValue = AmountFinanced * ResidualValues[leaseDuration];
-    const MonthlyFinanceRepayment = PMT((AnnualLeaseInterestRate) / 12, (LeaseTerm) * 12, ((AmountFinanced) - (ResidualValue))) + ResidualValue * (AnnualLeaseInterestRate / 12);
-    const MonthlyRunningCosts = 339.45; // Calculate later
-    const LoanManagementFees = 20;
-    const MonthlyTotalCosts = LoanManagementFees + MonthlyRunningCosts + MonthlyFinanceRepayment;
-    const AnnualTotalCosts = MonthlyTotalCosts * 12;
-    const FBTTaxableValue = CarBaseValueForFBT * 0.2;
-    // const FBT = FBTTaxableValue * 2.0802 * 0.49; // Maybe?
-    const EmployeeContributionPostTax = FBTTaxableValue;
+  // function calculateNovatedLease(purchasePrice: number, isEV: boolean, leaseDuration: number) {
+  //   // const AnnualTravel = 10000;
+  //   console.log(isEV);
+  //   const AnnualLeaseInterestRate = 0.08;
+  //   const DealerDeliveryCharges = 1722.73;
+  //   const gst = (purchasePrice + DealerDeliveryCharges) * 0.1;
+  //   const PurchaseStampDuty = 1179; // Figure out formula
+  //   const CarBaseValueForFBT = purchasePrice + DealerDeliveryCharges + gst;
+  //   const AmountFinanced = purchasePrice + DealerDeliveryCharges + PurchaseStampDuty;
+  //   const LeaseTerm = leaseDuration;
+  //   // const InitialDeposit = AmountFinanced * 0.2;
+  //   const ResidualValue = AmountFinanced * ResidualValues[leaseDuration];
+  //   const MonthlyFinanceRepayment = PMT((AnnualLeaseInterestRate) / 12, (LeaseTerm) * 12, ((AmountFinanced) - (ResidualValue))) + ResidualValue * (AnnualLeaseInterestRate / 12);
+  //   const MonthlyRunningCosts = 339.45; // Calculate later
+  //   const LoanManagementFees = 20;
+  //   const MonthlyTotalCosts = LoanManagementFees + MonthlyRunningCosts + MonthlyFinanceRepayment;
+  //   const AnnualTotalCosts = MonthlyTotalCosts * 12;
+  //   const FBTTaxableValue = CarBaseValueForFBT * 0.2;
+  //   // const FBT = FBTTaxableValue * 2.0802 * 0.49; // Maybe?
+  //   const EmployeeContributionPostTax = FBTTaxableValue;
 
-    const TotalAnnualVehicleCosts = AnnualTotalCosts;
-    const SalarySacrifise = TotalAnnualVehicleCosts - EmployeeContributionPostTax;
-    //const TaxableIncome = salary - SalarySacrifise;
+  //   const TotalAnnualVehicleCosts = AnnualTotalCosts;
+  //   const SalarySacrifise = TotalAnnualVehicleCosts - EmployeeContributionPostTax;
+  //   //const TaxableIncome = salary - SalarySacrifise;
 
-    return [SalarySacrifise, EmployeeContributionPostTax];
-  }
+  //   return [SalarySacrifise, EmployeeContributionPostTax];
+  // }
 
   function calculateStudentLoan(repaymentIncome: number, loanYear: Record<number, number[]>): number {
     let repaymentAmount = 0;
@@ -431,11 +431,11 @@ function App() {
     // Calculation Novated Lease
     if (hasNovatedLease) {
       let novatedLeaseContributions = [0, 0];
-      if (novatedLeaseExample == "Toyota Corolla") {
-        novatedLeaseContributions = calculateNovatedLease(39100, false, 1);
+      if (novatedLeaseExample == "Toyota Rav 4") {
+        novatedLeaseContributions = [534 * 12, 888 * 12]; // Montly 534 Pre-Tax 888 Post-Tax
       }
-      else if (novatedLeaseExample == "Polestar 2") {
-        novatedLeaseContributions = calculateNovatedLease(45000, false, 1);
+      else if (novatedLeaseExample == "Tesla Model Y") {
+        novatedLeaseContributions = [1513 * 12, 0]; // Montly 1513 Pre-Tax 0 Post-Tax
       }
       novatedLeasePreTax = splitTax(-novatedLeaseContributions[0], yearlyHours);
       novatedLeasePostTax = splitTax(-novatedLeaseContributions[1], yearlyHours);
@@ -563,7 +563,9 @@ function App() {
       payrollData[0].subCategories.push({ id: 'mortage', label: 'Mortage Repayments', value: Number(mortageAnnualPayments), color: '#a30101' });
     }
     if (hasNovatedLease) {
-      payrollData[0].subCategories.push({ id: 'novatedLease', label: 'Novated Lease', value: Number(-novatedLeasePostTax[4]), color: '#ff7300' });
+      if (novatedLeasePostTax[4] > 0) {
+        payrollData[0].subCategories.push({ id: 'novatedLease', label: 'Novated Lease', value: Number(-novatedLeasePostTax[4]), color: '#ff7300' });
+      }
     }
 
     return {
@@ -588,7 +590,7 @@ function App() {
       mortageData: mortageData,
       grossSalary: grossPay,
       annualMortageSplit: annualMortageSplit,
-      workDeductablesAmount: [0, 0, 0, 0, workDeductablesAmount]
+      workDeductablesAmount: [0, 0, 0, 0, -workDeductablesAmount]
       // bonusSplit: bonusPeriods
     };
   }, [salary, payCycle, superPercentage, salaryIncludesSuper, , hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
@@ -693,7 +695,7 @@ function App() {
                   </td>
                   : <td style={{ width: '0px' }}></td>}
               </tr>
-              <tr className='big-table-row'>
+              {/* <tr className='big-table-row'>
                 <td className='big-table-cell'>
                   <SwitchToggle
                     label="Student loan"
@@ -737,59 +739,26 @@ function App() {
                   />
                 </td>
                 <td colSpan={1} className='big-table-cell'></td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
         </div >
-        <div id='hive-benefits'>
+        <div id='payroll-options'>
           <DropdownTab
-            colour='black'
-            label={'Benefits'}
+            colour='yellow'
+            label={'Payroll'}
             contents={
               <div className='hive-benefits-div'>
-                <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}>
-                  <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
-                  Hive Benefits
+                <h2 className='payroll-options' style={{ display: 'flex', justifyContent: 'center' }}>
+                  Payroll Options
                 </h2>
-                <span className='hive-subheader'>Our accounts team can offer you</span>
+                {/* <span className='hive-subheader'>Our accounts team can offer you</span> */}
               </div>
             }
             subContents={<>
-              <table style={{ backgroundColor: 'black' }}>
+              <table style={{ backgroundColor: 'var(--hive-yellow)' }}>
                 <tbody>
                   <tr className='benefits-table-row' style={{ width: '80%' }}>
-                    <td className='benefits-table-cell'>
-                      <ToggleExpandVerticalTab
-                        label='Work Deductables'
-                        desc='Subtract your work expenses from your taxable income'
-                        contents={<><table className='dropdown-table'>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <InputField
-                                  label={"Deductable amount"}
-                                  id='work-deductables-amount'
-                                  value={workDeductablesAmount}
-                                  setFunc={(val) => { setWorkDeductablesAmount(val); }}
-                                  styling='medium'
-                                  formatting={'monetary'}
-                                  rounding={2}
-                                  min={0}
-                                  max={null}
-                                />
-                              </td>
-                            </tr>
-
-                          </tbody>
-                        </table>
-
-                        </>
-                        }
-                        toggleFunc={setHasWorkDeductions}
-                        expandedVar={hasWorkDeductions}
-                        infoTag={null}
-                      />
-                    </td>
                     <td className='benefits-table-cell'>
                       <ToggleExpandVerticalTab
                         label='Accelerated Mortage Repayments'
@@ -861,6 +830,75 @@ function App() {
                       />
                     </td>
                     <td className='benefits-table-cell'>
+                      <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
+                    </td>
+                    <td className='benefits-table-cell'>
+                      <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={4}>
+                      <div className='pretax-savings'>
+                        {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </>}
+          />
+        </div>
+        <div id='hive-benefits'>
+          <DropdownTab
+            colour='black'
+            label={'Benefits'}
+            contents={
+              <div className='hive-benefits-div'>
+                <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}>
+                  <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
+                  Hive Benefits
+                </h2>
+                <span className='hive-subheader'>Our accounts team can offer you</span>
+              </div>
+            }
+            subContents={<>
+              <table style={{ backgroundColor: 'black' }}>
+                <tbody>
+                  <tr className='benefits-table-row' style={{ width: '80%' }}>
+                    <td className='benefits-table-cell'>
+                      <ToggleExpandVerticalTab
+                        label='Work Deductables'
+                        desc='Subtract your work expenses from your taxable income'
+                        contents={<><table className='dropdown-table'>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <InputField
+                                  label={"Deductable amount"}
+                                  id='work-deductables-amount'
+                                  value={workDeductablesAmount}
+                                  setFunc={(val) => { setWorkDeductablesAmount(val); }}
+                                  styling='medium'
+                                  formatting={'monetary'}
+                                  rounding={2}
+                                  min={0}
+                                  max={null}
+                                />
+                              </td>
+                            </tr>
+
+                          </tbody>
+                        </table>
+
+                        </>
+                        }
+                        toggleFunc={setHasWorkDeductions}
+                        expandedVar={hasWorkDeductions}
+                        infoTag={null}
+                      />
+                    </td>
+
+                    <td className='benefits-table-cell'>
                       <ToggleExpandVerticalTab
                         label='Novated Lease'
                         desc='Lease a car and pay it off before tax'
@@ -876,10 +914,8 @@ function App() {
                                   value={novatedLeaseExample}
                                   setFunc={setNovatedLeaseExample}
                                   items={{
-                                    "Toyota Corolla": "Toyota Corolla",
-                                    "Polestar 2": "Polestar 2",
-                                    "Tesla Model 3": "Tesla Model 3",
-                                    "Audi A1": "Audi A1",
+                                    "Toyota Rav 4": "Toyota Rav 4",
+                                    "Tesla Model Y": "Tesla Model Y",
                                   }}
                                   styling='medium'
                                 />

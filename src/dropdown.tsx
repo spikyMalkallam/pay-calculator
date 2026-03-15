@@ -57,7 +57,7 @@ export function DropdownTab({ label, contents, subContents, colour }: DropdownPr
                 >
                     {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
                 </button>
-                <div className='dropdown-contents-div' style={{ flexGrow: 1 }}>{contents}</div>
+                <div className={'dropdown-contents-div ' + colour} style={{ flexGrow: 1 }}>{contents}</div>
             </div>
             <div className={'dropdown-subdiv' + (expanded ? " expanded" : '')}>
                 {subContents}
@@ -413,7 +413,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                 </tr>
             </thead>
             <tbody className="mortage-body">
-                <tr>
+                {/* <tr>
                     <td>
                         Repayment Ammount
                     </td>
@@ -423,8 +423,8 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {displayMoney(mortageData['weeklyRepaymentAmmount'])}
                     </td>
-                </tr>
-                <tr>
+                </tr> */}
+                {/* <tr>
                     <td>
                         Loan Paid Off In Years
                     </td>
@@ -434,7 +434,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {mortageData['weeklyPayedOffIn']}
                     </td>
-                </tr>
+                </tr> */}
                 <tr>
                     <td>
                         Time Saved (years)
@@ -446,18 +446,8 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                         {mortageData['weeklyTimeSaved']}
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        Total Repayments
-                    </td>
-                    <td className={!monthlyPayment ? 'selected-val' : ''}>
-                        {displayMoney(mortageData['monthlyTotalRepayments'])}
-                    </td>
-                    <td className={monthlyPayment ? 'selected-val' : ''}>
-                        {displayMoney(mortageData['weeklyTotalRepayments'])}
-                    </td>
-                </tr>
-                <tr>
+
+                {/* <tr>
                     <td>
                         Total Interest Paid
                     </td>
@@ -467,7 +457,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {displayMoney(mortageData['weeklyTotalInterest'])}
                     </td>
-                </tr>
+                </tr> */}
                 <tr>
                     <td>
                         Total Interest Savings over the loan term
@@ -488,6 +478,17 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     </td>
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {displayMoney(mortageData['weeklyAnnualInterestSavings'])}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total Repayments
+                    </td>
+                    <td className={!monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['monthlyTotalRepayments'])}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['weeklyTotalRepayments'])}
                     </td>
                 </tr>
             </tbody>

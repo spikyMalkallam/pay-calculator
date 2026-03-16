@@ -60,7 +60,8 @@ function App() {
   const [salary, setSalary] = useState(40.00)
   // 0: 1: 2: 3: 4: 5: 6:
   const [payCycle, setPayCycle] = useState('Hourly')
-  const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
+  // const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
+  const salaryIncludesSuper = true;
   const [hasStudentLoan, setHasStudentLoan] = useToggle()
   // const [bonus, setBonus] = useState(0)
   // const [bonusFrequency, setBonusFrequency] = useState('Annual')
@@ -605,6 +606,9 @@ function App() {
                 <td className='big-table-cell'>
                   {/* <td className='big-table-cell'> */}
                   <InputField
+                    textColour='white'
+                    headerColour='var(--hive-yellow)'
+                    backgroundColour='var(--yellow-tone-5)'
                     id='Salary'
                     label='Salary'
                     value={salary}
@@ -622,6 +626,9 @@ function App() {
                       <tr>
                         <td>
                           <SelectField
+                            textColour='white'
+                            headerColour='var(--hive-yellow)'
+                            backgroundColour='var(--yellow-tone-5)'
                             id="pay-cycle"
                             label="Pay Cycle"
                             value={payCycle}
@@ -649,6 +656,9 @@ function App() {
                         <tr>
                           <td>
                             <InputField
+                              textColour='white'
+                              headerColour='var(--hive-yellow)'
+                              backgroundColour='var(--yellow-tone-5)'
                               label='Hours'
                               id='work-hours'
                               value={dailyHours}
@@ -662,6 +672,9 @@ function App() {
                           </td>
                           <td>
                             <InputField
+                              textColour='white'
+                              headerColour='var(--hive-yellow)'
+                              backgroundColour='var(--yellow-tone-5)'
                               label='Days'
                               id='days-per-period'
                               value={daysPerPeriod}
@@ -676,6 +689,9 @@ function App() {
                           </td>
                           <td>
                             <SelectField
+                              textColour='white'
+                              headerColour='var(--hive-yellow)'
+                              backgroundColour='var(--yellow-tone-5)'
                               label="each"
                               id="week-or-fortnight"
                               value={hoursPeriod}
@@ -745,84 +761,107 @@ function App() {
         </div >
         <div id='payroll-options'>
           <DropdownTab
-            colour='yellow'
+            colour='var(--hive-yellow)'
             label={'Payroll'}
             contents={
               <div className='hive-benefits-div'>
                 <h2 className='payroll-options' style={{ display: 'flex', justifyContent: 'center' }}>
-                  Payroll Options
+                  Hive Payroll Options
                 </h2>
                 {/* <span className='hive-subheader'>Our accounts team can offer you</span> */}
               </div>
             }
             subContents={<>
-              <table style={{ backgroundColor: 'var(--hive-yellow)' }}>
+              <table style={{ backgroundColor: 'black' }}>
                 <tbody>
                   <tr className='benefits-table-row' style={{ width: '80%' }}>
                     <td className='benefits-table-cell'>
+                      <table className='dropdown-table'>
+                        <tbody>
+                          <tr>
+                            <td style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
+                              <p>Hive offers Weekly & Monthly payroll options</p>
+                              <a href='https://www.recruitmenthive.com.au/wp-content/uploads/2026/03/HIVE_DOC_076-Salary-Packaging-Services.pdf' target='_blank'>View our Salary Packaging Services here</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                    <td className='benefits-table-cell'>
                       <ToggleExpandVerticalTab
                         label='Accelerated Mortage Repayments'
-                        desc='Calculate your monthly and weekly repayments'
-                        contents={<><table className='dropdown-table'>
-                          <tbody>
-                            <tr>
-                              <td style={{ background: 'var(--yellow-tone-5)' }} colSpan={2}>
-                                <SwitchToggle
-                                  label="Weekly payments"
-                                  description={''}
-                                  setFunc={setMortagePayFreq}
-                                  infoTag={null}
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td colSpan={2}>
-                                <InputField
-                                  label={"Loan Ammount"}
-                                  id='mortage-loan-ammount'
-                                  value={mortageLoanAmmount}
-                                  setFunc={(val) => { setMortageLoanAmmount(val); }}
-                                  styling='medium'
-                                  formatting={'monetary'}
-                                  rounding={2}
-                                  min={0}
-                                  max={null}
-                                />
-                              </td>
+                        desc='See the difference between weekly and monthly mortage repayments'
+                        contents={<>
+                          <table className='dropdown-table'>
+                            <tbody>
+                              <tr>
+                                <td style={{ backgroundColor: 'var(--dark-grey)' }} colSpan={2}>
+                                  <SwitchToggle
+                                    dropdown={false}
+                                    label="Weekly payments"
+                                    description={''}
+                                    setFunc={setMortagePayFreq}
+                                    infoTag={null}
+                                  />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colSpan={2}>
+                                  <InputField
+                                    textColour='white'
+                                    headerColour='var(--dark-grey)'
+                                    backgroundColour='var(--dark-grey)'
+                                    label={"Loan Ammount"}
+                                    id='mortage-loan-ammount'
+                                    value={mortageLoanAmmount}
+                                    setFunc={(val) => { setMortageLoanAmmount(val); }}
+                                    styling='medium'
+                                    formatting={'monetary'}
+                                    rounding={2}
+                                    min={0}
+                                    max={null}
+                                  />
+                                </td>
 
-                            </tr>
-                            <tr>
-                              <td colSpan={1}>
-                                <InputField
-                                  label={"Annual Interest Rate"}
-                                  id='mortage-loan-ammount'
-                                  value={mortageInterestRate}
-                                  setFunc={(val) => { setMortageInterestRate(val); }}
-                                  styling='medium'
-                                  formatting={'percentage'}
-                                  rounding={2}
-                                  min={0}
-                                  max={null}
-                                />
-                              </td>
-                              <td colSpan={1}>
-                                <InputField
-                                  label={"Loan Term (years)"}
-                                  id='mortage-loan-ammount'
-                                  value={mortageTerm}
-                                  setFunc={(val) => { setMortageTerm(val); }}
-                                  styling='medium'
-                                  formatting={'number'}
-                                  rounding={2}
-                                  min={0}
-                                  max={null}
-                                />
-                              </td>
-                            </tr>
+                              </tr>
+                              <tr>
+                                <td colSpan={1}>
+                                  <InputField
+                                    textColour='white'
+                                    headerColour='var(--dark-grey)'
+                                    backgroundColour='var(--dark-grey)'
+                                    label={"Annual Interest Rate"}
+                                    id='mortage-loan-ammount'
+                                    value={mortageInterestRate}
+                                    setFunc={(val) => { setMortageInterestRate(val); }}
+                                    styling='medium'
+                                    formatting={'percentage'}
+                                    rounding={2}
+                                    min={0}
+                                    max={null}
+                                  />
+                                </td>
+                                <td colSpan={1}>
+                                  <InputField
+                                    textColour='white'
+                                    headerColour='var(--dark-grey)'
+                                    backgroundColour='var(--dark-grey)'
+                                    label={"Loan Term (years)"}
+                                    id='mortage-loan-ammount'
+                                    value={mortageTerm}
+                                    setFunc={(val) => { setMortageTerm(val); }}
+                                    styling='medium'
+                                    formatting={'number'}
+                                    rounding={2}
+                                    min={0}
+                                    max={null}
+                                  />
+                                </td>
+                              </tr>
 
-                          </tbody>
-                        </table>
-
+                            </tbody>
+                          </table>
+                          <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
                         </>}
                         toggleFunc={setHasMortage}
                         expandedVar={hasMortage}
@@ -830,17 +869,7 @@ function App() {
                       />
                     </td>
                     <td className='benefits-table-cell'>
-                      <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
-                    </td>
-                    <td className='benefits-table-cell'>
-                      <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan={4}>
-                      <div className='pretax-savings'>
-                        {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
-                      </div>
+
                     </td>
                   </tr>
                 </tbody>
@@ -853,43 +882,61 @@ function App() {
             colour='black'
             label={'Benefits'}
             contents={
-              <div className='hive-benefits-div'>
-                <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}>
-                  <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
-                  Hive Benefits
-                </h2>
-                <span className='hive-subheader'>Our accounts team can offer you</span>
-              </div>
+              <table id='benefits-table'>
+                <tbody>
+                  <tr>
+                    <td>
+                    </td>
+                    <td>
+                      <div className='hive-benefits-div'>
+                        <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}>
+                          <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
+                          Hive Benefits
+                        </h2>
+                        <span className='hive-subheader'>Our accounts team can offer you</span>
+                      </div>
+                    </td>
+                    <td id='savings-cell'>
+                      <div className='pretax-savings'>
+                        {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             }
             subContents={<>
-              <table style={{ backgroundColor: 'black' }}>
+              <table style={{ backgroundColor: 'black', width: '100%' }}>
                 <tbody>
                   <tr className='benefits-table-row' style={{ width: '80%' }}>
                     <td className='benefits-table-cell'>
                       <ToggleExpandVerticalTab
                         label='Work Deductables'
                         desc='Subtract your work expenses from your taxable income'
-                        contents={<><table className='dropdown-table'>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <InputField
-                                  label={"Deductable amount"}
-                                  id='work-deductables-amount'
-                                  value={workDeductablesAmount}
-                                  setFunc={(val) => { setWorkDeductablesAmount(val); }}
-                                  styling='medium'
-                                  formatting={'monetary'}
-                                  rounding={2}
-                                  min={0}
-                                  max={null}
-                                />
-                              </td>
-                            </tr>
+                        contents={<>
+                          <table className='dropdown-table'>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <InputField
+                                    textColour='white'
+                                    headerColour='var(--dark-grey)'
+                                    backgroundColour='var(--dark-grey)'
+                                    label={"Deductable amount"}
+                                    id='work-deductables-amount'
+                                    value={workDeductablesAmount}
+                                    setFunc={(val) => { setWorkDeductablesAmount(val); }}
+                                    styling='medium'
+                                    formatting={'monetary'}
+                                    rounding={2}
+                                    min={0}
+                                    max={null}
+                                  />
+                                </td>
+                              </tr>
 
-                          </tbody>
-                        </table>
-
+                            </tbody>
+                          </table>
                         </>
                         }
                         toggleFunc={setHasWorkDeductions}
@@ -897,7 +944,6 @@ function App() {
                         infoTag={null}
                       />
                     </td>
-
                     <td className='benefits-table-cell'>
                       <ToggleExpandVerticalTab
                         label='Novated Lease'
@@ -909,8 +955,11 @@ function App() {
                               <td>
 
                                 <SelectField
+                                  textColour='white'
                                   label="Vehicle to Lease"
                                   id="week-or-fortnight"
+                                  headerColour='var(--dark-grey)'
+                                  backgroundColour='var(--dark-grey)'
                                   value={novatedLeaseExample}
                                   setFunc={setNovatedLeaseExample}
                                   items={{
@@ -937,8 +986,9 @@ function App() {
                         contents={<><table className='dropdown-table'>
                           <tbody>
                             <tr>
-                              <td style={{ background: 'var(--yellow-tone-5' }}>
+                              <td style={{ background: 'var(--dark-grey)' }}>
                                 <SwitchToggle
+                                  dropdown={false}
                                   label="Contribute up to concessional cap"
                                   description={''}
                                   setFunc={setMaximiseSuper}
@@ -949,6 +999,9 @@ function App() {
                             <tr>
                               <td>
                                 <InputField
+                                  textColour='white'
+                                  headerColour='var(--dark-grey)'
+                                  backgroundColour='var(--dark-grey)'
                                   label={"Voluntary Super contribution"}
                                   id='super-sacrifice--amount'
                                   value={voluntarySuperAmmount}
@@ -972,13 +1025,6 @@ function App() {
                       />
                     </td>
 
-                  </tr>
-                  <tr>
-                    <td colSpan={4}>
-                      <div className='pretax-savings'>
-                        {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
-                      </div>
-                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -1020,6 +1066,7 @@ function App() {
                       "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map(displayMoney) : null,
                       "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
                     }} />
+                  <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>Options active: {hasMortage ? 'Mortage, ' : ''}{hasNovatedLease ? 'Novated Lease, ' : ''}{hasSuperSalarySacrifise ? 'Voluntary Super, ' : ''}{hasWorkDeductions ? "Work Deductions, " : ''}</p>
                 </td>
               </tr>
 
@@ -1028,9 +1075,6 @@ function App() {
 
           <div className='chart-block'>
             <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
-
-            {hasMortage ? <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} /> : null}
-
           </div>
         </div>
 

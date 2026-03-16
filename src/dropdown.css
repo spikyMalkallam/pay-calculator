@@ -127,6 +127,7 @@
     transition: max-height 0.3s ease-in-out;
     background-color: #00000000;
     color: white;
+    width: 100%;
 }
 
 .dropdown-subdiv.expanded {
@@ -135,6 +136,7 @@
 
 .expand-subdiv-vertical.expanded {
     max-height: 500px;
+    padding: 10px 5px 5px 5px;
 }
 
 .expand-subdiv-horizontal.expanded {
@@ -148,7 +150,7 @@
 }
 
 .expand.AcceleratedMortage {
-    color: black;
+    color: var(--hive-yellow);
 }
 
 .finance-dropdown-amount {
@@ -170,7 +172,7 @@ select>option {
     /* color: var(--hive-yellow); */
     width: 100%;
     flex-direction: column;
-    max-width: 550px;
+    /* max-width: 550px; */
     margin: 20px 0px 20px 0px;
     /* height: 100px; */
 }
@@ -276,12 +278,15 @@ select>option {
 .expand-subdiv-vertical {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
-    background-color: #00000000;
+    transition: all 0.3s ease-in-out;
+    background-color: #272727;
     color: white;
     /* position: absolute; */
     /* margin: 30px 0px 0px 55px; */
     white-space: nowrap;
+    padding: 00px 5px 0px 5px;
+    align-items: center;
+    display: flex;
 }
 
 .expand-subdiv p {
@@ -644,11 +649,12 @@ select>option {
 .mortage-table {
     border-collapse: collapse;
     color: white;
-    border: 2px solid var(--income-subtable-backing);
+    border: 2px solid var(--hive-yellow);
 }
 
 .mortage-table td {
     padding: 8px;
+    border: 2px solid var(--hive-yellow);
     /* background-color: var(--income-subtable-backing); */
 }
 

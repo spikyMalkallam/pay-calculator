@@ -106,6 +106,7 @@ body {
 #summary-section {
   display: flex;
   width: 100%;
+  align-items: flex-start;
 }
 
 #income-div {
@@ -145,14 +146,14 @@ button:focus {
 } */
 .chart-block {
   flex: 0 1 auto;
-  /* Prevents blocks from stretching awkwardly */
-  display: flex;
-  justify-content: baseline;
+
+  display: block;
+
   align-items: baseline;
   min-width: 300px;
   flex-direction: row;
   margin-right: 20px;
-  /* Ensures they don't get too squashed */
+
 }
 
 .pretax-savings {
@@ -273,11 +274,25 @@ button:focus {
   color: white;
 }
 
+#benefits-table td {
+  width: 33%;
+}
+
+#benefits-table {
+  width: 100%;
+}
+
+#savings-cell {
+  padding-right: 20px;
+  text-align: right;
+}
+
 .hive-benefits-div {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 
 .hive-subheader {
   text-decoration: none;
@@ -316,23 +331,20 @@ button:focus {
 }
 
 .dropdown.row-drop.Payroll {
-  --c: #ff7b00;
-  /* the border color */
+  /* --c: #ff7b00;
   --b: 10px;
-  /* the border thickness*/
   --g: 5px;
-  /* the gap on hover */
-
   padding: calc(var(--g));
   --_g: #0000 25%, var(--c) 0;
   background:
     conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) var(--_i, 200%) 0 /200% var(--_i, var(--b)) no-repeat,
     conic-gradient(at bottom var(--b) left var(--b), var(--_g)) 0 var(--_i, 200%)/var(--_i, var(--b)) 200% no-repeat;
   transition: .3s, background-position .3s;
-  cursor: pointer;
+  cursor: pointer; */
+  /* padding: 0px 5px */
 }
 
-.dropdown.row-drop.Payroll:hover {
+/* .dropdown.row-drop.Payroll:hover {
   --_i: 100%;
   transition: .3s, background-size .3s .3s;
 }
@@ -340,4 +352,4 @@ button:focus {
 .dropdown.row-drop.Payroll.open {
   --_i: 100%;
   transition: .3s, background-size .3s .3s;
-}
+} */

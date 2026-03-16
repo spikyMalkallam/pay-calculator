@@ -52,12 +52,12 @@ export function DropdownTab({ label, contents, subContents, colour }: DropdownPr
         <>
             <div className={'dropdown row-drop ' + label + (expanded ? " open" : '')} style={{ display: 'flex' }} onClick={setExpanded}>
                 <button
-                    className={'dropdown-button ' + colour + (expanded ? " expanded" : '')}
-
+                    className={'dropdown-button ' + (expanded ? " expanded" : '')}
+                    style={{ backgroundColor: colour }}
                 >
                     {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
                 </button>
-                <div className={'dropdown-contents-div ' + colour} style={{ flexGrow: 1 }}>{contents}</div>
+                <div className={'dropdown-contents-div '} style={{ flexGrow: 1, backgroundColor: colour }}>{contents}</div>
             </div>
             <div className={'dropdown-subdiv' + (expanded ? " expanded" : '')}>
                 {subContents}
@@ -132,6 +132,7 @@ export function ToggleExpandVerticalTab({ label, desc, contents, toggleFunc, exp
     return (
         <>
             <div className={'expand' + ' ' + label.replace(' ', '')}> {<SwitchToggle
+                dropdown={true}
                 label={label}
                 description={desc}
                 setFunc={toggleFunc}
@@ -150,6 +151,7 @@ export function ToggleExpandHorizontalTab({ label, desc, contents, toggleFunc, e
     return (
         <>
             <div className={'expand' + ' ' + label.replace(' ', '')}> {<SwitchToggle
+                dropdown={true}
                 label={label}
                 description={desc}
                 setFunc={toggleFunc}
@@ -382,33 +384,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                         Monthly
                     </td>
                     <td className={monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
-                        Weekly <HtmlTooltip
-                            title={
-                                <>
-                                    <b>Repayment brackets</b>
-                                    <ul style={{ 'textAlign': 'left' }}>
-                                        <li><b>$0 - $67,000:</b> Nil</li>
-                                        <li><b>$67,001 - $125,000:</b> 15c for each $1 over $67,000</li>
-                                        <li><b>$125,001 -$179,285:</b> $8,700 plus 17c for each $1 over $125,000</li>
-                                        <li><b>$179,286 and over:</b> 10% of your total repayment income</li>
-                                    </ul>
-                                </>
-                            }
-                            slotProps={{
-                                popper: {
-                                    modifiers: [
-                                        {
-                                            name: 'offset',
-                                            options: {
-                                                offset: [210, -90],
-                                            },
-                                        },
-                                    ],
-                                },
-                            }}
-                        >
-                            <AiFillInfoCircle />
-                        </HtmlTooltip>
+                        Weekly
                     </td>
                 </tr>
             </thead>

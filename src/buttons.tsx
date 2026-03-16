@@ -5,11 +5,12 @@ type SwitchProps = {
     description: string;
     setFunc: () => void;
     infoTag: any;
+    dropdown: boolean
 };
 
-export function SwitchToggle({ label, description, setFunc, infoTag }: SwitchProps) {
+export function SwitchToggle({ label, description, setFunc, infoTag, dropdown }: SwitchProps) {
     return (
-        <table>
+        <table className={(dropdown ? 'toggle-table' : '')}>
             <tbody>
                 <tr>
                     <td rowSpan={2}>

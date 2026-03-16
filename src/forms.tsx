@@ -10,6 +10,9 @@ type InputProps = {
     rounding: number;
     min: number;
     max: number | null;
+    headerColour: string;
+    backgroundColour: string;
+    textColour: string;
 }
 type SelectProps = {
     id: string;
@@ -18,9 +21,12 @@ type SelectProps = {
     setFunc: (val: any) => void;
     items: Record<string, string>;
     styling: string;
+    headerColour: string;
+    backgroundColour: string;
+    textColour: string;
 }
 
-export function InputField({ id, label, value, setFunc, styling, formatting, min, max }: InputProps) {
+export function InputField({ id, label, value, setFunc, styling, formatting, min, max, headerColour, backgroundColour, textColour }: InputProps) {
     const internalLabel = id.toLowerCase().replace(" ", "-");
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target;
@@ -87,11 +93,12 @@ export function InputField({ id, label, value, setFunc, styling, formatting, min
     }
 
     return (
-        <div className={`${styling}-form-box ${internalLabel}`}>
-            <div className={`${styling}-form-box-header ${internalLabel}`}>
-                <p>{label}</p>
+        <div className={`${styling}-form-box ${internalLabel}`} style={{ backgroundColor: backgroundColour }}>
+            <div style={{ backgroundColor: headerColour }} className={`${styling}-form-box-header ${internalLabel}`}>
+                <p style={{ color: textColour }}>{label}</p>
             </div>
             <input
+
                 type="text"
                 id={`${internalLabel}-input`}
                 className={`${styling}-form ${internalLabel}`}
@@ -103,12 +110,12 @@ export function InputField({ id, label, value, setFunc, styling, formatting, min
     )
 }
 
-export function SelectField({ id, label, value, setFunc, items, styling }: SelectProps) {
+export function SelectField({ id, label, value, setFunc, items, styling, headerColour, backgroundColour, textColour }: SelectProps) {
     const internalLabel = id.toLowerCase().replace(" ", "-")
     return (
-        <div className={styling + '-form-box ' + internalLabel}>
-            <div className={styling + '-form-box-header ' + internalLabel}>
-                <p>{label}</p>
+        <div className={styling + '-form-box ' + internalLabel} style={{ backgroundColor: backgroundColour }}>
+            <div style={{ backgroundColor: headerColour }} className={styling + '-form-box-header ' + internalLabel}>
+                <p style={{ color: textColour }}>{label}</p>
             </div>
             <select
                 id={internalLabel + "-input"}

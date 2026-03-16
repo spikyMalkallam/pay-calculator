@@ -21,6 +21,11 @@
     height: 0;
 }
 
+.toggle-table {
+    border-bottom: #fdc333 2px solid;
+
+}
+
 /* The slider */
 .slider {
     position: absolute;

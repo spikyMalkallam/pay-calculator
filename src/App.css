@@ -123,6 +123,15 @@ body {
   .flex-cell {
     margin: 5px 5px;
   }
+
+  .hive-shine {
+    font-size: 22px;
+  }
+
+  #hive_logo {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 @media (width > 1280px) {
@@ -181,7 +190,35 @@ button:focus {
   /* width: 60vw; */
   max-width: 70%;
   margin: 0px 50px 0px 50px;
+}
 
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  /* Enables horizontal scroll */
+  -webkit-overflow-scrolling: touch;
+  /* Smooth scrolling on iOS */
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    width: 90%;
+    margin: 0 auto;
+    /* Centers the container */
+    border: 1px solid #ddd;
+    /* Optional: helps define the scroll area */
+  }
+
+  .payroll-options {
+    font-size: 22px
+  }
+
+  #summary-table {
+    min-width: 600px;
+    /* Forces the table to be wider than the container to trigger the scroll */
+    width: 100%;
+    margin: 0px;
+  }
 }
 
 /* @media (width > 1360px) {
@@ -332,9 +369,7 @@ button:focus {
   color: var(--hive-yellow);
 }
 
-#benefits-table td {
-  width: 33%;
-}
+
 
 #benefits-table {
   width: 100%;
@@ -358,7 +393,7 @@ button:focus {
   color: var(--hive-yellow);
   font-style: italic;
   font-size: 15px;
-  margin: 0px 0px 5px 0px;
+  margin: 0px 0px 0px 0px;
 }
 
 .dropdown.row-drop.Benefits {

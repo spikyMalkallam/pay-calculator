@@ -63,7 +63,7 @@ function App() {
   // const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
   const salaryIncludesSuper = true;
   // const [hasStudentLoan, setHasStudentLoan] = useToggle()
-  const hasStudentLoan = true;
+  const hasStudentLoan = false;
   // const [bonus, setBonus] = useState(0)
   // const [bonusFrequency, setBonusFrequency] = useState('Annual')
   // const [medicareLevy, setMedicareLevy] = useState(0)
@@ -617,118 +617,115 @@ function App() {
     <>
       <div className='global-div'>
         <div id='income-div'>
-          <table style={{ width: "100%" }}>
-            <tbody>
-              <tr className='big-table-row'>
-                <td className='big-table-cell'>
-                  {/* <td className='big-table-cell'> */}
-                  <InputField
-                    textColour='white'
-                    headerColour='var(--hive-yellow)'
-                    backgroundColour='var(--yellow-tone-5)'
-                    id='Salary'
-                    label='Salary'
-                    value={salary}
-                    setFunc={(val) => { setSalary(val); }}
-                    styling='large'
-                    formatting={'monetary'}
-                    rounding={2}
-                    min={0}
-                    max={null}
-                  />
-                </td>
-                <td className='big-table-cell'>
-                  <table className='dropdown-table'>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <SelectField
-                            textColour='white'
-                            headerColour='var(--hive-yellow)'
-                            backgroundColour='var(--yellow-tone-5)'
-                            id="pay-cycle"
-                            label="Pay Cycle"
-                            value={payCycle}
-                            setFunc={setPayCycle}
-                            items={{
-                              "Annually": "Annual",
-                              "Monthly": "Monthly",
-                              "Fortnightly": "Fortnightly",
-                              "Weekly": "Weekly",
-                              "Daily": "Daily",
-                              "Hourly": "Hourly"
-                            }}
-                            styling='large'
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-
-                {payCycle == 'Hourly' ?
-                  <td className='big-table-cell'>
-                    <table className='dropdown-table'>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <InputField
-                              textColour='white'
-                              headerColour='var(--hive-yellow)'
-                              backgroundColour='var(--yellow-tone-5)'
-                              label='Hours'
-                              id='work-hours'
-                              value={dailyHours}
-                              setFunc={setDailyHours}
-                              styling='large'
-                              formatting={'number'}
-                              rounding={2}
-                              min={0}
-                              max={24}
-                            />
-                          </td>
-                          <td>
-                            <InputField
-                              textColour='white'
-                              headerColour='var(--hive-yellow)'
-                              backgroundColour='var(--yellow-tone-5)'
-                              label='Days'
-                              id='days-per-period'
-                              value={daysPerPeriod}
-                              setFunc={setDaysPerPeriod}
-                              styling='large'
-                              formatting={'number'}
-                              rounding={1}
-                              min={0}
-                              // max={null}
-                              max={hoursPeriod == 'Week' ? 5 : (hoursPeriod == 'Fortnight' ? 10 : (hoursPeriod == 'Month' ? 23 : 276))}
-                            />
-                          </td>
-                          <td>
-                            <SelectField
-                              textColour='white'
-                              headerColour='var(--hive-yellow)'
-                              backgroundColour='var(--yellow-tone-5)'
-                              label="each"
-                              id="week-or-fortnight"
-                              value={hoursPeriod}
-                              setFunc={setHoursPeriod}
-                              items={{
-                                "Week": "Week",
-                                "Fortnight": "Fortnight",
-                                "Month": "Month",
-                                "Year": "Year",
-                              }}
-                              styling='large'
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+          <div className='flex-cell'>
+            {/* <td className='big-table-cell'> */}
+            <InputField
+              textColour='white'
+              headerColour='var(--hive-yellow)'
+              backgroundColour='var(--yellow-tone-5)'
+              id='Salary'
+              label='Salary'
+              value={salary}
+              setFunc={(val) => { setSalary(val); }}
+              styling='large'
+              formatting={'monetary'}
+              rounding={2}
+              min={0}
+              max={null}
+            />
+          </div>
+          <div className='flex-cell'>
+            <table className='dropdown-table'>
+              <tbody>
+                <tr>
+                  <td>
+                    <SelectField
+                      textColour='white'
+                      headerColour='var(--hive-yellow)'
+                      backgroundColour='var(--yellow-tone-5)'
+                      id="pay-cycle"
+                      label="Pay Cycle"
+                      value={payCycle}
+                      setFunc={setPayCycle}
+                      items={{
+                        "Annually": "Annual",
+                        "Monthly": "Monthly",
+                        "Fortnightly": "Fortnightly",
+                        "Weekly": "Weekly",
+                        "Daily": "Daily",
+                        "Hourly": "Hourly"
+                      }}
+                      styling='large'
+                    />
                   </td>
-                  : <td style={{ width: '0px' }}></td>}
-              </tr>
-              {/* <tr className='big-table-row'>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {payCycle == 'Hourly' ?
+            <div className='flex-cell'>
+              <table className='dropdown-table'>
+                <tbody>
+                  <tr>
+                    <td>
+                      <InputField
+                        textColour='white'
+                        headerColour='var(--hive-yellow)'
+                        backgroundColour='var(--yellow-tone-5)'
+                        label='Hours'
+                        id='work-hours'
+                        value={dailyHours}
+                        setFunc={setDailyHours}
+                        styling='large'
+                        formatting={'number'}
+                        rounding={2}
+                        min={0}
+                        max={24}
+                      />
+                    </td>
+                    <td>
+                      <InputField
+                        textColour='white'
+                        headerColour='var(--hive-yellow)'
+                        backgroundColour='var(--yellow-tone-5)'
+                        label='Days'
+                        id='days-per-period'
+                        value={daysPerPeriod}
+                        setFunc={setDaysPerPeriod}
+                        styling='large'
+                        formatting={'number'}
+                        rounding={1}
+                        min={0}
+                        // max={null}
+                        max={hoursPeriod == 'Week' ? 5 : (hoursPeriod == 'Fortnight' ? 10 : (hoursPeriod == 'Month' ? 23 : 276))}
+                      />
+                    </td>
+                    <td>
+                      <SelectField
+                        textColour='white'
+                        headerColour='var(--hive-yellow)'
+                        backgroundColour='var(--yellow-tone-5)'
+                        label="each"
+                        id="week-or-fortnight"
+                        value={hoursPeriod}
+                        setFunc={setHoursPeriod}
+                        items={{
+                          "Week": "Week",
+                          "Fortnight": "Fortnight",
+                          "Month": "Month",
+                          "Year": "Year",
+                        }}
+                        styling='large'
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            : <div className='flex-cell'></div>}
+
+          {/* <tr className='big-table-row'>
                 <td className='big-table-cell'>
                   <SwitchToggle
                     label="Student loan"
@@ -773,8 +770,7 @@ function App() {
                 </td>
                 <td colSpan={1} className='big-table-cell'></td>
               </tr> */}
-            </tbody>
-          </table>
+
         </div >
         <div id='payroll-options'>
           <DropdownTab
@@ -814,7 +810,7 @@ function App() {
                       <ToggleExpandVerticalTab
                         label='Mortage Repayments'
                         desc='See the difference between weekly and monthly mortage repayments'
-                        contents={<>
+                        contents={<div id='mortage-dropdown'>
                           <table className='dropdown-table'>
                             <tbody>
                               <tr>
@@ -885,7 +881,7 @@ function App() {
                             </tbody>
                           </table>
                           <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
-                        </>}
+                        </div>}
                         toggleFunc={setHasMortage}
                         expandedVar={hasMortage}
                         infoTag={null}
@@ -929,183 +925,192 @@ function App() {
               </table>
             }
             subContents={<>
-              <table style={{ backgroundColor: 'black', width: '100%' }}>
+              <div id='hive-benefits-cell'>
+                {/* <table style={{ backgroundColor: 'black', width: '100%' }}>
                 <tbody>
                   <tr className='benefits-table-row' style={{ width: '80%' }}>
+                    <td className='benefits-table-cell'> */}
+                <div className='flex-cell'>
+                  <ToggleExpandVerticalTab
+                    label='Novated Lease'
+                    desc='Lease a car and pay it off partially before tax'
+                    contents={<><table className='dropdown-table'>
+                      <tbody>
+                        <tr></tr>
+                        <tr>
+                          <td>
 
-                    <td className='benefits-table-cell'>
-                      <ToggleExpandVerticalTab
-                        label='Novated Lease'
-                        desc='Lease a car and pay it off partially before tax'
-                        contents={<><table className='dropdown-table'>
-                          <tbody>
-                            <tr></tr>
-                            <tr>
-                              <td>
+                            <SelectField
+                              textColour='white'
+                              label="Vehicle to Lease"
+                              id="week-or-fortnight"
+                              headerColour='var(--dark-grey)'
+                              backgroundColour='var(--dark-grey)'
+                              value={novatedLeaseExample}
+                              setFunc={setNovatedLeaseExample}
+                              items={{
+                                "Toyota Rav 4": "Toyota Rav 4",
+                                "Tesla Model Y": "Tesla Model Y",
+                              }}
+                              styling='medium'
+                            />
+                            <p style={{ margin: '0px' }}><i>These estimates are from our partner <a href='https://www.allianceleasing.com.au/' target='_blank' style={{ color: 'rgb(0, 184, 0)' }}>Alliance Leasing</a>.</i></p>
+                            <a href='https://www.recruitmenthive.com.au/novated-lease-form/' target='_blank' style={{ color: 'var(--hive-yellow)' }}>Learn more here</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                                <SelectField
-                                  textColour='white'
-                                  label="Vehicle to Lease"
-                                  id="week-or-fortnight"
-                                  headerColour='var(--dark-grey)'
-                                  backgroundColour='var(--dark-grey)'
-                                  value={novatedLeaseExample}
-                                  setFunc={setNovatedLeaseExample}
-                                  items={{
-                                    "Toyota Rav 4": "Toyota Rav 4",
-                                    "Tesla Model Y": "Tesla Model Y",
-                                  }}
-                                  styling='medium'
-                                />
-                                <p style={{ margin: '0px' }}><i>These estimates are from our partner <a href='https://www.allianceleasing.com.au/' target='_blank' style={{ color: 'rgb(0, 184, 0)' }}>Alliance Leasing</a>.</i></p>
-                                <a href='https://www.recruitmenthive.com.au/novated-lease-form/' target='_blank' style={{ color: 'var(--hive-yellow)' }}>Learn more here</a>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-
-                        </>}
-                        toggleFunc={setHasNovatedLease}
-                        expandedVar={hasNovatedLease}
-                        infoTag={<HtmlTooltip
-                          title={
-                            <>
-                              <b>Novated Leasing</b> is salary packaging benefit through your employer. We highly recommend our leasing partners <a href="https://www.allianceleasing.com.au/" target="_blank">Alliance Leasing</a> and <a href="https://www.easifleet.com.au/" target='_blank'> Easi</a>. The below examples are estimates from Alliance.
-                            </>
-                          }
-                          slotProps={{
-                            popper: {
-                              modifiers: [
-                                {
-                                  name: 'offset',
-                                  options: {
-                                    offset: [160, -60],
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                        >
-                          <AiFillInfoCircle />
-                        </HtmlTooltip>}
-                      />
-                    </td>
-                    <td className='benefits-table-cell'>
-                      <ToggleExpandVerticalTab
-                        label='Super Salary Sacrifice'
-                        desc='Lower your income tax with voluntary super contributions'
-                        contents={<><table className='dropdown-table'>
-                          <tbody>
-                            <tr>
-                              <td style={{ background: 'var(--dark-grey)' }}>
-                                <SwitchToggle
-                                  dropdown={false}
-                                  label="Contribute up to concessional cap"
-                                  description={''}
-                                  setFunc={setMaximiseSuper}
-                                  infoTag={null}
-                                />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <InputField
-                                  textColour='white'
-                                  headerColour='var(--dark-grey)'
-                                  backgroundColour='var(--dark-grey)'
-                                  label={"Voluntary Super contribution"}
-                                  id='super-sacrifice--amount'
-                                  value={voluntarySuperAmmount}
-                                  setFunc={(val) => { setVoluntarySuperAmmount(val); }}
-                                  styling='medium'
-                                  formatting={'monetary'}
-                                  rounding={2}
-                                  min={0}
-                                  max={null}
-                                />
-                              </td>
-                            </tr>
-
-                          </tbody>
-                        </table>
-
-                        </>}
-                        toggleFunc={setHasSuperSalarySacrifise}
-                        expandedVar={hasSuperSalarySacrifise}
-                        infoTag={null}
-                      />
-                    </td>
-                    <td className='benefits-table-cell'>
-                      <ToggleExpandVerticalTab
-                        label='Work Deductables'
-                        desc='Subtract your work expenses from your taxable income'
-                        contents={<>
-                          <table className='dropdown-table'>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <InputField
-                                    textColour='white'
-                                    headerColour='var(--dark-grey)'
-                                    backgroundColour='var(--dark-grey)'
-                                    label={"Deductable amount"}
-                                    id='work-deductables-amount'
-                                    value={workDeductablesAmount}
-                                    setFunc={(val) => { setWorkDeductablesAmount(val); }}
-                                    styling='medium'
-                                    formatting={'monetary'}
-                                    rounding={2}
-                                    min={0}
-                                    max={null}
-                                  />
-                                </td>
-                              </tr>
-
-                            </tbody>
-                          </table>
+                    </>}
+                    toggleFunc={setHasNovatedLease}
+                    expandedVar={hasNovatedLease}
+                    infoTag={<HtmlTooltip
+                      title={
+                        <>
+                          <b>Novated Leasing</b> is salary packaging benefit through your employer. We highly recommend our leasing partners <a href="https://www.allianceleasing.com.au/" target="_blank">Alliance Leasing</a> and <a href="https://www.easifleet.com.au/" target='_blank'> Easi</a>. The below examples are estimates from Alliance.
                         </>
-                        }
-                        toggleFunc={setHasWorkDeductions}
-                        expandedVar={hasWorkDeductions}
-                        infoTag={<HtmlTooltip
-                          title={
-                            <>
-                              <b>Work Deductables</b> include:
-                              <ul>
-                                <li>Tools for work (computers, stationery)</li>
-                                <li>Travel expenses for work</li>
-                                <li>Education and training for work</li>
-                              </ul>
-                              A comprehensive list can be found
-                              <a href="https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/work-related-deductions" target="_blank"> here</a>
-                            </>
-                          }
-                          slotProps={{
-                            popper: {
-                              modifiers: [
-                                {
-                                  name: 'offset',
-                                  options: {
-                                    offset: [160, -60],
-                                  },
-                                },
-                              ],
+                      }
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: 'offset',
+                              options: {
+                                offset: [160, -60],
+                              },
                             },
-                          }}
-                        >
-                          <AiFillInfoCircle />
-                        </HtmlTooltip>}
-                      />
-                    </td>
+                          ],
+                        },
+                      }}
+                    >
+                      <AiFillInfoCircle />
+                    </HtmlTooltip>}
+                  />
+                </div>
+                {/* </td>
+                    <td className='benefits-table-cell'> */}
+                <div className='flex-cell'>
+                  <ToggleExpandVerticalTab
+                    label='Super Salary Sacrifice'
+                    desc='Lower your income tax with voluntary super contributions'
+                    contents={<><table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td style={{ background: 'var(--dark-grey)' }}>
+                            <SwitchToggle
+                              dropdown={false}
+                              label="Contribute up to concessional cap"
+                              description={''}
+                              setFunc={setMaximiseSuper}
+                              infoTag={null}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <InputField
+                              textColour='white'
+                              headerColour='var(--dark-grey)'
+                              backgroundColour='var(--dark-grey)'
+                              label={"Voluntary Super contribution"}
+                              id='super-sacrifice--amount'
+                              value={voluntarySuperAmmount}
+                              setFunc={(val) => { setVoluntarySuperAmmount(val); }}
+                              styling='medium'
+                              formatting={'monetary'}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+
+                    </>}
+                    toggleFunc={setHasSuperSalarySacrifise}
+                    expandedVar={hasSuperSalarySacrifise}
+                    infoTag={null}
+                  />
+                </div >
+                {/* </td>
+                    <td className='benefits-table-cell'> */}
+                <div className='flex-cell'>
+                  <ToggleExpandVerticalTab
+                    label='Work Deductables'
+                    desc='Subtract your work expenses from your taxable income'
+                    contents={<>
+                      <table className='dropdown-table'>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <InputField
+                                textColour='white'
+                                headerColour='var(--dark-grey)'
+                                backgroundColour='var(--dark-grey)'
+                                label={"Deductable amount"}
+                                id='work-deductables-amount'
+                                value={workDeductablesAmount}
+                                setFunc={(val) => { setWorkDeductablesAmount(val); }}
+                                styling='medium'
+                                formatting={'monetary'}
+                                rounding={2}
+                                min={0}
+                                max={null}
+                              />
+                            </td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </>
+                    }
+                    toggleFunc={setHasWorkDeductions}
+                    expandedVar={hasWorkDeductions}
+                    infoTag={<HtmlTooltip
+                      title={
+                        <>
+                          <b>Work Deductables</b> include:
+                          <ul>
+                            <li>Tools for work (computers, stationery)</li>
+                            <li>Travel expenses for work</li>
+                            <li>Education and training for work</li>
+                          </ul>
+                          A comprehensive list can be found
+                          <a href="https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/work-related-deductions" target="_blank"> here</a>
+                        </>
+                      }
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: 'offset',
+                              options: {
+                                offset: [160, -60],
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    >
+                      <AiFillInfoCircle />
+                    </HtmlTooltip>}
+                  />
+                </div>
+                {/* </td>
                   </tr>
-                  <tr>
-                    <td colSpan={3}>
-                      <p style={{ color: 'var(--hive-yellow)' }}><i>We also offer Living Away From Home Allowance (LAFHA), Banked Pay, and Banking Benefits. Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
-                    </td>
-                  </tr>
+                  <tr> */}
+
+                {/* </tr>
                 </tbody>
-              </table>
+              </table> */}
+              </div>
+              <div>
+                <p style={{ color: 'var(--hive-yellow)' }}><i>We also offer Living Away From Home Allowance (LAFHA), Banked Pay, and Banking Benefits. Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
+              </div>
             </>}
+
           />
         </div>
         <div id='summary-section'>

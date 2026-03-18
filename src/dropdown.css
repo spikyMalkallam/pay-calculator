@@ -44,14 +44,13 @@
 }
 
 #summary-table {
-    table-layout: fixed;
+    /* table-layout: fixed; */
     width: 100%;
     /* Forces the table to match the parent's width */
     border-collapse: collapse;
     /* Prevents double borders from adding extra width */
     word-wrap: break-word;
     /* Ensures long text doesn't push the table wider */
-
 }
 
 #summary-table td {
@@ -84,9 +83,7 @@
 }
 
 /* Styles to apply when the container is expanded */
-.dropdown-details.expanded {
-    max-height: 500px;
-}
+
 
 /* Styling for the inner content (paragraph) */
 .dropdown-container .dropdown-details p {
@@ -116,9 +113,10 @@
 }
 
 @media (max-width: 1280px) {
-    .dropdown {
+    /* .dropdown {
         max-width: 600px;
     }
+     */
 }
 
 .dropdown-subdiv {
@@ -131,7 +129,7 @@
 }
 
 .dropdown-subdiv.expanded {
-    max-height: 500px;
+    max-height: 680px;
 }
 
 .expand-subdiv-vertical.expanded {
@@ -182,6 +180,11 @@ select>option {
     .expand {
         max-width: 600px;
     }
+}
+
+#mortage-dropdown {
+    display: flex;
+    flex-direction: column;
 }
 
 .dropdown-button {
@@ -566,11 +569,6 @@ select>option {
     /* min-width: 1000px; */
 }
 
-.sub-table-header td {
-    width: 200px;
-    /* justify-content: center; */
-    /* align-items: center; */
-}
 
 .income-table-header {
     font-weight: bold;

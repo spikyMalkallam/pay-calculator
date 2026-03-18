@@ -101,21 +101,66 @@ body {
     flex-direction: column;
     align-items: center;
   }
+
+  #income-div {
+    flex-direction: column;
+    margin: 10px 5px;
+  }
+
+  #summary-section {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #hive-benefits-cell {
+    flex-direction: column;
+  }
+
+  .flex-cell {
+    margin: 5px 5px;
+  }
+}
+
+@media (width > 1280px) {
+  .flex-cell {
+    margin: 10px 5px;
+  }
+
+  #summary-section {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  #hive-benefits-cell {
+    flex-direction: row;
+  }
+
 }
 
 #summary-section {
   display: flex;
   width: 100%;
-  align-items: flex-start;
 }
 
 #income-div {
   flex: 1 1 auto;
   min-width: 90%;
   box-sizing: border-box;
-  /* display: flex;
-  flex-direction: row; */
+  display: flex;
+  /* flex-direction: row; */
   margin: 0px 50px;
+}
+
+.flex-cell {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  /* justify-content: baseline; */
 }
 
 #summary-div {
@@ -202,6 +247,19 @@ button:focus {
   margin-right: auto;
   width: 90%;
   /* Ensures it doesn't stretch to 100% width */
+}
+
+#hive-benefits-cell {
+  display: flex;
+  /* flex-direction: column; */
+  /* align-items: center; */
+  justify-content: center;
+  /* Add these */
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  background-color: black;
+  /* flex-direction: row; */
 }
 
 .benefits-table-cell {

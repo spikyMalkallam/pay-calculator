@@ -71,7 +71,7 @@ function App() {
   // const [hasBonus, setHasBonus] = useToggle()
   const [pretaxSavings, setPretaxSavings] = useState<string[]>([])
   const [hasNovatedLease, setHasNovatedLease] = useToggle()
-  const [novatedLeaseExample, setNovatedLeaseExample] = useState('Toyota Corolla')
+  const [novatedLeaseExample, setNovatedLeaseExample] = useState('Toyota Rav 4')
   const [hasSuperSalarySacrifise, setHasSuperSalarySacrifise] = useToggle()
   const [voluntarySuperAmmount, setVoluntarySuperAmmount] = useState(0)
   const [hasWorkDeductions, setHasWorkDeductions] = useToggle()
@@ -362,7 +362,14 @@ function App() {
     }
     return repaymentAmount;
   }
-
+  let optionsActive: string[] = [];
+  if (hasMortage) { optionsActive.push('Mortage, '); }
+  if (hasNovatedLease) { optionsActive.push('Novated Lease, '); }
+  if (hasWorkDeductions) { optionsActive.push('Work Deductables, '); }
+  if (hasSuperSalarySacrifise) { optionsActive.push('Super Salary Sacrifice, '); }
+  if (optionsActive.length > 0) {
+    optionsActive[optionsActive.length - 1] = optionsActive[optionsActive.length - 1].substring(0, optionsActive[optionsActive.length - 1].length - 2);
+  }
   // const mortageData = useMemo(() => {
   //   return calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
   // }, [mortageLoanAmmount, mortageInterestRate, mortageTerm])
@@ -373,6 +380,7 @@ function App() {
     let salarySum = salaryPeriods[4];
     let superSum = 0;
     let superSalary = salaryPeriods[4];
+    // let payrollFeeSum = salarySum * payrollFee
     // Calculate super ammount
     if (salaryIncludesSuper) {
       superSalary = round(superSalary / (1 + (superPercentage / 100)), 2);
@@ -396,6 +404,7 @@ function App() {
     // Voluntary Super
     let superContribution = 0;
     let concessional = 0;
+    let nonConcessional = 0;
     if (hasSuperSalarySacrifise) {
       if (maximiseSuper) {
         superContribution = 30000 - superSum;
@@ -407,6 +416,10 @@ function App() {
       superSum += superContribution;
       if (superSum - 30000 >= 0) {
         concessional = round(-((superSum - 30000) - superContribution), 2)
+        nonConcessional = round(-((superSum - concessional) - superContribution), 2)
+        // console.log(nonConcessional);
+        // console.log(concessional);
+        // console.log(superContribution);
       }
       else {
         concessional = superContribution;
@@ -493,6 +506,7 @@ function App() {
     for (let i = 0; i < 5; i++) {
       grossSalary.push((round(salaryPeriods[i] - taxSplit["totalTax"][i] - pretaxDeductionSplit[i], 2)));
     }
+    grossSalary[4] -= (hasSuperSalarySacrifise ? nonConcessional : 0)
 
     // Gross Pay
     let grossPay: any[] = []
@@ -564,11 +578,12 @@ function App() {
       payrollData[0].subCategories.push({ id: 'mortage', label: 'Mortage Repayments', value: Number(mortageAnnualPayments), color: '#a30101' });
     }
     if (hasNovatedLease) {
-      if (novatedLeasePostTax[4] > 0) {
-        payrollData[0].subCategories.push({ id: 'novatedLease', label: 'Novated Lease', value: Number(-novatedLeasePostTax[4]), color: '#ff7300' });
+      if (-novatedLeasePostTax[4] > 0) {
+        payrollData[0].subCategories.push({ id: 'novatedLease', label: 'Novated Lease Post-Tax', value: Number(-novatedLeasePostTax[4]), color: '#ff7300' });
       }
     }
-
+    let concessionalSplit = [0, 0, 0, 0, concessional];
+    let nonConcessionalSplit = [0, 0, 0, 0, nonConcessional];
     return {
       totalSalary: salaryPeriods[4],
       superAmount: superSum,
@@ -591,7 +606,8 @@ function App() {
       mortageData: mortageData,
       grossSalary: grossPay,
       annualMortageSplit: annualMortageSplit,
-      workDeductablesAmount: [0, 0, 0, 0, -workDeductablesAmount]
+      workDeductablesAmount: [0, 0, 0, 0, -workDeductablesAmount],
+      voluntarySuperCon: [concessionalSplit, nonConcessionalSplit]
       // bonusSplit: bonusPeriods
     };
   }, [salary, payCycle, superPercentage, salaryIncludesSuper, , hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
@@ -761,7 +777,7 @@ function App() {
         </div >
         <div id='payroll-options'>
           <DropdownTab
-            colour='var(--hive-yellow)'
+            colour='black'
             label={'Payroll'}
             contents={
               <div className='hive-benefits-div'>
@@ -775,21 +791,27 @@ function App() {
               <table style={{ backgroundColor: 'black' }}>
                 <tbody>
                   <tr className='benefits-table-row' style={{ width: '80%' }}>
-                    <td className='benefits-table-cell'>
+                    {/* <td className='benefits-table-cell'>
                       <table className='dropdown-table'>
                         <tbody>
                           <tr>
                             <td style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
-                              <p>Hive offers Weekly & Monthly payroll options</p>
-                              <a href='https://www.recruitmenthive.com.au/wp-content/uploads/2026/03/HIVE_DOC_076-Salary-Packaging-Services.pdf' target='_blank'>View our Salary Packaging Services here</a>
+                              <p>Recruitment Hive offers Monthly & Weekly payroll options.</p>
+
+                              <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>View our Payroll Options here</a><br></br>
+
                             </td>
                           </tr>
                         </tbody>
                       </table>
-                    </td>
-                    <td className='benefits-table-cell'>
+                    </td> */}
+                    <td className='benefits-table-cell' style={{ padding: '20px' }}>
+                      <p style={{ color: 'var(--hive-yellow)', margin: '0px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
+
+                      <p style={{ color: 'var(--hive-yellow)' }}>View our Payroll Options <a style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>here</a></p>
+                      <p style={{ color: 'var(--hive-yellow)', textAlign: 'left' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
                       <ToggleExpandVerticalTab
-                        label='Accelerated Mortage Repayments'
+                        label='Mortage Repayments'
                         desc='See the difference between weekly and monthly mortage repayments'
                         contents={<>
                           <table className='dropdown-table'>
@@ -798,7 +820,7 @@ function App() {
                                 <td style={{ backgroundColor: 'var(--dark-grey)' }} colSpan={2}>
                                   <SwitchToggle
                                     dropdown={false}
-                                    label="Weekly payments"
+                                    label="Accelerated repayments"
                                     description={''}
                                     setFunc={setMortagePayFreq}
                                     infoTag={null}
@@ -909,45 +931,11 @@ function App() {
               <table style={{ backgroundColor: 'black', width: '100%' }}>
                 <tbody>
                   <tr className='benefits-table-row' style={{ width: '80%' }}>
-                    <td className='benefits-table-cell'>
-                      <ToggleExpandVerticalTab
-                        label='Work Deductables'
-                        desc='Subtract your work expenses from your taxable income'
-                        contents={<>
-                          <table className='dropdown-table'>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <InputField
-                                    textColour='white'
-                                    headerColour='var(--dark-grey)'
-                                    backgroundColour='var(--dark-grey)'
-                                    label={"Deductable amount"}
-                                    id='work-deductables-amount'
-                                    value={workDeductablesAmount}
-                                    setFunc={(val) => { setWorkDeductablesAmount(val); }}
-                                    styling='medium'
-                                    formatting={'monetary'}
-                                    rounding={2}
-                                    min={0}
-                                    max={null}
-                                  />
-                                </td>
-                              </tr>
 
-                            </tbody>
-                          </table>
-                        </>
-                        }
-                        toggleFunc={setHasWorkDeductions}
-                        expandedVar={hasWorkDeductions}
-                        infoTag={null}
-                      />
-                    </td>
                     <td className='benefits-table-cell'>
                       <ToggleExpandVerticalTab
                         label='Novated Lease'
-                        desc='Lease a car and pay it off before tax'
+                        desc='Lease a car and pay it off partially before tax'
                         contents={<><table className='dropdown-table'>
                           <tbody>
                             <tr></tr>
@@ -968,6 +956,8 @@ function App() {
                                   }}
                                   styling='medium'
                                 />
+                                <p style={{ margin: '0px' }}><i>These estimates are from our partner <a href='https://www.allianceleasing.com.au/' target='_blank' style={{ color: 'rgb(0, 184, 0)' }}>Alliance Leasing</a>.</i></p>
+                                <a href='https://www.recruitmenthive.com.au/novated-lease-form/' target='_blank' style={{ color: 'var(--hive-yellow)' }}>Learn more here</a>
                               </td>
                             </tr>
                           </tbody>
@@ -976,13 +966,33 @@ function App() {
                         </>}
                         toggleFunc={setHasNovatedLease}
                         expandedVar={hasNovatedLease}
-                        infoTag={null}
+                        infoTag={<HtmlTooltip
+                          title={
+                            <>
+                              <b>Novated Leasing</b> is salary packaging benefit through your employer. We highly recommend our leasing partners <a href="https://www.allianceleasing.com.au/" target="_blank">Alliance Leasing</a> and <a href="https://www.easifleet.com.au/" target='_blank'> Easi</a>. The below examples are estimates from Alliance.
+                            </>
+                          }
+                          slotProps={{
+                            popper: {
+                              modifiers: [
+                                {
+                                  name: 'offset',
+                                  options: {
+                                    offset: [160, -60],
+                                  },
+                                },
+                              ],
+                            },
+                          }}
+                        >
+                          <AiFillInfoCircle />
+                        </HtmlTooltip>}
                       />
                     </td>
                     <td className='benefits-table-cell'>
                       <ToggleExpandVerticalTab
                         label='Super Salary Sacrifice'
-                        desc='Lower your income tax by making voluntary super contributions'
+                        desc='Lower your income tax with voluntary super contributions'
                         contents={<><table className='dropdown-table'>
                           <tbody>
                             <tr>
@@ -1024,7 +1034,73 @@ function App() {
                         infoTag={null}
                       />
                     </td>
+                    <td className='benefits-table-cell'>
+                      <ToggleExpandVerticalTab
+                        label='Work Deductables'
+                        desc='Subtract your work expenses from your taxable income'
+                        contents={<>
+                          <table className='dropdown-table'>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <InputField
+                                    textColour='white'
+                                    headerColour='var(--dark-grey)'
+                                    backgroundColour='var(--dark-grey)'
+                                    label={"Deductable amount"}
+                                    id='work-deductables-amount'
+                                    value={workDeductablesAmount}
+                                    setFunc={(val) => { setWorkDeductablesAmount(val); }}
+                                    styling='medium'
+                                    formatting={'monetary'}
+                                    rounding={2}
+                                    min={0}
+                                    max={null}
+                                  />
+                                </td>
+                              </tr>
 
+                            </tbody>
+                          </table>
+                        </>
+                        }
+                        toggleFunc={setHasWorkDeductions}
+                        expandedVar={hasWorkDeductions}
+                        infoTag={<HtmlTooltip
+                          title={
+                            <>
+                              <b>Work Deductables</b> include:
+                              <ul>
+                                <li>Tools for work (computers, stationery)</li>
+                                <li>Travel expenses for work</li>
+                                <li>Education and training for work</li>
+                              </ul>
+                              A comprehensive list can be found
+                              <a href="https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/work-related-deductions" target="_blank"> here</a>
+                            </>
+                          }
+                          slotProps={{
+                            popper: {
+                              modifiers: [
+                                {
+                                  name: 'offset',
+                                  options: {
+                                    offset: [160, -60],
+                                  },
+                                },
+                              ],
+                            },
+                          }}
+                        >
+                          <AiFillInfoCircle />
+                        </HtmlTooltip>}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={3}>
+                      <p style={{ color: 'var(--hive-yellow)' }}><i>We also offer Living Away From Home Allowance (LAFHA), Banked Pay, and Banking Benefits. Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -1043,6 +1119,7 @@ function App() {
                     items={{
                       "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
                         "Base salary": financialData['baseSalarySplit'].map(displayMoney),
+                        "Concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][0].map((x) => displayMoney(-x)) : null,
                         "Work Deductables": hasWorkDeductions ? financialData['workDeductablesAmount'].map(displayMoney) : null,
                         "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
                       }],
@@ -1063,13 +1140,25 @@ function App() {
                     totals={financialData['postTax'].map(displayMoney)}
                     totalItems={{
                       "Net Salary": financialData['grossSalary'].map(displayMoney),
-                      "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map(displayMoney) : null,
+                      "Non-concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
+                      "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map((x) => displayMoney(-x)) : null,
                       "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
                     }} />
-                  <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>Options active: {hasMortage ? 'Mortage, ' : ''}{hasNovatedLease ? 'Novated Lease, ' : ''}{hasSuperSalarySacrifise ? 'Voluntary Super, ' : ''}{hasWorkDeductions ? "Work Deductions, " : ''}</p>
+                  {optionsActive.length > 0 ?
+                    <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
+                      Options Active: {optionsActive.map((option) => {
+                        return (
+                          <span style={{ color: 'black', fontWeight: 'bold' }}>
+                            {option}
+                          </span>
+                        )
+
+                      })}
+                    </p>
+                    :
+                    null}
                 </td>
               </tr>
-
             </tbody>
           </table>
 

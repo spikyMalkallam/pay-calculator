@@ -136,8 +136,8 @@ export function ToggleExpandVerticalTab({ label, desc, contents, toggleFunc, exp
                 label={label}
                 description={desc}
                 setFunc={toggleFunc}
-                infoTag={null}
-            />}  {infoTag}
+                infoTag={infoTag}
+            />}
 
                 <div className={'expand-subdiv-vertical' + (expandedVar ? " expanded" : '') + ' ' + label}>
                     {contents}
@@ -285,7 +285,27 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
                                                     <tbody>
                                                         <tr key={key} className={"income-table-category"}>
                                                             <td>
-                                                                <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div><span className="income-table-text">{(key[0] == '#' ? key.split('#')[1] : key)}</span></div>
+                                                                <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div><span className="income-table-text">{(key[0] == '#' ? key.split('#')[1] : key)}{key == 'Division 293' ? <HtmlTooltip
+                                                                    title={
+                                                                        <>
+                                                                            <a href="https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/division-293-tax-on-concessional-contributions-by-high-income-earners" target="_blank">Division 293</a> tax is an additional tax on super contributions, reducing the tax concession for individuals whose combined income and concessional contributions for Division 293 purposes is more than $250,000.
+                                                                        </>
+                                                                    }
+                                                                    slotProps={{
+                                                                        popper: {
+                                                                            modifiers: [
+                                                                                {
+                                                                                    name: 'offset',
+                                                                                    options: {
+                                                                                        offset: [160, -60],
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    }}
+                                                                >
+                                                                    <AiFillInfoCircle />
+                                                                </HtmlTooltip> : ''}</span></div>
                                                             </td>
                                                             <td>
                                                                 <div className={"income-table-category"}>{subValue[1]}</div>
@@ -413,13 +433,13 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                 </tr> */}
                 <tr>
                     <td>
-                        Time Saved (years)
+                        Time Saved
                     </td>
                     <td>
                         {'-'}
                     </td>
                     <td className={monthlyPayment ? 'selected-val' : ''}>
-                        {mortageData['weeklyTimeSaved']}
+                        {mortageData['weeklyTimeSaved']} years
                     </td>
                 </tr>
 

@@ -104,7 +104,7 @@ body {
 
   #income-div {
     flex-direction: column;
-    margin: 10px 5px;
+    /* margin: 10px 5px; */
   }
 
   #summary-section {
@@ -161,11 +161,11 @@ body {
 
 #income-div {
   flex: 1 1 auto;
-  min-width: 90%;
+  /* min-width: 100%; */
   box-sizing: border-box;
   display: flex;
   /* flex-direction: row; */
-  margin: 0px 50px;
+  /* margin: 0px 50px; */
 }
 
 .flex-cell {
@@ -189,39 +189,44 @@ button:focus {
   outline: none;
 }
 
-#summary-table {
-  /* width: 60vw; */
-  max-width: 70%;
-  margin: 0px 50px 0px 50px;
-}
-
 .table-container {
   width: 100%;
+  /* Ensure it takes the full width available */
   overflow-x: auto;
-  /* Enables horizontal scroll */
+  /* Enable horizontal scroll when content overflows */
   -webkit-overflow-scrolling: touch;
-  /* Smooth scrolling on iOS */
+  /* Smooth scrolling for iOS devices */
+  display: block;
+  /* Ensures the container behaves as a block for overflow */
+}
+
+#summary-table {
+  width: 100%;
+  /* Try to fit the width first */
+  min-width: 600px;
+  /* Optional: Force a minimum width to trigger scroll earlier */
+  border-collapse: collapse;
 }
 
 @media (max-width: 768px) {
-  .table-container {
-    width: 90%;
+
+  /* .table-container {
+    width: 100%;
     margin: 0 auto;
-    /* Centers the container */
     border: 1px solid #ddd;
-    /* Optional: helps define the scroll area */
-  }
+  } */
+
 
   .payroll-options {
     font-size: 24px
   }
 
-  #summary-table {
+  /* #summary-table {
     min-width: 600px;
-    /* Forces the table to be wider than the container to trigger the scroll */
+
     width: 100%;
     margin: 0px;
-  }
+  } */
 
   .pretax-savings {
     font-size: 16px;
@@ -279,9 +284,9 @@ button:focus {
   align-items: center;
   justify-content: center;
   /* Add these */
-  margin-left: auto;
+  /* margin-left: auto;
   margin-right: auto;
-  width: 90%;
+  width: 90%; */
   /* Ensures it doesn't stretch to 100% width */
 }
 
@@ -291,9 +296,9 @@ button:focus {
   align-items: center;
   justify-content: center;
   /* Add these */
-  margin-left: auto;
+  /* margin-left: auto;
   margin-right: auto;
-  width: 90%;
+  width: 90%; */
   /* Ensures it doesn't stretch to 100% width */
 }
 

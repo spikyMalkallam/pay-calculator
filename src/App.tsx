@@ -1071,62 +1071,60 @@ function App() {
         </div>
         <div id='summary-section'>
           {/* <div id='summary-div'> */}
-          <div>
-            <div className="table-container">
-              <table id='summary-table'>
-                <tbody>
-                  <tr>
-                    <td colSpan={2}>
-                      <IncomeTable
-                        label=''
-                        items={{
-                          "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
-                            "Base salary": financialData['baseSalarySplit'].map(displayMoney),
-                            "Concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][0].map((x) => displayMoney(-x)) : null,
-                            "Work Deductables": hasWorkDeductions ? financialData['workDeductablesAmount'].map(displayMoney) : null,
-                            "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
-                          }],
-                          "#Superannuation": [financialData['superSplit'].map(displayMoney), {
-                            "Employer Contribution": financialData['employerContribution'].map(displayMoney),
-                            "Voluntary Contribution": financialData['voluntaryContribution'][4] != 0 ? financialData['voluntaryContribution'].map(displayMoney) : null
-                          }],
-                          "#Total Taxes": [financialData['taxSplit']['totalTax'].map(displayMoney), {
-                            "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
-                            "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
-                            "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
-                            "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
-                            "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
-                          }],
+          <div className="table-container">
+            <table id='summary-table'>
+              <tbody>
+                <tr>
+                  <td colSpan={2}>
+                    <IncomeTable
+                      label=''
+                      items={{
+                        "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
+                          "Base salary": financialData['baseSalarySplit'].map(displayMoney),
+                          "Concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][0].map((x) => displayMoney(-x)) : null,
+                          "Work Deductables": hasWorkDeductions ? financialData['workDeductablesAmount'].map(displayMoney) : null,
+                          "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
+                        }],
+                        "#Superannuation": [financialData['superSplit'].map(displayMoney), {
+                          "Employer Contribution": financialData['employerContribution'].map(displayMoney),
+                          "Voluntary Contribution": financialData['voluntaryContribution'][4] != 0 ? financialData['voluntaryContribution'].map(displayMoney) : null
+                        }],
+                        "#Total Taxes": [financialData['taxSplit']['totalTax'].map(displayMoney), {
+                          "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
+                          "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
+                          "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
+                          "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
+                          "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
+                        }],
 
-                        }}
-                        oldTax={financialData['undeductedTax']}
-                        totals={financialData['postTax'].map(displayMoney)}
-                        totalItems={{
-                          "Net Salary": financialData['grossSalary'].map(displayMoney),
-                          "Non-concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
-                          "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map((x) => displayMoney(-x)) : null,
-                          "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
-                        }} />
+                      }}
+                      oldTax={financialData['undeductedTax']}
+                      totals={financialData['postTax'].map(displayMoney)}
+                      totalItems={{
+                        "Net Salary": financialData['grossSalary'].map(displayMoney),
+                        "Non-concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
+                        "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map((x) => displayMoney(-x)) : null,
+                        "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
+                      }} />
 
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            {optionsActive.length > 0 ?
-              <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
-                Options Active: {optionsActive.map((option) => {
-                  return (
-                    <span style={{ color: 'black', fontWeight: 'bold' }}>
-                      {option}
-                    </span>
-                  )
-
-                })}
-              </p>
-              :
-              null}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          {optionsActive.length > 0 ?
+            <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
+              Options Active: {optionsActive.map((option) => {
+                return (
+                  <span style={{ color: 'black', fontWeight: 'bold' }}>
+                    {option}
+                  </span>
+                )
+
+              })}
+            </p>
+            :
+            null}
           <div className='chart-block'>
             <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
           </div>

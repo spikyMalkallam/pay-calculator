@@ -456,7 +456,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                 </tr> */}
                 <tr>
                     <td>
-                        Total Interest Savings over the loan term
+                        Total Interest Savings
                     </td>
                     <td>
                         {'-'}

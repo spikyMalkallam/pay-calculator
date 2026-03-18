@@ -177,14 +177,19 @@ select>option {
 
 
 @media (max-width: 1280px) {
-    .expand {
+    /* .expand {
         max-width: 600px;
-    }
+    } */
 }
 
 #mortage-dropdown {
     display: flex;
     flex-direction: column;
+}
+
+#mortage-input {
+    display: flex;
+
 }
 
 .dropdown-button {

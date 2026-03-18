@@ -795,75 +795,61 @@ function App() {
                   label='Mortage Repayments'
                   desc='See the difference between weekly and monthly mortage repayments'
                   contents={<div id='mortage-dropdown'>
-                    <table className='dropdown-table'>
-                      <tbody>
-                        <tr>
-                          <td style={{ backgroundColor: 'var(--dark-grey)' }} colSpan={2}>
-                            <SwitchToggle
-                              dropdown={false}
-                              label="Accelerated repayments"
-                              description={''}
-                              setFunc={setMortagePayFreq}
-                              infoTag={null}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colSpan={2}>
-                            <InputField
-                              textColour='white'
-                              headerColour='var(--dark-grey)'
-                              backgroundColour='var(--dark-grey)'
-                              label={"Loan Ammount"}
-                              id='mortage-loan-ammount'
-                              value={mortageLoanAmmount}
-                              setFunc={(val) => { setMortageLoanAmmount(val); }}
-                              styling='medium'
-                              formatting={'monetary'}
-                              rounding={2}
-                              min={0}
-                              max={null}
-                            />
-                          </td>
+                    <div id='mortage-input'>
 
-                        </tr>
-                        <tr>
-                          <td colSpan={1}>
-                            <InputField
-                              textColour='white'
-                              headerColour='var(--dark-grey)'
-                              backgroundColour='var(--dark-grey)'
-                              label={"Annual Interest Rate"}
-                              id='mortage-loan-ammount'
-                              value={mortageInterestRate}
-                              setFunc={(val) => { setMortageInterestRate(val); }}
-                              styling='medium'
-                              formatting={'percentage'}
-                              rounding={2}
-                              min={0}
-                              max={null}
-                            />
-                          </td>
-                          <td colSpan={1}>
-                            <InputField
-                              textColour='white'
-                              headerColour='var(--dark-grey)'
-                              backgroundColour='var(--dark-grey)'
-                              label={"Loan Term (years)"}
-                              id='mortage-loan-ammount'
-                              value={mortageTerm}
-                              setFunc={(val) => { setMortageTerm(val); }}
-                              styling='medium'
-                              formatting={'number'}
-                              rounding={2}
-                              min={0}
-                              max={null}
-                            />
-                          </td>
-                        </tr>
 
-                      </tbody>
-                    </table>
+                      <InputField
+                        textColour='white'
+                        headerColour='var(--dark-grey)'
+                        backgroundColour='var(--dark-grey)'
+                        label={"Loan Ammount"}
+                        id='mortage-loan-ammount'
+                        value={mortageLoanAmmount}
+                        setFunc={(val) => { setMortageLoanAmmount(val); }}
+                        styling='medium'
+                        formatting={'monetary'}
+                        rounding={2}
+                        min={0}
+                        max={null}
+                      />
+
+                      <InputField
+                        textColour='white'
+                        headerColour='var(--dark-grey)'
+                        backgroundColour='var(--dark-grey)'
+                        label={"Annual Interest Rate"}
+                        id='mortage-loan-ammount'
+                        value={mortageInterestRate}
+                        setFunc={(val) => { setMortageInterestRate(val); }}
+                        styling='medium'
+                        formatting={'percentage'}
+                        rounding={2}
+                        min={0}
+                        max={null}
+                      />
+
+                      <InputField
+                        textColour='white'
+                        headerColour='var(--dark-grey)'
+                        backgroundColour='var(--dark-grey)'
+                        label={"Loan Term (years)"}
+                        id='mortage-loan-ammount'
+                        value={mortageTerm}
+                        setFunc={(val) => { setMortageTerm(val); }}
+                        styling='medium'
+                        formatting={'number'}
+                        rounding={2}
+                        min={0}
+                        max={null}
+                      />
+                      <SwitchToggle
+                        dropdown={false}
+                        label="Accelerated repayments"
+                        description={''}
+                        setFunc={setMortagePayFreq}
+                        infoTag={null}
+                      />
+                    </div>
                     <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
                   </div>}
                   toggleFunc={setHasMortage}
@@ -902,34 +888,36 @@ function App() {
                   <ToggleExpandVerticalTab
                     label='Novated Lease'
                     desc='Lease a car and pay it off partially before tax'
-                    contents={<><table className='dropdown-table'>
-                      <tbody>
-                        <tr></tr>
-                        <tr>
-                          <td>
-
-                            <SelectField
-                              textColour='white'
-                              label="Vehicle to Lease"
-                              id="week-or-fortnight"
-                              headerColour='var(--dark-grey)'
-                              backgroundColour='var(--dark-grey)'
-                              value={novatedLeaseExample}
-                              setFunc={setNovatedLeaseExample}
-                              items={{
-                                "Toyota Rav 4": "Toyota Rav 4",
-                                "Tesla Model Y": "Tesla Model Y",
-                              }}
-                              styling='medium'
-                            />
-                            <p style={{ margin: '0px' }}><i>These estimates are from our partner <a href='https://www.allianceleasing.com.au/' target='_blank' style={{ color: 'rgb(0, 184, 0)' }}>Alliance Leasing</a>.</i></p>
-                            <a href='https://www.recruitmenthive.com.au/novated-lease-form/' target='_blank' style={{ color: 'var(--hive-yellow)' }}>Learn more here</a>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-
-                    </>}
+                    contents={<div style={{ width: '100%' }}>
+                      <SelectField
+                        textColour='white'
+                        label="Vehicle to Lease"
+                        id="week-or-fortnight"
+                        headerColour='var(--dark-grey)'
+                        backgroundColour='var(--dark-grey)'
+                        value={novatedLeaseExample}
+                        setFunc={setNovatedLeaseExample}
+                        items={{
+                          "Toyota Rav 4": "Toyota Rav 4",
+                          "Tesla Model Y": "Tesla Model Y",
+                        }}
+                        styling='medium'
+                      />
+                      <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        textAlign: 'center' // Centers the text lines inside the tags
+                      }}>
+                        <p style={{
+                          margin: '0px',
+                          overflowWrap: 'anywhere',
+                          whiteSpace: 'normal'
+                        }}><i>These estimates are from our partner <a href='https://www.allianceleasing.com.au/' target='_blank' style={{ color: 'rgb(0, 184, 0)' }}>Alliance Leasing</a>.</i></p>
+                        <a href='https://www.recruitmenthive.com.au/novated-lease-form/' target='_blank' style={{ color: 'var(--hive-yellow)' }}>Learn more here</a>
+                      </div>
+                    </div>}
                     toggleFunc={setHasNovatedLease}
                     expandedVar={hasNovatedLease}
                     infoTag={<HtmlTooltip
@@ -1083,60 +1071,62 @@ function App() {
         </div>
         <div id='summary-section'>
           {/* <div id='summary-div'> */}
-          <div className="table-container">
-            <table id='summary-table'>
-              <tbody>
-                <tr>
-                  <td colSpan={2}>
-                    <IncomeTable
-                      label=''
-                      items={{
-                        "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
-                          "Base salary": financialData['baseSalarySplit'].map(displayMoney),
-                          "Concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][0].map((x) => displayMoney(-x)) : null,
-                          "Work Deductables": hasWorkDeductions ? financialData['workDeductablesAmount'].map(displayMoney) : null,
-                          "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
-                        }],
-                        "#Superannuation": [financialData['superSplit'].map(displayMoney), {
-                          "Employer Contribution": financialData['employerContribution'].map(displayMoney),
-                          "Voluntary Contribution": financialData['voluntaryContribution'][4] != 0 ? financialData['voluntaryContribution'].map(displayMoney) : null
-                        }],
-                        "#Total Taxes": [financialData['taxSplit']['totalTax'].map(displayMoney), {
-                          "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
-                          "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
-                          "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
-                          "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
-                          "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
-                        }],
+          <div>
+            <div className="table-container">
+              <table id='summary-table'>
+                <tbody>
+                  <tr>
+                    <td colSpan={2}>
+                      <IncomeTable
+                        label=''
+                        items={{
+                          "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
+                            "Base salary": financialData['baseSalarySplit'].map(displayMoney),
+                            "Concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][0].map((x) => displayMoney(-x)) : null,
+                            "Work Deductables": hasWorkDeductions ? financialData['workDeductablesAmount'].map(displayMoney) : null,
+                            "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
+                          }],
+                          "#Superannuation": [financialData['superSplit'].map(displayMoney), {
+                            "Employer Contribution": financialData['employerContribution'].map(displayMoney),
+                            "Voluntary Contribution": financialData['voluntaryContribution'][4] != 0 ? financialData['voluntaryContribution'].map(displayMoney) : null
+                          }],
+                          "#Total Taxes": [financialData['taxSplit']['totalTax'].map(displayMoney), {
+                            "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
+                            "LITO": financialData['taxSplit']['lito'] != null ? financialData['taxSplit']['lito'].map(displayMoney) : null,
+                            "Student Loan": hasStudentLoan ? financialData['studentLoanContribution'].map(displayMoney) : null,
+                            "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
+                            "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
+                          }],
 
-                      }}
-                      oldTax={financialData['undeductedTax']}
-                      totals={financialData['postTax'].map(displayMoney)}
-                      totalItems={{
-                        "Net Salary": financialData['grossSalary'].map(displayMoney),
-                        "Non-concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
-                        "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map((x) => displayMoney(-x)) : null,
-                        "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
-                      }} />
+                        }}
+                        oldTax={financialData['undeductedTax']}
+                        totals={financialData['postTax'].map(displayMoney)}
+                        totalItems={{
+                          "Net Salary": financialData['grossSalary'].map(displayMoney),
+                          "Non-concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
+                          "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map((x) => displayMoney(-x)) : null,
+                          "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
+                        }} />
 
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            {optionsActive.length > 0 ?
+              <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
+                Options Active: {optionsActive.map((option) => {
+                  return (
+                    <span style={{ color: 'black', fontWeight: 'bold' }}>
+                      {option}
+                    </span>
+                  )
+
+                })}
+              </p>
+              :
+              null}
           </div>
-          {optionsActive.length > 0 ?
-            <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
-              Options Active: {optionsActive.map((option) => {
-                return (
-                  <span style={{ color: 'black', fontWeight: 'bold' }}>
-                    {option}
-                  </span>
-                )
-
-              })}
-            </p>
-            :
-            null}
           <div className='chart-block'>
             <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
           </div>

@@ -52,12 +52,12 @@ export function DropdownTab({ label, contents, subContents, colour }: DropdownPr
         <>
             <div className={'dropdown row-drop ' + label + (expanded ? " open" : '')} style={{ display: 'flex' }} onClick={setExpanded}>
                 <button
-                    className={'dropdown-button ' + colour + (expanded ? " expanded" : '')}
-
+                    className={'dropdown-button ' + (expanded ? " expanded" : '')}
+                    style={{ backgroundColor: colour }}
                 >
                     {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
                 </button>
-                <div className='dropdown-contents-div' style={{ flexGrow: 1 }}>{contents}</div>
+                <div className={'dropdown-contents-div '} style={{ flexGrow: 1, backgroundColor: colour }}>{contents}</div>
             </div>
             <div className={'dropdown-subdiv' + (expanded ? " expanded" : '')}>
                 {subContents}
@@ -132,11 +132,12 @@ export function ToggleExpandVerticalTab({ label, desc, contents, toggleFunc, exp
     return (
         <>
             <div className={'expand' + ' ' + label.replace(' ', '')}> {<SwitchToggle
+                dropdown={true}
                 label={label}
                 description={desc}
                 setFunc={toggleFunc}
-                infoTag={null}
-            />}  {infoTag}
+                infoTag={infoTag}
+            />}
 
                 <div className={'expand-subdiv-vertical' + (expandedVar ? " expanded" : '') + ' ' + label}>
                     {contents}
@@ -150,6 +151,7 @@ export function ToggleExpandHorizontalTab({ label, desc, contents, toggleFunc, e
     return (
         <>
             <div className={'expand' + ' ' + label.replace(' ', '')}> {<SwitchToggle
+                dropdown={true}
                 label={label}
                 description={desc}
                 setFunc={toggleFunc}
@@ -283,7 +285,27 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
                                                     <tbody>
                                                         <tr key={key} className={"income-table-category"}>
                                                             <td>
-                                                                <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div><span className="income-table-text">{(key[0] == '#' ? key.split('#')[1] : key)}</span></div>
+                                                                <div className={"income-table-name"}><div className={"coloured-dot-" + key.replace(" ", "").replace('#', '')}></div><span className="income-table-text">{(key[0] == '#' ? key.split('#')[1] : key)}{key == 'Division 293' ? <HtmlTooltip
+                                                                    title={
+                                                                        <>
+                                                                            <a href="https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/caps-limits-and-tax-on-super-contributions/division-293-tax-on-concessional-contributions-by-high-income-earners" target="_blank">Division 293</a> tax is an additional tax on super contributions, reducing the tax concession for individuals whose combined income and concessional contributions for Division 293 purposes is more than $250,000.
+                                                                        </>
+                                                                    }
+                                                                    slotProps={{
+                                                                        popper: {
+                                                                            modifiers: [
+                                                                                {
+                                                                                    name: 'offset',
+                                                                                    options: {
+                                                                                        offset: [160, -60],
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    }}
+                                                                >
+                                                                    <AiFillInfoCircle />
+                                                                </HtmlTooltip> : ''}</span></div>
                                                             </td>
                                                             <td>
                                                                 <div className={"income-table-category"}>{subValue[1]}</div>
@@ -382,38 +404,12 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                         Monthly
                     </td>
                     <td className={monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
-                        Weekly <HtmlTooltip
-                            title={
-                                <>
-                                    <b>Repayment brackets</b>
-                                    <ul style={{ 'textAlign': 'left' }}>
-                                        <li><b>$0 - $67,000:</b> Nil</li>
-                                        <li><b>$67,001 - $125,000:</b> 15c for each $1 over $67,000</li>
-                                        <li><b>$125,001 -$179,285:</b> $8,700 plus 17c for each $1 over $125,000</li>
-                                        <li><b>$179,286 and over:</b> 10% of your total repayment income</li>
-                                    </ul>
-                                </>
-                            }
-                            slotProps={{
-                                popper: {
-                                    modifiers: [
-                                        {
-                                            name: 'offset',
-                                            options: {
-                                                offset: [210, -90],
-                                            },
-                                        },
-                                    ],
-                                },
-                            }}
-                        >
-                            <AiFillInfoCircle />
-                        </HtmlTooltip>
+                        Weekly
                     </td>
                 </tr>
             </thead>
             <tbody className="mortage-body">
-                <tr>
+                {/* <tr>
                     <td>
                         Repayment Ammount
                     </td>
@@ -423,8 +419,8 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {displayMoney(mortageData['weeklyRepaymentAmmount'])}
                     </td>
-                </tr>
-                <tr>
+                </tr> */}
+                {/* <tr>
                     <td>
                         Loan Paid Off In Years
                     </td>
@@ -434,30 +430,20 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {mortageData['weeklyPayedOffIn']}
                     </td>
-                </tr>
+                </tr> */}
                 <tr>
                     <td>
-                        Time Saved (years)
+                        Time Saved
                     </td>
                     <td>
                         {'-'}
                     </td>
                     <td className={monthlyPayment ? 'selected-val' : ''}>
-                        {mortageData['weeklyTimeSaved']}
+                        {mortageData['weeklyTimeSaved']} years
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        Total Repayments
-                    </td>
-                    <td className={!monthlyPayment ? 'selected-val' : ''}>
-                        {displayMoney(mortageData['monthlyTotalRepayments'])}
-                    </td>
-                    <td className={monthlyPayment ? 'selected-val' : ''}>
-                        {displayMoney(mortageData['weeklyTotalRepayments'])}
-                    </td>
-                </tr>
-                <tr>
+
+                {/* <tr>
                     <td>
                         Total Interest Paid
                     </td>
@@ -467,7 +453,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {displayMoney(mortageData['weeklyTotalInterest'])}
                     </td>
-                </tr>
+                </tr> */}
                 <tr>
                     <td>
                         Total Interest Savings over the loan term
@@ -488,6 +474,17 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     </td>
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {displayMoney(mortageData['weeklyAnnualInterestSavings'])}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total Repayments
+                    </td>
+                    <td className={!monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['monthlyTotalRepayments'])}
+                    </td>
+                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                        {displayMoney(mortageData['weeklyTotalRepayments'])}
                     </td>
                 </tr>
             </tbody>

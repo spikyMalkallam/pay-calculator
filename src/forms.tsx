@@ -1,5 +1,6 @@
 import './forms.css'
 import { displayMoney, displayPercentage } from './functions';
+import React, { useState, useEffect } from 'react';
 type InputProps = {
     id: string;
     label: string;
@@ -10,6 +11,9 @@ type InputProps = {
     rounding: number;
     min: number;
     max: number | null;
+    headerColour: string;
+    backgroundColour: string;
+    textColour: string;
 }
 type SelectProps = {
     id: string;
@@ -18,97 +22,85 @@ type SelectProps = {
     setFunc: (val: any) => void;
     items: Record<string, string>;
     styling: string;
+    headerColour: string;
+    backgroundColour: string;
+    textColour: string;
 }
 
-export function InputField({ id, label, value, setFunc, styling, formatting, min, max }: InputProps) {
+
+
+export function InputField({ id, label, value, setFunc, styling, formatting, min, max, headerColour, backgroundColour, textColour }: InputProps) {
     const internalLabel = id.toLowerCase().replace(" ", "-");
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const input = e.target;
-        const selectionStart = input.selectionStart; // Capture cursor position
-        let rawValue = input.value;
+    const [inputValue, setInputValue] = useState<string>(String(value));
 
-        function replaceAt(string: string, index: number): string {
-            let replacement = string.substring(index, index + 1);
-            // console.log(string.substring(0, index + 1) + replacement + string.substring(index + 1 + replacement.length))
-            return string.substring(0, index) + replacement + string.substring(index + 1 + replacement.length);
-        }
-
-        // 1. Filter characters
-        rawValue = rawValue.replace(/[^\d.]/g, '');
-
-        // 2. Handle multiple decimals
-        const parts = rawValue.split('.');
-        // console.log(parts)
-        if (parts.length > 2) {
-            rawValue = parts[0] + '.' + parts.slice(1).join('');
-        }
-        else if (parts.length == 2) {
-            rawValue = parts[0] + '.' + parts[1].substring(0, 2);
-        }
-
-        // 3. Logic for numeric conversion 
-        // NOTE: If you use .toFixed() here, it returns a string. 
-        // If setFunc expects a number, use parseFloat().
-        const numericValue = parseFloat(rawValue);
-
-        let finalValue = isNaN(numericValue) ? 0 : numericValue;
-
-        if (formatting != 'monetary') {
-            if (selectionStart !== null) {
-                finalValue = Number(replaceAt(String(finalValue), selectionStart - 1));
-            }
-        }
-        // Cap values
-        if (max !== null) {
-            if (Number(finalValue) > max) {
-                finalValue = max;
-            }
-        }
-        else if (Number(finalValue) < min) {
-            finalValue = min;
-        }
-        // const formatted = new Intl.NumberFormat().format(Number(finalValue))
-        setFunc(finalValue);
-        // 4. Restore Cursor Position
-        // We use requestAnimationFrame to wait for the next render cycle
-        requestAnimationFrame(() => {
-            if (selectionStart !== null) {
-                input.setSelectionRange(selectionStart, selectionStart);
-            }
-        });
+    // Formatting logic
+    const getFormattingFunction = () => {
+        if (formatting === 'monetary') return displayMoney;
+        if (formatting === 'percentage') return displayPercentage;
+        return null;
     };
-    // Formatting
-    let formattingFunction = null;
-    if (formatting == 'monetary') {
-        formattingFunction = displayMoney;
-    }
-    else if (formatting == 'percentage') {
-        formattingFunction = displayPercentage;
-    }
+    const formattingFunction = getFormattingFunction();
+
+    useEffect(() => {
+        setInputValue(formattingFunction !== null ? formattingFunction(value) : String(value));
+    }, [value]);
+
+    // Shared logic to "Commit" the value
+    const commitValue = () => {
+        let numericValue = parseFloat(inputValue.replace(/[^\d.-]/g, '')); // Strip symbols for parsing
+
+        if (isNaN(numericValue)) {
+            numericValue = 0;
+        }
+
+        let finalValue = numericValue;
+        if (max !== null && finalValue > max) finalValue = max;
+        if (min !== null && finalValue < min) finalValue = min;
+
+        setFunc(finalValue);
+        setInputValue(formattingFunction !== null ? formattingFunction(finalValue) : String(finalValue));
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            commitValue();
+            // Optional: Remove focus from the input after pressing Enter
+            (e.target as HTMLInputElement).blur();
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value.replace(/[^\d.]/g, '');
+        const parts = val.split('.');
+        const cleanVal = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : val;
+        setInputValue(cleanVal);
+    };
 
     return (
-        <div className={`${styling}-form-box ${internalLabel}`}>
-            <div className={`${styling}-form-box-header ${internalLabel}`}>
-                <p>{label}</p>
+        <div className={`${styling}-form-box ${internalLabel}`} style={{ backgroundColor: backgroundColour }}>
+            <div style={{ backgroundColor: headerColour }} className={`${styling}-form-box-header ${internalLabel}`}>
+                <p style={{ color: textColour }}>{label}</p>
             </div>
             <input
                 type="text"
                 id={`${internalLabel}-input`}
                 className={`${styling}-form ${internalLabel}`}
-                // 4. Format the display only: Add $ and commas for the user
-                value={formattingFunction !== null ? formattingFunction(value) : value}
+                value={inputValue}
                 onChange={handleChange}
+                onBlur={commitValue} // Use the same shared logic
+                onKeyDown={handleKeyDown} // Listen for Enter key
+                onFocus={() => setInputValue(String(value))}
             />
         </div>
-    )
+    );
 }
 
-export function SelectField({ id, label, value, setFunc, items, styling }: SelectProps) {
+export function SelectField({ id, label, value, setFunc, items, styling, headerColour, backgroundColour, textColour }: SelectProps) {
     const internalLabel = id.toLowerCase().replace(" ", "-")
     return (
-        <div className={styling + '-form-box ' + internalLabel}>
-            <div className={styling + '-form-box-header ' + internalLabel}>
-                <p>{label}</p>
+        <div className={styling + '-form-box ' + internalLabel} style={{ backgroundColor: backgroundColour }}>
+            <div style={{ backgroundColor: headerColour }} className={styling + '-form-box-header ' + internalLabel}>
+                <p style={{ color: textColour }}>{label}</p>
             </div>
             <select
                 id={internalLabel + "-input"}

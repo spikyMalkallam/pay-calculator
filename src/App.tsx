@@ -62,7 +62,8 @@ function App() {
   const [payCycle, setPayCycle] = useState('Hourly')
   // const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
   const salaryIncludesSuper = true;
-  const [hasStudentLoan, setHasStudentLoan] = useToggle()
+  // const [hasStudentLoan, setHasStudentLoan] = useToggle()
+  const hasStudentLoan = true;
   // const [bonus, setBonus] = useState(0)
   // const [bonusFrequency, setBonusFrequency] = useState('Annual')
   // const [medicareLevy, setMedicareLevy] = useState(0)
@@ -308,7 +309,7 @@ function App() {
       'litoSplit': litoSplit
     }
   }
-  const ResidualValues: Record<number, number> = { 1: 0.6563, 2: 0.5625, 3: 0.4688, 4: 0.3750, 5: 0.2813 }
+  // const ResidualValues: Record<number, number> = { 1: 0.6563, 2: 0.5625, 3: 0.4688, 4: 0.3750, 5: 0.2813 }
   // function calculateNovatedLease(purchasePrice: number, isEV: boolean, leaseDuration: number) {
   //   // const AnnualTravel = 10000;
   //   console.log(isEV);

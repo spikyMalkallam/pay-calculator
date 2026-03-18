@@ -701,7 +701,7 @@ function App() {
                         max={hoursPeriod == 'Week' ? 5 : (hoursPeriod == 'Fortnight' ? 10 : (hoursPeriod == 'Month' ? 23 : 276))}
                       />
                     </td>
-                    <td>
+                    <td style={{ width: '50%' }}>
                       <SelectField
                         textColour='white'
                         headerColour='var(--hive-yellow)'
@@ -784,116 +784,94 @@ function App() {
                 {/* <span className='hive-subheader'>Our accounts team can offer you</span> */}
               </div>
             }
-            subContents={<>
-              <table style={{ backgroundColor: 'black' }}>
-                <tbody>
-                  <tr className='benefits-table-row' style={{ width: '80%' }}>
-                    {/* <td className='benefits-table-cell'>
-                      <table className='dropdown-table'>
-                        <tbody>
-                          <tr>
-                            <td style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
-                              <p>Recruitment Hive offers Monthly & Weekly payroll options.</p>
+            subContents={<div style={{ background: 'black' }}>
+              <div style={{ padding: '20px 20px 0px 20px' }}>
+                <p style={{ color: 'var(--hive-yellow)', margin: '0px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
+                <p style={{ color: 'var(--hive-yellow)' }}>View our Payroll Options <a style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>here</a></p>
+                <p style={{ color: 'var(--hive-yellow)', textAlign: 'left' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
+              </div>
+              <div style={{ padding: '0px 20px 20px 20px' }}>
+                <ToggleExpandVerticalTab
+                  label='Mortage Repayments'
+                  desc='See the difference between weekly and monthly mortage repayments'
+                  contents={<div id='mortage-dropdown'>
+                    <table className='dropdown-table'>
+                      <tbody>
+                        <tr>
+                          <td style={{ backgroundColor: 'var(--dark-grey)' }} colSpan={2}>
+                            <SwitchToggle
+                              dropdown={false}
+                              label="Accelerated repayments"
+                              description={''}
+                              setFunc={setMortagePayFreq}
+                              infoTag={null}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan={2}>
+                            <InputField
+                              textColour='white'
+                              headerColour='var(--dark-grey)'
+                              backgroundColour='var(--dark-grey)'
+                              label={"Loan Ammount"}
+                              id='mortage-loan-ammount'
+                              value={mortageLoanAmmount}
+                              setFunc={(val) => { setMortageLoanAmmount(val); }}
+                              styling='medium'
+                              formatting={'monetary'}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
 
-                              <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>View our Payroll Options here</a><br></br>
+                        </tr>
+                        <tr>
+                          <td colSpan={1}>
+                            <InputField
+                              textColour='white'
+                              headerColour='var(--dark-grey)'
+                              backgroundColour='var(--dark-grey)'
+                              label={"Annual Interest Rate"}
+                              id='mortage-loan-ammount'
+                              value={mortageInterestRate}
+                              setFunc={(val) => { setMortageInterestRate(val); }}
+                              styling='medium'
+                              formatting={'percentage'}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                          <td colSpan={1}>
+                            <InputField
+                              textColour='white'
+                              headerColour='var(--dark-grey)'
+                              backgroundColour='var(--dark-grey)'
+                              label={"Loan Term (years)"}
+                              id='mortage-loan-ammount'
+                              value={mortageTerm}
+                              setFunc={(val) => { setMortageTerm(val); }}
+                              styling='medium'
+                              formatting={'number'}
+                              rounding={2}
+                              min={0}
+                              max={null}
+                            />
+                          </td>
+                        </tr>
 
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </td> */}
-                    <td className='benefits-table-cell' style={{ padding: '20px' }}>
-                      <p style={{ color: 'var(--hive-yellow)', margin: '0px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
-
-                      <p style={{ color: 'var(--hive-yellow)' }}>View our Payroll Options <a style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>here</a></p>
-                      <p style={{ color: 'var(--hive-yellow)', textAlign: 'left' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
-                      <ToggleExpandVerticalTab
-                        label='Mortage Repayments'
-                        desc='See the difference between weekly and monthly mortage repayments'
-                        contents={<div id='mortage-dropdown'>
-                          <table className='dropdown-table'>
-                            <tbody>
-                              <tr>
-                                <td style={{ backgroundColor: 'var(--dark-grey)' }} colSpan={2}>
-                                  <SwitchToggle
-                                    dropdown={false}
-                                    label="Accelerated repayments"
-                                    description={''}
-                                    setFunc={setMortagePayFreq}
-                                    infoTag={null}
-                                  />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td colSpan={2}>
-                                  <InputField
-                                    textColour='white'
-                                    headerColour='var(--dark-grey)'
-                                    backgroundColour='var(--dark-grey)'
-                                    label={"Loan Ammount"}
-                                    id='mortage-loan-ammount'
-                                    value={mortageLoanAmmount}
-                                    setFunc={(val) => { setMortageLoanAmmount(val); }}
-                                    styling='medium'
-                                    formatting={'monetary'}
-                                    rounding={2}
-                                    min={0}
-                                    max={null}
-                                  />
-                                </td>
-
-                              </tr>
-                              <tr>
-                                <td colSpan={1}>
-                                  <InputField
-                                    textColour='white'
-                                    headerColour='var(--dark-grey)'
-                                    backgroundColour='var(--dark-grey)'
-                                    label={"Annual Interest Rate"}
-                                    id='mortage-loan-ammount'
-                                    value={mortageInterestRate}
-                                    setFunc={(val) => { setMortageInterestRate(val); }}
-                                    styling='medium'
-                                    formatting={'percentage'}
-                                    rounding={2}
-                                    min={0}
-                                    max={null}
-                                  />
-                                </td>
-                                <td colSpan={1}>
-                                  <InputField
-                                    textColour='white'
-                                    headerColour='var(--dark-grey)'
-                                    backgroundColour='var(--dark-grey)'
-                                    label={"Loan Term (years)"}
-                                    id='mortage-loan-ammount'
-                                    value={mortageTerm}
-                                    setFunc={(val) => { setMortageTerm(val); }}
-                                    styling='medium'
-                                    formatting={'number'}
-                                    rounding={2}
-                                    min={0}
-                                    max={null}
-                                  />
-                                </td>
-                              </tr>
-
-                            </tbody>
-                          </table>
-                          <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
-                        </div>}
-                        toggleFunc={setHasMortage}
-                        expandedVar={hasMortage}
-                        infoTag={null}
-                      />
-                    </td>
-                    <td className='benefits-table-cell'>
-
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </>}
+                      </tbody>
+                    </table>
+                    <MortageRepaymentTable mortageData={financialData['mortageData']} monthlyPayment={mortagePayFreq} />
+                  </div>}
+                  toggleFunc={setHasMortage}
+                  expandedVar={hasMortage}
+                  infoTag={null}
+                />
+              </div>
+            </div>}
           />
         </div>
         <div id='hive-benefits'>
@@ -912,12 +890,10 @@ function App() {
                     {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
                   </div>
                 </div>
-
-
               </>
             }
             subContents={<>
-              <div id='hive-benefits-cell'>
+              <div id='hive-benefits-cell' style={{ padding: '5px 20px 0px 20px' }}>
                 {/* <table style={{ backgroundColor: 'black', width: '100%' }}>
                 <tbody>
                   <tr className='benefits-table-row' style={{ width: '80%' }}>
@@ -1098,8 +1074,8 @@ function App() {
                 </tbody>
               </table> */}
               </div>
-              <div>
-                <p style={{ color: 'var(--hive-yellow)' }}><i>We also offer Living Away From Home Allowance (LAFHA), Banked Pay, and Banking Benefits. Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
+              <div style={{ background: 'black' }}>
+                <p style={{ color: 'var(--hive-yellow)', margin: '0px', paddingBottom: '5px' }}><i>We also offer Living Away From Home Allowance (LAFHA), Banked Pay, and Banking Benefits. Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
               </div>
             </>}
 

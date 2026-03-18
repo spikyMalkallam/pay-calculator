@@ -129,7 +129,7 @@
 }
 
 .dropdown-subdiv.expanded {
-    max-height: 680px;
+    max-height: 910px;
 }
 
 .expand-subdiv-vertical.expanded {
@@ -287,7 +287,7 @@ select>option {
     /* position: absolute; */
     /* margin: 30px 0px 0px 55px; */
     white-space: nowrap;
-    padding: 00px 5px 0px 5px;
+    padding: 0px 5px 0px 5px;
     align-items: center;
     display: flex;
 }

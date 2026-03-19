@@ -706,7 +706,7 @@ function App() {
                         textColour='white'
                         headerColour='var(--hive-yellow)'
                         backgroundColour='var(--yellow-tone-5)'
-                        label="each"
+                        label="Each"
                         id="week-or-fortnight"
                         value={hoursPeriod}
                         setFunc={setHoursPeriod}
@@ -786,18 +786,16 @@ function App() {
             }
             subContents={<div style={{ background: 'black' }}>
               <div style={{ padding: '20px 20px 0px 20px' }}>
-                <p style={{ color: 'var(--hive-yellow)', margin: '0px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
-                <p style={{ color: 'var(--hive-yellow)' }}>View our Payroll Options <a style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>here</a></p>
-                <p style={{ color: 'var(--hive-yellow)', textAlign: 'left' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
+                <p style={{ color: 'var(--hive-yellow)', margin: '0px', fontSize: '20px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
+                <p style={{ color: 'var(--hive-yellow)', fontSize: '20px' }}>View our Payroll Options <a style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>here</a></p>
+                <p style={{ color: 'var(--hive-yellow)', textAlign: 'left', margin: '0px 20px' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
               </div>
-              <div style={{ padding: '0px 20px 20px 20px' }}>
+              <div style={{ padding: '0px 20px 5px 20px' }}>
                 <ToggleExpandVerticalTab
                   label='Mortage Repayments'
                   desc='See the difference between weekly and monthly mortage repayments'
                   contents={<div id='mortage-dropdown'>
                     <div id='mortage-input'>
-
-
                       <InputField
                         textColour='white'
                         headerColour='var(--dark-grey)'
@@ -812,7 +810,6 @@ function App() {
                         min={0}
                         max={null}
                       />
-
                       <InputField
                         textColour='white'
                         headerColour='var(--dark-grey)'
@@ -827,7 +824,6 @@ function App() {
                         min={0}
                         max={null}
                       />
-
                       <InputField
                         textColour='white'
                         headerColour='var(--dark-grey)'
@@ -1111,22 +1107,24 @@ function App() {
                 </tr>
               </tbody>
             </table>
-          </div>
-          {optionsActive.length > 0 ?
-            <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
-              Options Active: {optionsActive.map((option) => {
-                return (
-                  <span style={{ color: 'black', fontWeight: 'bold' }}>
-                    {option}
-                  </span>
-                )
+            {optionsActive.length > 0 ?
+              <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
+                Benefits Active: {optionsActive.map((option) => {
+                  return (
+                    <span style={{ color: 'black', fontWeight: 'bold' }}>
+                      {option}
+                    </span>
+                  )
 
-              })}
-            </p>
-            :
-            null}
+                })}
+              </p>
+              :
+              null}
+          </div>
+
           <div className='chart-block'>
-            <PayrollPieChart title={'Salary Breakdown'} data={financialData['payrollData']} />
+            <PayrollPieChart title={''} data={financialData['payrollData']} />
+
           </div>
         </div>
 

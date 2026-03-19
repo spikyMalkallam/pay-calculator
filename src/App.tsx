@@ -312,7 +312,6 @@ function App() {
   // const ResidualValues: Record<number, number> = { 1: 0.6563, 2: 0.5625, 3: 0.4688, 4: 0.3750, 5: 0.2813 }
   // function calculateNovatedLease(purchasePrice: number, isEV: boolean, leaseDuration: number) {
   //   // const AnnualTravel = 10000;
-  //   console.log(isEV);
   //   const AnnualLeaseInterestRate = 0.08;
   //   const DealerDeliveryCharges = 1722.73;
   //   const gst = (purchasePrice + DealerDeliveryCharges) * 0.1;
@@ -345,7 +344,6 @@ function App() {
     // Find the relevant band and calculate repayments
     // Highest bracket
     if (repaymentIncome >= 179286) {
-
       return repaymentIncome * 0.10;
     }
     for (const [threshold, value] of Object.entries(loanYear)) {
@@ -401,6 +399,7 @@ function App() {
       }
     }
     let employerContribution = splitTax(superSum, yearlyHours);
+    let employerContributionSum = superSum;
     let pretaxDeductionAmount = 0;
     // Voluntary Super
     let superContribution = 0;
@@ -415,12 +414,14 @@ function App() {
         superContribution = voluntarySuperAmmount;
       }
       superSum += superContribution;
+      console.log(superContribution)
       if (superSum - 30000 >= 0) {
         concessional = round(-((superSum - 30000) - superContribution), 2)
-        nonConcessional = round(-((superSum - concessional) - superContribution), 2)
+        nonConcessional = round(superSum - 30000, 2)
         // console.log(nonConcessional);
         // console.log(concessional);
         // console.log(superContribution);
+        // console.log(superSum)
       }
       else {
         concessional = superContribution;
@@ -496,18 +497,20 @@ function App() {
     // Mortage
     const mortageData = calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
     const mortageAnnualPayments = mortagePayFreq ? mortageData['weeklyRepaymentAmmount'] * 52 : mortageData['montlyRepaymentAmmount'] * 12;
-    const annualMortageSplit = splitTax(mortageAnnualPayments, yearlyHours);
-
+    let annualMortageSplit = splitTax(mortageAnnualPayments, yearlyHours);
+    // Remove weekly pay is monthly mortage
+    mortagePayFreq ? null : annualMortageSplit[1] = 0;
     // Remove mortage
     const mortageSplit = splitTax(mortageAnnualPayments, yearlyHours)
     // Remove pretax
-    const pretaxDeductionSplit = splitTax(pretaxDeductionAmount, yearlyHours);
+    const pretaxDeductionSplit = splitTax(pretaxDeductionAmount - (hasWorkDeductions ? workDeductablesAmount : 0), yearlyHours);
     // Remove Tax and mortage
     let grossSalary: any[] = []
     for (let i = 0; i < 5; i++) {
       grossSalary.push((round(salaryPeriods[i] - taxSplit["totalTax"][i] - pretaxDeductionSplit[i], 2)));
     }
-    grossSalary[4] -= (hasSuperSalarySacrifise ? nonConcessional : 0)
+    grossSalary[4] -= (hasWorkDeductions ? workDeductablesAmount : 0);
+
 
     // Gross Pay
     let grossPay: any[] = []
@@ -518,6 +521,7 @@ function App() {
     // // Subtract cost of novated lease
     // console.log(novatedLeasePostTax)
     // Takehome pay
+    grossSalary[4] -= (hasSuperSalarySacrifise ? nonConcessional : 0)
     for (let i = 0; i < 5; i++) {
 
       if (hasNovatedLease) {
@@ -532,11 +536,14 @@ function App() {
       //   console.log(pretaxDeductionSplit[i])
       // }
     }
-    let superSplit = splitTax(superSum, yearlyHours);
+    let superSplit = splitTax(employerContributionSum, yearlyHours);
+    superSplit[4] += voluntarySuperAmmount;
     let taxableIncomePeriods = [];
     for (let i = 0; i < 5; i++) {
       taxableIncomePeriods.push(salaryPeriods[i] - pretaxDeductionSplit[i]);
-    }// TODO Fix taxable income
+    }
+    taxableIncomePeriods[4] -= (hasWorkDeductions ? workDeductablesAmount : 0);
+    // TODO Fix taxable income
     // taxableIncomePeriods[4] = taxableIncomePeriods[4] - pretaxDeductionAmount;
     // if (hasBonus) {
     //   taxableIncomePeriods[4] += Number(bonus);
@@ -546,7 +553,7 @@ function App() {
       id: 'take-home',
       label: 'Pay',
       color: '#71972c',
-      subCategories: [{ id: 'base-pay', label: 'Take-home pay', value: Number(basePay), color: '#71972c' }],
+      subCategories: [{ id: 'base-pay', label: 'Take-Home pay', value: Number(basePay), color: '#71972c' }],
     },
     {
       id: 'tax',
@@ -605,7 +612,7 @@ function App() {
       voluntaryContribution: [0, 0, 0, 0, superContribution],
       novatedPayments: [novatedLeasePreTax, novatedLeasePostTax],
       mortageData: mortageData,
-      grossSalary: grossPay,
+      grossPay: grossPay,
       annualMortageSplit: annualMortageSplit,
       workDeductablesAmount: [0, 0, 0, 0, -workDeductablesAmount],
       voluntarySuperCon: [concessionalSplit, nonConcessionalSplit]
@@ -944,7 +951,7 @@ function App() {
                 <div className='flex-cell'>
                   <ToggleExpandVerticalTab
                     label='Super Salary Sacrifice'
-                    desc='Lower your income tax with voluntary super contributions'
+                    desc='Lower your tax with voluntary super contributions'
                     contents={<><table className='dropdown-table'>
                       <tbody>
                         <tr>
@@ -976,6 +983,10 @@ function App() {
                             />
                           </td>
                         </tr>
+
+                        {(hasSuperSalarySacrifise && financialData['voluntarySuperCon'][1][4] != 0) ? <tr>
+                          <td colSpan={1}><p style={{ color: 'rgb(255, 136, 0)', margin: '0px' }}>You have exceeded the concessional cap</p><p style={{ color: 'rgb(255, 136, 0)', margin: '0px' }}> {displayMoney(financialData['voluntarySuperCon'][1][4])} is being contributed Post-Tax</p></td>
+                        </tr> : null}
 
                       </tbody>
                     </table>
@@ -1026,7 +1037,6 @@ function App() {
                           <b>Work Deductables</b> include:
                           <ul>
                             <li>Tools for work (computers, stationery)</li>
-                            <li>Travel expenses for work</li>
                             <li>Education and training for work</li>
                           </ul>
                           A comprehensive list can be found
@@ -1097,8 +1107,8 @@ function App() {
                       oldTax={financialData['undeductedTax']}
                       totals={financialData['postTax'].map(displayMoney)}
                       totalItems={{
-                        "Net Salary": financialData['grossSalary'].map(displayMoney),
-                        "Non-concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
+                        "Net Salary": financialData['grossPay'].map(displayMoney),
+                        "Non-Concessional Voluntary Super": (hasSuperSalarySacrifise && financialData['voluntarySuperCon'][1][4] != 0) ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
                         "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map((x) => displayMoney(-x)) : null,
                         "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
                       }} />

@@ -162,7 +162,7 @@ select>option {
 
 .expand {
     /* position: relative; */
-    padding: 10px 0px 5px 0px;
+    padding: 5px 0px 5px 0px;
     /* background-color: #000000; */
     display: flex;
     justify-content: left;
@@ -171,7 +171,7 @@ select>option {
     width: 100%;
     flex-direction: column;
     /* max-width: 550px; */
-    margin: 20px 0px 20px 0px;
+    margin: 10px 0px 10px 0px;
     /* height: 100px; */
 }
 

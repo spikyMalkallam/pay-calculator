@@ -442,7 +442,7 @@ button:focus {
 #hive-benefits {
   --c: #fdc333;
   /* the border color */
-  --b: 10px;
+  --b: 11px;
   /* the border thickness*/
   --g: 5px;
   /* the gap on hover */

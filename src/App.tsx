@@ -411,6 +411,7 @@ function App() {
       if (maximiseSuper) {
         superContribution = 30000 - superSum;
         setVoluntarySuperAmmount(superContribution / 52)
+        // console.log(voluntarySuperAmmount)
       }
       else {
         superContribution = voluntarySuperAmmount * 52;
@@ -622,7 +623,6 @@ function App() {
     };
   }, [salary, payCycle, superPercentage, salaryIncludesSuper, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
   //bonus hasBonus bonusFrequency hasPretaxDeduction pretaxDeductionAmount
-  console.log(financialData['voluntarySuperCon'][0]);
   return (
     <>
       <div className='global-div'>
@@ -643,6 +643,7 @@ function App() {
               rounding={2}
               min={0}
               max={null}
+              lock={false}
             />
           </div>
           {/* <div className='flex-cell'>
@@ -693,6 +694,7 @@ function App() {
                         rounding={2}
                         min={0}
                         max={24}
+                        lock={false}
                       />
                     </td>
                     <td>
@@ -710,6 +712,7 @@ function App() {
                         min={0}
                         // max={null}
                         max={hoursPeriod == 'Week' ? 5 : (hoursPeriod == 'Fortnight' ? 10 : (hoursPeriod == 'Month' ? 23 : 276))}
+                        lock={false}
                       />
                     </td>
                     <td style={{ width: '50%' }}>
@@ -983,6 +986,7 @@ function App() {
                               rounding={2}
                               min={0}
                               max={null}
+                              lock={maximiseSuper ? true : false}
                             />
                           </td>
                         </tr>
@@ -1024,6 +1028,7 @@ function App() {
                                 rounding={2}
                                 min={0}
                                 max={null}
+                                lock={false}
                               />
                             </td>
                           </tr>

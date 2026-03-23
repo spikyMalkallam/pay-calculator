@@ -59,7 +59,8 @@ function App() {
   // }
   const [salary, setSalary] = useState(40.00)
   // 0: 1: 2: 3: 4: 5: 6:
-  const [payCycle, setPayCycle] = useState('Hourly')
+  const payCycle = 'Hourly';
+  // const [payCycle, setPayCycle] = useState('Hourly')
   // const [salaryIncludesSuper, setSalaryIncludesSuper] = useToggle()
   const salaryIncludesSuper = true;
   // const [hasStudentLoan, setHasStudentLoan] = useToggle()
@@ -369,9 +370,7 @@ function App() {
   if (optionsActive.length > 0) {
     optionsActive[optionsActive.length - 1] = optionsActive[optionsActive.length - 1].substring(0, optionsActive[optionsActive.length - 1].length - 2);
   }
-  // const mortageData = useMemo(() => {
-  //   return calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
-  // }, [mortageLoanAmmount, mortageInterestRate, mortageTerm])
+
   // Add all components of the salary together
   const financialData = useMemo(() => {
     let yearlyHours = calculateYearlyHours(dailyHours, parseFloat(daysPerPeriod), hoursPeriod);
@@ -383,7 +382,6 @@ function App() {
     // Calculate super ammount
     if (salaryIncludesSuper) {
       superSalary = round(superSalary / (1 + (superPercentage / 100)), 2);
-
       superSum = round(superSalary * (superPercentage / 100), 2);
       // Cap to concessional limit
       if (superSum > 30000) {
@@ -399,6 +397,10 @@ function App() {
       }
     }
     let employerContribution = splitTax(superSum, yearlyHours);
+    for (let i = 0; i < 5; i++) {
+      salaryPeriods[i] -= employerContribution[i];
+    }
+    salarySum = salaryPeriods[4];
     let employerContributionSum = superSum;
     let pretaxDeductionAmount = 0;
     // Voluntary Super
@@ -408,13 +410,13 @@ function App() {
     if (hasSuperSalarySacrifise) {
       if (maximiseSuper) {
         superContribution = 30000 - superSum;
-        setVoluntarySuperAmmount(superContribution)
+        setVoluntarySuperAmmount(superContribution / 52)
       }
       else {
-        superContribution = voluntarySuperAmmount;
+        superContribution = voluntarySuperAmmount * 52;
       }
       superSum += superContribution;
-      console.log(superContribution)
+      // console.log(superContribution)
       if (superSum - 30000 >= 0) {
         concessional = round(-((superSum - 30000) - superContribution), 2)
         nonConcessional = round(superSum - 30000, 2)
@@ -429,6 +431,8 @@ function App() {
     }
     else { concessional = 0; }
     pretaxDeductionAmount += concessional;
+    let concessionalSplit = splitTax(concessional, yearlyHours);
+    let nonConcessionalSplit = splitTax(nonConcessional, yearlyHours);
     // Add bonus
     // if (hasBonus) {
     //   salarySum += Number(bonus);
@@ -440,7 +444,7 @@ function App() {
 
     // Calculate Pre-Tax Savings
     if (hasWorkDeductions) {
-      pretaxDeductionAmount += workDeductablesAmount;
+      pretaxDeductionAmount += (round(workDeductablesAmount - (workDeductablesAmount / 11), 2));
     }
     let novatedLeasePreTax = [0, 0, 0, 0, 0];
     let novatedLeasePostTax = [0, 0, 0, 0, 0];
@@ -498,17 +502,18 @@ function App() {
     const mortageData = calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
     const mortageAnnualPayments = mortagePayFreq ? mortageData['weeklyRepaymentAmmount'] * 52 : mortageData['montlyRepaymentAmmount'] * 12;
     let annualMortageSplit = splitTax(mortageAnnualPayments, yearlyHours);
-    // Remove weekly pay is monthly mortage
+    // Remove weekly pay if monthly mortage
     mortagePayFreq ? null : annualMortageSplit[1] = 0;
     // Remove mortage
     const mortageSplit = splitTax(mortageAnnualPayments, yearlyHours)
     // Remove pretax
-    const pretaxDeductionSplit = splitTax(pretaxDeductionAmount - (hasWorkDeductions ? workDeductablesAmount : 0), yearlyHours);
+    const pretaxDeductionSplit = splitTax(pretaxDeductionAmount - (hasWorkDeductions ? (round(workDeductablesAmount - (workDeductablesAmount / 11), 2)) : 0), yearlyHours);
     // Remove Tax and mortage
     let grossSalary: any[] = []
     for (let i = 0; i < 5; i++) {
       grossSalary.push((round(salaryPeriods[i] - taxSplit["totalTax"][i] - pretaxDeductionSplit[i], 2)));
     }
+    // Subtract work deductable amount
     grossSalary[4] -= (hasWorkDeductions ? workDeductablesAmount : 0);
 
 
@@ -521,28 +526,26 @@ function App() {
     // // Subtract cost of novated lease
     // console.log(novatedLeasePostTax)
     // Takehome pay
-    grossSalary[4] -= (hasSuperSalarySacrifise ? nonConcessional : 0)
+    // Subtract Ammounts from Post-Tax Pay
     for (let i = 0; i < 5; i++) {
-
       if (hasNovatedLease) {
         grossSalary[i] += novatedLeasePostTax[i];
-        // console.log(grossSalary)
-        // console.log('--------')
       }
       if (hasMortage) {
         grossSalary[i] -= mortageSplit[i];
       }
-      // if (i == 4) {
-      //   console.log(pretaxDeductionSplit[i])
-      // }
+      if (hasSuperSalarySacrifise) {
+        grossSalary[i] -= nonConcessionalSplit[i];
+      }
     }
-    let superSplit = splitTax(employerContributionSum, yearlyHours);
-    superSplit[4] += voluntarySuperAmmount;
+    let superSplit = splitTax(employerContributionSum + (hasSuperSalarySacrifise ? voluntarySuperAmmount * 52 : 0), yearlyHours);
+    // superSplit[4] += (hasSuperSalarySacrifise ? voluntarySuperAmmount * 52 : 0);
     let taxableIncomePeriods = [];
     for (let i = 0; i < 5; i++) {
       taxableIncomePeriods.push(salaryPeriods[i] - pretaxDeductionSplit[i]);
     }
-    taxableIncomePeriods[4] -= (hasWorkDeductions ? workDeductablesAmount : 0);
+    // Subtract Work Deduction amount without GST
+    taxableIncomePeriods[4] -= (hasWorkDeductions ? (round(workDeductablesAmount - (workDeductablesAmount / 11), 2)) : 0);
     // TODO Fix taxable income
     // taxableIncomePeriods[4] = taxableIncomePeriods[4] - pretaxDeductionAmount;
     // if (hasBonus) {
@@ -579,7 +582,7 @@ function App() {
     if (hasStudentLoan && currentTax['HECS'] > 0) {
       payrollData[1].subCategories.push({ id: 'student-loan', label: 'Student Loan', value: Number(currentTax['HECS']), color: '#d100b5' });
     }
-    if (superContribution > 0) {
+    if (hasSuperSalarySacrifise && superContribution > 0) {
       payrollData[2].subCategories.push({ id: 'voluntary', label: 'Voluntary Contribution', value: Number(superContribution), color: '#256f88' });
     }
     if (hasMortage) {
@@ -590,8 +593,7 @@ function App() {
         payrollData[0].subCategories.push({ id: 'novatedLease', label: 'Novated Lease Post-Tax', value: Number(-novatedLeasePostTax[4]), color: '#ff7300' });
       }
     }
-    let concessionalSplit = [0, 0, 0, 0, concessional];
-    let nonConcessionalSplit = [0, 0, 0, 0, nonConcessional];
+
     return {
       totalSalary: salaryPeriods[4],
       superAmount: superSum,
@@ -609,20 +611,22 @@ function App() {
       fringeBenefitsTax: currentTax['fringe-benefits-tax'],
       pretaxDeductionAmount: pretaxDeductionAmount,
       employerContribution: employerContribution,
-      voluntaryContribution: [0, 0, 0, 0, superContribution],
+      voluntaryContribution: splitTax(voluntarySuperAmmount * 52, yearlyHours),
       novatedPayments: [novatedLeasePreTax, novatedLeasePostTax],
       mortageData: mortageData,
       grossPay: grossPay,
       annualMortageSplit: annualMortageSplit,
-      workDeductablesAmount: [0, 0, 0, 0, -workDeductablesAmount],
+      workDeductablesAmount: [0, 0, 0, 0, -(round(workDeductablesAmount - (workDeductablesAmount / 11), 2))],
       voluntarySuperCon: [concessionalSplit, nonConcessionalSplit]
       // bonusSplit: bonusPeriods
     };
-  }, [salary, payCycle, superPercentage, salaryIncludesSuper, , hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
+  }, [salary, payCycle, superPercentage, salaryIncludesSuper, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
   //bonus hasBonus bonusFrequency hasPretaxDeduction pretaxDeductionAmount
+  console.log(financialData['voluntarySuperCon'][0]);
   return (
     <>
       <div className='global-div'>
+
         <div id='income-div'>
           <div className='flex-cell'>
             {/* <td className='big-table-cell'> */}
@@ -631,7 +635,7 @@ function App() {
               headerColour='var(--hive-yellow)'
               backgroundColour='var(--yellow-tone-5)'
               id='Salary'
-              label='Salary'
+              label='Rate (inc. of Super)'
               value={salary}
               setFunc={(val) => { setSalary(val); }}
               styling='large'
@@ -641,7 +645,7 @@ function App() {
               max={null}
             />
           </div>
-          <div className='flex-cell'>
+          {/* <div className='flex-cell'>
             <table className='dropdown-table'>
               <tbody>
                 <tr>
@@ -668,7 +672,7 @@ function App() {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> */}
 
           {payCycle == 'Hourly' ?
             <div className='flex-cell'>
@@ -721,7 +725,6 @@ function App() {
                           "Week": "Week",
                           "Fortnight": "Fortnight",
                           "Month": "Month",
-                          "Year": "Year",
                         }}
                         styling='large'
                       />
@@ -779,7 +782,7 @@ function App() {
               </tr> */}
 
         </div >
-        <div id='payroll-options'>
+        {/* <div id='payroll-options'>
           <DropdownTab
             colour='black'
             label={'Payroll'}
@@ -788,13 +791,13 @@ function App() {
                 <h2 className='payroll-options' style={{ display: 'flex', justifyContent: 'center' }}>
                   Hive Payroll Options
                 </h2>
-                {/* <span className='hive-subheader'>Our accounts team can offer you</span> */}
+
               </div>
             }
             subContents={<div style={{ background: 'black' }}>
               <div style={{ padding: '20px 20px 0px 20px' }}>
                 <p style={{ color: 'var(--hive-yellow)', margin: '0px', fontSize: '20px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
-                <p style={{ color: 'var(--hive-yellow)', fontSize: '20px' }}>View our Payroll Options <a style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>here</a></p>
+                <p><a id='payroll-button' href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>View our Payroll Options here</a></p>
                 <p style={{ color: 'var(--hive-yellow)', textAlign: 'left', margin: '0px 20px' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
               </div>
               <div style={{ padding: '0px 20px 5px 20px' }}>
@@ -862,7 +865,7 @@ function App() {
               </div>
             </div>}
           />
-        </div>
+        </div> */}
         <div id='hive-benefits'>
           <DropdownTab
             colour='black'
@@ -876,7 +879,7 @@ function App() {
                   </h2>
                   <span className='hive-subheader'>Our accounts team can offer you</span>
                   <div className='pretax-savings'>
-                    {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in income tax savings') : null}
+                    {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in annual income tax savings') : null}
                   </div>
                 </div>
               </>
@@ -971,7 +974,7 @@ function App() {
                               textColour='white'
                               headerColour='var(--dark-grey)'
                               backgroundColour='var(--dark-grey)'
-                              label={"Voluntary Super contribution"}
+                              label={"Weekly Voluntary Super Contribution"}
                               id='super-sacrifice--amount'
                               value={voluntarySuperAmmount}
                               setFunc={(val) => { setVoluntarySuperAmmount(val); }}
@@ -1012,7 +1015,7 @@ function App() {
                                 textColour='white'
                                 headerColour='var(--dark-grey)'
                                 backgroundColour='var(--dark-grey)'
-                                label={"Deductable amount"}
+                                label={"Yearly Deductable amount"}
                                 id='work-deductables-amount'
                                 value={workDeductablesAmount}
                                 setFunc={(val) => { setWorkDeductablesAmount(val); }}
@@ -1088,12 +1091,12 @@ function App() {
                         "#Taxable Income": [financialData['taxablebaseSalarySplit'].map(displayMoney), {
                           "Base salary": financialData['baseSalarySplit'].map(displayMoney),
                           "Concessional Voluntary Super": hasSuperSalarySacrifise ? financialData['voluntarySuperCon'][0].map((x) => displayMoney(-x)) : null,
-                          "Work Deductables": hasWorkDeductions ? financialData['workDeductablesAmount'].map(displayMoney) : null,
+                          "Work Deductables Pre-Tax": hasWorkDeductions ? financialData['workDeductablesAmount'].map(displayMoney) : null,
                           "Novated Lease Pre-Tax Payment": financialData['novatedPayments'][0][0] != 0 ? financialData['novatedPayments'][0].map(displayMoney) : null,
                         }],
                         "#Superannuation": [financialData['superSplit'].map(displayMoney), {
                           "Employer Contribution": financialData['employerContribution'].map(displayMoney),
-                          "Voluntary Contribution": financialData['voluntaryContribution'][4] != 0 ? financialData['voluntaryContribution'].map(displayMoney) : null
+                          "Voluntary Contribution": (financialData['voluntaryContribution'][4] != 0 && hasSuperSalarySacrifise) ? financialData['voluntaryContribution'].map(displayMoney) : null
                         }],
                         "#Total Taxes": [financialData['taxSplit']['totalTax'].map(displayMoney), {
                           "Income Tax": financialData['taxSplit']['incomeTax'].map(displayMoney),
@@ -1102,12 +1105,12 @@ function App() {
                           "Medicare Levy": financialData['taxSplit']['medicare'][4] != 0 ? financialData['taxSplit']['medicare'].map(displayMoney) : null,
                           "Division 293": financialData['taxSplit']['293'][4] != 0 ? financialData['taxSplit']['293'].map(displayMoney) : null,
                         }],
-
                       }}
                       oldTax={financialData['undeductedTax']}
                       totals={financialData['postTax'].map(displayMoney)}
                       totalItems={{
                         "Net Salary": financialData['grossPay'].map(displayMoney),
+                        "Work Deductables": (hasWorkDeductions ? [0, 0, 0, 0, -workDeductablesAmount].map(displayMoney) : null),
                         "Non-Concessional Voluntary Super": (hasSuperSalarySacrifise && financialData['voluntarySuperCon'][1][4] != 0) ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
                         "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map((x) => displayMoney(-x)) : null,
                         "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
@@ -1137,7 +1140,7 @@ function App() {
 
           </div>
         </div>
-
+        <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
       </div >
     </>
   )

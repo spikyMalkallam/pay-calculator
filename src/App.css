@@ -348,6 +348,28 @@ button:focus {
   max-width: 300px;
 }
 
+
+#payroll-button {
+  color: var(--hive-yellow);
+  font-weight: bold;
+  background-color: black;
+  border: var(--hive-yellow) 3px solid;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 10px;
+  transition: all 0.2s;
+}
+
+#payroll-button:hover {
+  color: black;
+  font-weight: bold;
+  background-color: var(--hive-yellow);
+  border: var(--hive-yellow) 3px solid;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 10px;
+}
+
 #resetButton {
   border: solid 2px black;
 }
@@ -403,6 +425,7 @@ button:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 10px;
 }
 
 
@@ -413,18 +436,18 @@ button:focus {
   font-style: italic;
   font-size: 15px;
   margin: 0px 0px 0px 0px;
-  padding: 0px 0px 5px 0px;
+  padding: 0px 0px 0px 0px;
 }
 
-.dropdown.row-drop.Benefits {
+#hive-benefits {
   --c: #fdc333;
   /* the border color */
   --b: 10px;
   /* the border thickness*/
   --g: 5px;
   /* the gap on hover */
-
-  padding: calc(var(--g));
+  border-radius: 20px;
+  padding: 5px 5px 5px 5px;
   --_g: #0000 25%, var(--c) 0;
   background:
     conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) var(--_i, 200%) 0 /200% var(--_i, var(--b)) no-repeat,
@@ -433,12 +456,12 @@ button:focus {
   cursor: pointer;
 }
 
-.dropdown.row-drop.Benefits:hover {
+#hive-benefits:hover {
   --_i: 100%;
   transition: .3s, background-size .3s .3s;
 }
 
-.dropdown.row-drop.Benefits.open {
+#hive-benefits.open {
   --_i: 100%;
   transition: .3s, background-size .3s .3s;
 }
@@ -446,13 +469,14 @@ button:focus {
 .dropdown.row-drop.Payroll {
   --c: var(--hive-yellow);
   --b: 10px;
-  --g: 5px;
+  --g: 15px;
   padding: calc(var(--g));
   --_g: #0000 25%, var(--c) 0;
   background:
     conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) var(--_i, 200%) 0 /200% var(--_i, var(--b)) no-repeat,
     conic-gradient(at bottom var(--b) left var(--b), var(--_g)) 0 var(--_i, 200%)/var(--_i, var(--b)) 200% no-repeat;
   transition: .3s, background-position .3s;
+  border-radius: 20px;
   cursor: pointer;
   /* padding: 0px 5px */
 }
@@ -460,9 +484,11 @@ button:focus {
 .dropdown.row-drop.Payroll:hover {
   --_i: 100%;
   transition: .3s, background-size .3s .3s;
+  border-radius: 20px;
 }
 
 .dropdown.row-drop.Payroll.open {
   --_i: 100%;
   transition: .3s, background-size .3s .3s;
+  border-radius: 0px;
 }

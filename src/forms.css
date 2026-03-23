@@ -64,7 +64,7 @@
 .large-form-box-header {
     background-color: var(--hive-yellow);
     height: 40px;
-    padding: 1px;
+    padding: 1px 0px 0px 5px;
     margin-bottom: 12px;
     /* border-radius: 20px 20px 0px 0px; */
 }

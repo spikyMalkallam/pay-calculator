@@ -8,7 +8,7 @@
     cursor: pointer;
     margin: auto;
     overflow: hidden;
-    transition: max-height 0.7s ease-in-out;
+    transition: max-height 0.7s ease;
     min-width: 0;
 }
 
@@ -119,8 +119,14 @@
      */
 }
 
+
+.dropdown-subdiv.Benefits {
+    max-height: 20px;
+}
+
 .dropdown-subdiv {
-    max-height: 0;
+    max-height: 0px;
+    /* This one!! */
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
     background-color: #00000000;
@@ -196,7 +202,7 @@ select>option {
     /* display: flex; */
     /* background-color: var(--income-table-backing); */
     color: white;
-    transition: background-color 0.2s, color 0.2s;
+    transition: all 0.5s, color 0.2s;
     border: none;
     border-radius: 0px;
     height: 70px;
@@ -204,6 +210,17 @@ select>option {
     padding: 5px;
     font-size: 10px;
 }
+
+.dropdown-button.Benefits {
+    border-radius: 20px 0px 0px 0px;
+    padding-top: 25px;
+}
+
+/* .dropdown-button.expanded.Benefits {
+    border-radius: 20px 0px 0px 0px;
+} */
+
+/* border-radius: 20px 0px 0px 20px; */
 
 .dropdown-spacer {
     /* background-color: var(--income-subtable-backing); */
@@ -252,10 +269,18 @@ select>option {
     text-align: left;
 }
 
-.dropdown-contents-div {
+.dropdown-contents-div.Benefits {
     /* background-color: black; */
     max-width: 100%;
+    border-radius: 0px 20px 0px 0px;
+    transition: 0.5s ease;
 }
+
+/* .dropdown-contents-div.expanded {
+    background-color: black;
+    max-width: 100%;
+    border-radius: 0px 20px 0px 0px;
+} */
 
 .dropdown-table td {
     padding: 0;
@@ -284,7 +309,7 @@ select>option {
 }
 
 .expand-subdiv-vertical {
-    max-height: 0;
+    max-height: 0px;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
     background-color: #272727;
@@ -593,7 +618,10 @@ select>option {
     transition: background-color 0.3s ease;
     user-select: none;
     background-color: var(--income-table-backing);
+}
 
+.dropdown-subdiv.Benefits {
+    border-radius: 0px 0px 20px 20px;
 }
 
 .income-table-header-name {

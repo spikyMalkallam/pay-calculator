@@ -105,7 +105,6 @@ export default function PayCalculator() {
   function calculateSalaryPeriods(rate: number, period: string, hours: number[]) {
     let hourlyRate = 0;
     let dailyRate = 0;
-
     let weeklyRate = 0;
     let fortnightlyRate = 0;
     let monthlyRate = 0;

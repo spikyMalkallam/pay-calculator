@@ -52,14 +52,14 @@ export function DropdownTab({ label, contents, subContents, colour }: DropdownPr
         <>
             <div className={'dropdown row-drop ' + label + (expanded ? " open" : '')} style={{ display: 'flex' }} onClick={setExpanded}>
                 <button
-                    className={'dropdown-button ' + (expanded ? " expanded" : '')}
+                    className={'dropdown-button ' + (expanded ? "expanded " : '') + label}
                     style={{ backgroundColor: colour }}
                 >
                     {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
                 </button>
-                <div className={'dropdown-contents-div '} style={{ flexGrow: 1, backgroundColor: colour }}>{contents}</div>
+                <div className={'dropdown-contents-div ' + (expanded ? "expanded " : '') + label} style={{ flexGrow: 1, backgroundColor: colour }}>{contents}</div>
             </div>
-            <div className={'dropdown-subdiv' + (expanded ? " expanded" : '')}>
+            <div className={'dropdown-subdiv ' + (expanded ? "expanded " : '') + label}>
                 {subContents}
             </div >
         </>
@@ -79,7 +79,7 @@ export function DropdownTab2({ label, contents, subContents, colour }: DropdownP
                 </button>
                 <div style={{ flexGrow: 1 }}>{contents}</div>
             </div>
-            <div className={'dropdown-subdiv' + (expanded ? " expanded" : '')}>
+            <div className={'dropdown-subdiv ' + (expanded ? "expanded " : '') + label}>
                 {subContents}
             </div>
         </>
@@ -121,7 +121,7 @@ export function ToggleDropdownTab({ label, contents, expandedVar }: ToggleDropdo
     return (
         <>
             <div className={'dropdown' + ' ' + label}> {<DropdownTab label='' contents={contents} subContents={contents} colour="grey" />}</div >
-            <div className={'dropdown-subdiv' + (expandedVar ? " expanded" : '') + ' ' + label}>
+            <div className={'dropdown-subdiv ' + (expandedVar ? "expanded " : '') + label}>
                 {contents}
             </div>
         </>

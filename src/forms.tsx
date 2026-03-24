@@ -14,6 +14,7 @@ type InputProps = {
     headerColour: string;
     backgroundColour: string;
     textColour: string;
+    lock: boolean;
 }
 type SelectProps = {
     id: string;
@@ -29,7 +30,7 @@ type SelectProps = {
 
 
 
-export function InputField({ id, label, value, setFunc, styling, formatting, min, max, headerColour, backgroundColour, textColour }: InputProps) {
+export function InputField({ id, label, value, setFunc, styling, formatting, min, max, headerColour, backgroundColour, textColour, lock }: InputProps) {
     const internalLabel = id.toLowerCase().replace(" ", "-");
     const [inputValue, setInputValue] = useState<string>(String(value));
 
@@ -86,10 +87,11 @@ export function InputField({ id, label, value, setFunc, styling, formatting, min
                 id={`${internalLabel}-input`}
                 className={`${styling}-form ${internalLabel}`}
                 value={inputValue}
-                onChange={handleChange}
-                onBlur={commitValue} // Use the same shared logic
-                onKeyDown={handleKeyDown} // Listen for Enter key
-                onFocus={() => setInputValue(String(value))}
+                style={lock ? { color: 'var(--hive-yellow)', pointerEvents: 'none' } : {}}
+                onChange={lock ? () => null : handleChange}
+                onBlur={lock ? () => null : commitValue} // Use the same shared logic
+                onKeyDown={lock ? () => null : handleKeyDown} // Listen for Enter key
+                onFocus={lock ? () => null : (() => setInputValue(String(value)))}
             />
         </div>
     );

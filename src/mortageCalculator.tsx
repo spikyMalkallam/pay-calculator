@@ -1,8 +1,8 @@
-import { displayMoney, round, PMT, NPER, HtmlTooltip } from './functions';
+import { round, PMT, NPER } from './functions';
 import useToggle from './hooks/useToggle'
 import { useState, useMemo } from 'react'
-import { IncomeTable, ToggleExpandVerticalTab, MortageRepaymentTable, DropdownTab } from './dropdown'
-import { InputField, SelectField } from './forms'
+import { MortageRepaymentTable } from './dropdown'
+import { InputField } from './forms'
 import { SwitchToggle } from './buttons'
 
 export default function MortageCalculator() {

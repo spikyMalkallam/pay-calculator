@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import './payCalculator.css'
-import { IncomeTable, ToggleExpandVerticalTab, MortageRepaymentTable, DropdownTab } from './dropdown'
+import { IncomeTable, ToggleExpandVerticalTab, DropdownTab } from './dropdown'
 import useToggle from './hooks/useToggle'
 import { InputField, SelectField } from './forms'
 import { SwitchToggle } from './buttons'
@@ -90,12 +90,16 @@ export default function PayCalculator() {
   const [daysPerPeriod, setDaysPerPeriod] = useState('5');
   const [hoursPeriod, setHoursPeriod] = useState('Week');
 
-  const [mortageLoanAmmount, setMortageLoanAmmount] = useState(500000);
-  const [mortageInterestRate, setMortageInterestRate] = useState(5.25);
-  const [mortageTerm, setMortageTerm] = useState(20);
-  const [mortagePayFreq, setMortagePayFreq] = useToggle();
-  const [hasMortage, setHasMortage] = useToggle();
-
+  // const [mortageLoanAmmount, setMortageLoanAmmount] = useState(500000);
+  // const [mortageInterestRate, setMortageInterestRate] = useState(5.25);
+  // const [mortageTerm, setMortageTerm] = useState(20);
+  // const [mortagePayFreq, setMortagePayFreq] = useToggle();
+  // const [hasMortage, setHasMortage] = useToggle();
+  const mortageLoanAmmount = 50000;
+  const mortageInterestRate = 5.25;
+  const mortageTerm = 20;
+  const mortagePayFreq = false;
+  const hasMortage = false;
 
   let superPercentage = 12.00;
   function calculateSalaryPeriods(rate: number, period: string, hours: number[]) {

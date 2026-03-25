@@ -15,15 +15,21 @@ import { AiFillInfoCircle } from "react-icons/ai";
 // }
 
 export default function PayCalculator() {
-  const sendHeight = () => {
+  // 1. Define the function to report the height
+  const notifyParent = () => {
     const height = document.documentElement.scrollHeight;
     window.parent.postMessage({ frameHeight: height }, '*');
-    // Tip: Replace '*' with your actual parent domain for better security
   };
 
-  // Send height on load and whenever the window resizes
-  window.addEventListener('load', sendHeight);
-  window.addEventListener('resize', sendHeight);
+  // 2. Create the Observer
+  const resizeObserver = new ResizeObserver(entries => {
+    for (let entry of entries) {
+      notifyParent();
+    }
+  });
+
+  // 3. Start observing the body or a specific wrapper
+  resizeObserver.observe(document.body);
   // function stringToNumFreq(freq: string): number {
   //   switch (freq) {
   //     case "Annual": {

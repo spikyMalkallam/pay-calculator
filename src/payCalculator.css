@@ -201,6 +201,7 @@ button:focus {
   -webkit-overflow-scrolling: touch;
   /* Smooth scrolling for iOS devices */
   display: block;
+  margin-bottom: 15px;
   /* Ensures the container behaves as a block for overflow */
 }
 

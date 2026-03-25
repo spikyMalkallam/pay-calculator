@@ -533,9 +533,10 @@ select>option {
     width: 25%;
 }
 
+
 /* 2. Remove the padding from the wrapper div */
 .dropdown.row-drop {
-    padding: 0;
+    padding: 0px 0px 10px 0px;
     /* Changed from 10px */
     /* display: flex; */
     width: 100%;

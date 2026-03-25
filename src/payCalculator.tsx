@@ -17,9 +17,14 @@ import { AiFillInfoCircle } from "react-icons/ai";
 export default function PayCalculator() {
   // 1. Define the function to report the height
   const notifyParent = () => {
-    const height = document.documentElement.scrollHeight;
+    // 1. Temporarily allow the body to shrink to 0 to find the 'true' content height
+    document.body.style.height = '0px';
+    // 2. Measure the height of the actual content wrapper
+    // Use a specific wrapper div ID if possible for better accuracy
+    const height = document.body.scrollHeight;
+    // 3. Reset the body height so it can grow again
+    document.body.style.height = 'auto';
     window.parent.postMessage({ frameHeight: height }, '*');
-    // console.log(height)
   };
 
   // 2. Create the Observer

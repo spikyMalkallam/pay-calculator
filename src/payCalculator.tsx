@@ -25,6 +25,7 @@ export default function PayCalculator() {
   const resizeObserver = new ResizeObserver(entries => {
     for (let entry of entries) {
       notifyParent();
+      console.log(entry);
     }
   });
 

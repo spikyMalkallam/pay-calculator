@@ -279,7 +279,6 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
                                         return (
                                             <div className={'dropdown row-drop '} style={{ display: 'flex' }}>
                                                 <button className="dropdown-spacer dark-grey">
-
                                                 </button>
                                                 <div style={{ flexGrow: 1 }}><table className="sub-sub-table-header">
                                                     <tbody>
@@ -409,7 +408,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                 </tr>
             </thead>
             <tbody className="mortage-body">
-                {/* <tr>
+                <tr>
                     <td>
                         Repayment Ammount
                     </td>
@@ -419,7 +418,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {displayMoney(mortageData['weeklyRepaymentAmmount'])}
                     </td>
-                </tr> */}
+                </tr>
                 {/* <tr>
                     <td>
                         Loan Paid Off In Years

@@ -46,19 +46,19 @@ export default function MortageCalculator() {
     }, [mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq])
     return (
         <div id='payroll-options'>
-            <div style={{ background: 'black' }}>
+            <div >
                 <div style={{ padding: '20px 20px 0px 20px' }}>
-                    <p style={{ color: 'var(--hive-yellow)', margin: '0px', fontSize: '20px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
+                    <p style={{ color: 'black', margin: '0px', fontSize: '20px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
                     <p><a id='payroll-button' href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>View our Payroll Options here</a></p>
-                    <p style={{ color: 'var(--hive-yellow)', textAlign: 'left', margin: '0px 20px' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
+                    <p style={{ color: 'black', textAlign: 'left', margin: '0px 20px' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
                 </div>
                 <div style={{ padding: '0px 20px 5px 20px' }}>
                     <div id='mortage-dropdown'>
                         <div id='mortage-input'>
                             <InputField
-                                textColour='white'
-                                headerColour='var(--dark-grey)'
-                                backgroundColour='var(--dark-grey)'
+                                textColour='black'
+                                headerColour='rgba(0,0,0,0)'
+                                backgroundColour='rgba(0,0,0,0)'
                                 label={"Loan Ammount"}
                                 id='mortage-loan-ammount'
                                 value={mortageLoanAmmount}
@@ -71,9 +71,9 @@ export default function MortageCalculator() {
                                 lock={false}
                             />
                             <InputField
-                                textColour='white'
-                                headerColour='var(--dark-grey)'
-                                backgroundColour='var(--dark-grey)'
+                                textColour='black'
+                                headerColour='white'
+                                backgroundColour='white'
                                 label={"Annual Interest Rate"}
                                 id='mortage-loan-ammount'
                                 value={mortageInterestRate}
@@ -86,9 +86,9 @@ export default function MortageCalculator() {
                                 lock={false}
                             />
                             <InputField
-                                textColour='white'
-                                headerColour='var(--dark-grey)'
-                                backgroundColour='var(--dark-grey)'
+                                textColour='black'
+                                headerColour='white'
+                                backgroundColour='white'
                                 label={"Loan Term (years)"}
                                 id='mortage-loan-ammount'
                                 value={mortageTerm}

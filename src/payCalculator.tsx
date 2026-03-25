@@ -378,6 +378,7 @@ export default function PayCalculator() {
   // Add all components of the salary together
   const financialData = useMemo(() => {
     let yearlyHours = calculateYearlyHours(dailyHours, parseFloat(daysPerPeriod), hoursPeriod);
+    console.log(yearlyHours)
     let salaryPeriods = calculateSalaryPeriods(salary, payCycle, yearlyHours);
     let salarySum = salaryPeriods[4];
     let superSum = 0;

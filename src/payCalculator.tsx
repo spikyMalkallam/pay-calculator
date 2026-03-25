@@ -19,14 +19,12 @@ export default function PayCalculator() {
   const notifyParent = () => {
     const height = document.documentElement.scrollHeight;
     window.parent.postMessage({ frameHeight: height }, '*');
+    // console.log(height)
   };
 
   // 2. Create the Observer
-  const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-      notifyParent();
-      console.log(entry);
-    }
+  const resizeObserver = new ResizeObserver(() => {
+    notifyParent();
   });
 
   // 3. Start observing the body or a specific wrapper

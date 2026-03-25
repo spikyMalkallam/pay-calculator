@@ -95,10 +95,10 @@ type PayrollPieProps = {
 
 export default function PayrollPieChart({ data, title }: PayrollPieProps) {
     // 2. Data Processing
-    const totalValue = data.reduce(
-        (acc, cat) => acc + cat.subCategories.reduce((sum, sub) => sum + sub.value, 0),
-        0
-    );
+    // const totalValue = data.reduce(
+    //     (acc, cat) => acc + cat.subCategories.reduce((sum, sub) => sum + sub.value, 0),
+    //     0
+    // );
 
     // Inner Ring: Main Categories
     const mainRingData = data.map((cat) => ({

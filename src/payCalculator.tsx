@@ -15,7 +15,15 @@ import { AiFillInfoCircle } from "react-icons/ai";
 // }
 
 export default function PayCalculator() {
+  const sendHeight = () => {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage({ frameHeight: height }, '*');
+    // Tip: Replace '*' with your actual parent domain for better security
+  };
 
+  // Send height on load and whenever the window resizes
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
   // function stringToNumFreq(freq: string): number {
   //   switch (freq) {
   //     case "Annual": {
@@ -176,13 +184,13 @@ export default function PayCalculator() {
     return [dailyHours, weeklyHours, fortnightlyHours, monthlyHours, yearlyHours];
   }
   function splitTax(ammount: number, hours: number[]): number[] {
-    let daily = round(ammount / (hours[4] / hours[0]), 2);
+    let daily = round(ammount / (hours[4] / hours[0]), 0);
     daily = Number.isNaN(daily) ? 0 : daily;
-    let weekly = round(ammount / (hours[4] / hours[1]), 2);
+    let weekly = round(ammount / (hours[4] / hours[1]), 0);
     weekly = Number.isNaN(weekly) ? 0 : weekly;
-    let fortnightly = round(ammount / (hours[4] / hours[2]), 2);
+    let fortnightly = round(ammount / (hours[4] / hours[2]), 0);
     fortnightly = Number.isNaN(fortnightly) ? 0 : fortnightly;
-    let monthly = round(ammount / (hours[4] / hours[3]), 2);
+    let monthly = round(ammount / (hours[4] / hours[3]), 0);
     monthly = Number.isNaN(monthly) ? 0 : monthly;
     return [daily, weekly, fortnightly, monthly, round(ammount, 2)]
   }
@@ -378,7 +386,7 @@ export default function PayCalculator() {
   // Add all components of the salary together
   const financialData = useMemo(() => {
     let yearlyHours = calculateYearlyHours(dailyHours, parseFloat(daysPerPeriod), hoursPeriod);
-    console.log(yearlyHours)
+    // console.log(yearlyHours)
     let salaryPeriods = calculateSalaryPeriods(salary, payCycle, yearlyHours);
     let salarySum = salaryPeriods[4];
     let superSum = 0;
@@ -1014,7 +1022,7 @@ export default function PayCalculator() {
                 <div className='flex-cell'>
                   <ToggleExpandVerticalTab
                     label='Work Deductables'
-                    desc='Subtract your work expenses from your taxable income'
+                    desc='Subtract your work expenses (minus GST) from your taxable income'
                     contents={<>
                       <table className='dropdown-table'>
                         <tbody>

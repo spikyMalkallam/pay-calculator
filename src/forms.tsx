@@ -87,7 +87,7 @@ export function InputField({ id, label, value, setFunc, styling, formatting, min
                 id={`${internalLabel}-input`}
                 className={`${styling}-form ${internalLabel}`}
                 value={inputValue}
-                style={lock ? { color: 'var(--hive-yellow)', pointerEvents: 'none' } : {}}
+                style={lock ? { color: 'var(--hive-yellow)', pointerEvents: 'none' } : { color: textColour }}
                 onChange={lock ? () => null : handleChange}
                 onBlur={lock ? () => null : commitValue} // Use the same shared logic
                 onKeyDown={lock ? () => null : handleKeyDown} // Listen for Enter key

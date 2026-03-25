@@ -95,10 +95,10 @@ type PayrollPieProps = {
 
 export default function PayrollPieChart({ data, title }: PayrollPieProps) {
     // 2. Data Processing
-    const totalValue = data.reduce(
-        (acc, cat) => acc + cat.subCategories.reduce((sum, sub) => sum + sub.value, 0),
-        0
-    );
+    // const totalValue = data.reduce(
+    //     (acc, cat) => acc + cat.subCategories.reduce((sum, sub) => sum + sub.value, 0),
+    //     0
+    // );
 
     // Inner Ring: Main Categories
     const mainRingData = data.map((cat) => ({
@@ -121,9 +121,9 @@ export default function PayrollPieChart({ data, title }: PayrollPieProps) {
     const innerRadius = 50;
     const middleRadius = 110;
     const outerRadius = 130;
-
+    // console.log(totalValue)
     return (
-        <Box sx={{ maxWidth: 350, height: 380, textAlign: 'center' }}>
+        <Box sx={{ maxWidth: 350, height: 350, textAlign: 'center' }}>
             <h2 style={{ margin: '0px 10px 0px 10px' }}>{title}</h2>
             <Box sx={{ display: 'flex', justifyContent: 'center', width: 350, height: 350 }}>
                 <PieChart
@@ -145,7 +145,7 @@ export default function PayrollPieChart({ data, title }: PayrollPieProps) {
                             outerRadius: outerRadius,
                             paddingAngle: 1,
                             cornerRadius: 2,
-                            arcLabel: (item) => `${((item.value / totalValue) * 100).toFixed(0)}%`,
+                            // arcLabel: (item) => `${((item.value / totalValue) * 100).toFixed(0)}%`,
                             arcLabelRadius: outerRadius + 20, // Move labels outside
                             highlightScope: { fade: 'global', highlight: 'item' },
                         },

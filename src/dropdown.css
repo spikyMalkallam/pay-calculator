@@ -710,7 +710,7 @@ select>option {
 }
 
 .mortage-body td {
-    background-color: var(--income-table-backing);
+    background-color: var(--yellow-tone-5);
 }
 
 .selected-freq {
@@ -719,7 +719,7 @@ select>option {
 }
 
 .unselected-freq {
-    background-color: var(--income-subtable-backing);
+    background-color: var(--yellow-tone-5);
 }
 
 .selected-val {

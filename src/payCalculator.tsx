@@ -25,7 +25,7 @@ export default function PayCalculator() {
     // 3. Reset the body height so it can grow again
     document.body.style.height = 'auto';
     window.parent.postMessage({ frameHeight: height }, '*');
-    console.log("Child: " + height);
+    // console.log("Child: " + height);
   };
 
   // 2. Create the Observer

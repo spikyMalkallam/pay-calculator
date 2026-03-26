@@ -1,15 +1,17 @@
 import { round, PMT, NPER } from './functions';
-import useToggle from './hooks/useToggle'
+// import useToggle from './hooks/useToggle'
 import { useState, useMemo } from 'react'
 import { MortageRepaymentTable } from './dropdown'
 import { InputField } from './forms'
-import { SwitchToggle } from './buttons'
+// import { SwitchToggle } from './buttons'
+import './mortageCalculator.css'
 
 export default function MortageCalculator() {
     const [mortageLoanAmmount, setMortageLoanAmmount] = useState(500000);
     const [mortageInterestRate, setMortageInterestRate] = useState(5.25);
     const [mortageTerm, setMortageTerm] = useState(20);
-    const [mortagePayFreq, setMortagePayFreq] = useToggle();
+    // const [mortagePayFreq, setMortagePayFreq] = useToggle();
+    const mortagePayFreq = true;
     // const [hasMortage, setHasMortage] = useToggle();
 
     function calculateMortage(loanAmmount: number, loanInterestRate: number, loanTerm: number) {
@@ -100,13 +102,13 @@ export default function MortageCalculator() {
                                 max={null}
                                 lock={false}
                             />
-                            <SwitchToggle
+                            {/* <SwitchToggle
                                 dropdown={false}
                                 label="Accelerated repayments"
                                 description={''}
                                 setFunc={setMortagePayFreq}
                                 infoTag={null}
-                            />
+                            /> */}
                         </div>
                         <MortageRepaymentTable mortageData={mortageData} monthlyPayment={mortagePayFreq} />
                     </div>

@@ -396,7 +396,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
         <table className="mortage-table">
             <thead>
                 <tr className="mortage-table-header">
-                    <td className='unselected-freq'>
+                    <td colSpan={1} className='unselected-freq'>
                         Mortage Repayments
                     </td>
                     <td className={!monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
@@ -408,6 +408,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                 </tr>
             </thead>
             <tbody className="mortage-body">
+
                 <tr>
                     <td>
                         Repayment Ammount

@@ -7,7 +7,7 @@ import { SwitchToggle } from './buttons'
 // import { TaxBandBar } from './graphs';
 import PayrollPieChart from './graphs';
 import { displayMoney, round, PMT, NPER, HtmlTooltip } from './functions';
-import { AiFillInfoCircle } from "react-icons/ai";
+import { AiFillInfoCircle, AiOutlineArrowRight } from "react-icons/ai";
 
 // type IncomeTableRowProps = {
 //   values: number[];

@@ -47,11 +47,11 @@ export default function MortageCalculator() {
     return (
         <div id='payroll-options'>
             <div >
-                <div style={{ padding: '20px 20px 0px 20px' }}>
+                {/* <div style={{ padding: '20px 20px 0px 20px' }}>
                     <p style={{ color: 'black', margin: '0px', fontSize: '20px' }}>Recruitment Hive offers Monthly & Weekly payroll options.</p>
                     <p><a id='payroll-button' href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank'>View our Payroll Options here</a></p>
                     <p style={{ color: 'black', textAlign: 'left', margin: '0px 20px' }}><b>"Accelerated" repayments</b> allow you to repay your mortage weekly, saving <b>time</b> and <b>money</b>. Hive's Weekly pay option can help you make these weekly repayments. See below how much you can save.</p>
-                </div>
+                </div> */}
                 <div style={{ padding: '0px 20px 5px 20px' }}>
                     <div id='mortage-dropdown'>
                         <div id='mortage-input'>

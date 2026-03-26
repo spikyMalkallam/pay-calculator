@@ -1,0 +1,16 @@
+#payroll-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Add these */
+    /* margin-left: auto;
+  margin-right: auto;
+  width: 90%; */
+    /* Ensures it doesn't stretch to 100% width */
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+}

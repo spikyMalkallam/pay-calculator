@@ -59,7 +59,7 @@ export function DropdownTab({ label, contents, subContents, colour }: DropdownPr
                 </button>
                 <div className={'dropdown-contents-div ' + (expanded ? "expanded " : '') + label} style={{ flexGrow: 1, backgroundColor: colour }}>{contents}</div>
             </div>
-            <div className={'dropdown-subdiv ' + (expanded ? "expanded " : '') + label}>
+            <div className={'dropdown-subdiv ' + (expanded ? "expanded " : '') + label} onClick={() => !expanded ? setExpanded() : () => null}>
                 {subContents}
             </div >
         </>

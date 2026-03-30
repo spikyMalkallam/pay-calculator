@@ -7,9 +7,9 @@ import { SwitchToggle } from './buttons'
 // import { TaxBandBar } from './graphs';
 import PayrollPieChart from './graphs';
 import { displayMoney, round, PMT, NPER, HtmlTooltip } from './functions';
-import { AiFillInfoCircle, } from "react-icons/ai";
+import { AiFillInfoCircle, AiOutlineArrowRight } from "react-icons/ai";
 
-// type IncomeTableRowProps = {//AiOutlineArrowRight
+// type IncomeTableRowProps = {//
 //   values: number[];
 //   subrow: any[];
 // }
@@ -195,13 +195,13 @@ export default function PayCalculator() {
     return [dailyHours, weeklyHours, fortnightlyHours, monthlyHours, yearlyHours];
   }
   function splitTax(ammount: number, hours: number[]): number[] {
-    let daily = round(ammount / (hours[4] / hours[0]), 0);
+    let daily = round(ammount / (hours[4] / hours[0]), 2);
     daily = Number.isNaN(daily) ? 0 : daily;
-    let weekly = round(ammount / (hours[4] / hours[1]), 0);
+    let weekly = round(ammount / (hours[4] / hours[1]), 2);
     weekly = Number.isNaN(weekly) ? 0 : weekly;
-    let fortnightly = round(ammount / (hours[4] / hours[2]), 0);
+    let fortnightly = round(ammount / (hours[4] / hours[2]), 2);
     fortnightly = Number.isNaN(fortnightly) ? 0 : fortnightly;
-    let monthly = round(ammount / (hours[4] / hours[3]), 0);
+    let monthly = round(ammount / (hours[4] / hours[3]), 2);
     monthly = Number.isNaN(monthly) ? 0 : monthly;
     return [daily, weekly, fortnightly, monthly, round(ammount, 2)]
   }
@@ -231,8 +231,13 @@ export default function PayCalculator() {
     taxAmount += (grossEarnings - currentThreshold) * currentTaxRate
     incomeTax = taxAmount;
     let incomeTaxSplit = splitTax(incomeTax, hours);
+
     // Division 293 tax
+    if (superSum > 30000) {
+      superSum = 30000
+    }
     if (grossEarnings + superSum > 250000) {
+      // console.log(superSum)
       let taxableAmmount = (grossEarnings + superSum) - 250000 > superSum ? superSum : (grossEarnings + superSum) - 250000;
       div293 = [0, 0, 0, 0, round(taxableAmmount * .15, 2)];
     }
@@ -258,6 +263,8 @@ export default function PayCalculator() {
     }
     taxAmount += medicareLevy;
     let totalTaxSplit = splitTax(taxAmount, hours);
+
+
     // Add LITO
     taxAmount += lito;
     let medicareSplit = splitTax(medicareLevy, hours);
@@ -266,6 +273,11 @@ export default function PayCalculator() {
       lito = round(lito, 2);
       litoSplit = [0, 0, 0, 0, -lito]
     }
+    // LITO
+    const adjustedLITO = lito > totalTaxSplit[4] ? totalTaxSplit[4] : lito;
+    totalTaxSplit[4] = totalTaxSplit[4] - adjustedLITO;
+    // 293
+    totalTaxSplit[4] = totalTaxSplit[4] + div293[4];
 
     // Calculate bonus tax, using the below page:
     // https://www.ato.gov.au/tax-rates-and-codes/schedule-5-tax-table-for-back-payments-commissions-bonuses-and-similar-payments/working-out-the-withholding-amount
@@ -445,10 +457,6 @@ export default function PayCalculator() {
       if (superSum - 30000 >= 0) {
         concessional = round(-((superSum - 30000) - superContribution), 2)
         nonConcessional = round(superSum - 30000, 2)
-        // console.log(nonConcessional);
-        // console.log(concessional);
-        // console.log(superContribution);
-        // console.log(superSum)
       }
       else {
         concessional = superContribution;
@@ -494,11 +502,14 @@ export default function PayCalculator() {
     let taxDeductionDiff = [];
 
     if (pretaxDeductionAmount > 0) {
-      numUndeductedTax = calculateTax(salaryPeriods[4], superSum, taxRates['2226'], yearlyHours)['totalTaxSplit'];
+      numUndeductedTax = calculateTax(salaryPeriods[4], employerContributionSum, taxRates['2226'], yearlyHours)['totalTaxSplit'];
+      console.log(numUndeductedTax)
       taxDeductionDiff = currentTax['totalTaxSplit'].map((val: number, i: number) =>
         round(numUndeductedTax[i] - val, 2)
       );
       if (!taxDeductionDiff.every((item: number) => item === 0)) {
+        numUndeductedTax = numUndeductedTax.map((x) => Math.round(x));
+        // console.log(numUndeductedTax)
         undeductedTax = numUndeductedTax.map(displayMoney);
       }
       taxDeductionDiff = taxDeductionDiff.map(displayMoney);
@@ -513,9 +524,10 @@ export default function PayCalculator() {
     // LITO
     const adjustedLITO = Number(currentTax['LITO']) > Number(currentTax['totalTaxSplit'][4]) ? Number(currentTax['totalTaxSplit'][4]) : Number(currentTax['LITO']);
 
-    currentTax['totalTaxSplit'][4] = Number(currentTax['totalTaxSplit'][4]) - adjustedLITO;
-    // 293
-    currentTax['totalTaxSplit'][4] = Number(currentTax['totalTaxSplit'][4]) + Number(currentTax['div293'][4]);
+    // Round tax down to zero decimal places
+    for (let i = 0; i < 5; i++) {
+      currentTax['totalTaxSplit'][i] = round(currentTax['totalTaxSplit'][i], 0);
+    }
     let taxSplit: Record<string, number[]> = {
       "totalTax": currentTax['totalTaxSplit'],
       "incomeTax": currentTax['incomeTaxSplit'],
@@ -647,6 +659,7 @@ export default function PayCalculator() {
     };
   }, [salary, payCycle, superPercentage, salaryIncludesSuper, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
   //bonus hasBonus bonusFrequency hasPretaxDeduction pretaxDeductionAmount
+
   return (
     <>
       <div className='global-div'>
@@ -659,7 +672,7 @@ export default function PayCalculator() {
               headerColour='var(--hive-yellow)'
               backgroundColour='var(--yellow-tone-5)'
               id='Salary'
-              label='Rate (inc. of Super)'
+              label='Hourly Rate (inclusive of Super)'
               value={salary}
               setFunc={(val) => { setSalary(val); }}
               styling='large'
@@ -750,7 +763,7 @@ export default function PayCalculator() {
                         setFunc={setHoursPeriod}
                         items={{
                           "Week": "Week",
-                          "Fortnight": "Fortnight",
+                          // "Fortnight": "Fortnight",
                           "Month": "Month",
                         }}
                         styling='large'
@@ -893,6 +906,15 @@ export default function PayCalculator() {
             </div>}
           />
         </div> */}
+        <div id='mortage-container-container'>
+          <div id='mortage-container'>
+            <a target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
+              <div id='mortage-link'>
+                <i>Learn how Hive's weekly pay can help you save money on your Mortage</i>
+              </div>
+            </a>
+          </div>
+        </div>
         <div id='hive-benefits'>
           <DropdownTab
             colour='black'
@@ -956,7 +978,7 @@ export default function PayCalculator() {
                     infoTag={<HtmlTooltip
                       title={
                         <>
-                          <b>Novated Leasing</b> is salary packaging benefit through your employer. We highly recommend our leasing partners <a href="https://www.allianceleasing.com.au/" target="_blank">Alliance Leasing</a> and <a href="https://www.easifleet.com.au/" target='_blank'> Easi</a>. The below examples are estimates from Alliance.
+                          <b>Novated Leasing</b> is salary packaging benefit through your employer. We highly recommend our leasing partners <a href="https://www.allianceleasing.com.au/" target="_blank">Alliance Leasing</a> and <a href="https://www.easifleet.com.au/" target='_blank'> Easi</a>.
                         </>
                       }
                       slotProps={{
@@ -981,7 +1003,7 @@ export default function PayCalculator() {
                 <div className='flex-cell'>
                   <ToggleExpandVerticalTab
                     label='Super Salary Sacrifice'
-                    desc='Lower your tax with voluntary super contributions'
+                    desc='Lower your tax with voluntary super'
                     contents={<><table className='dropdown-table'>
                       <tbody>
                         <tr>
@@ -1025,7 +1047,27 @@ export default function PayCalculator() {
                     </>}
                     toggleFunc={setHasSuperSalarySacrifise}
                     expandedVar={hasSuperSalarySacrifise}
-                    infoTag={null}
+                    infoTag={<HtmlTooltip
+                      title={
+                        <>
+                          <b>Novated Leasing</b> is salary packaging benefit through your employer. We highly recommend our leasing partners <a href="https://www.allianceleasing.com.au/" target="_blank">Alliance Leasing</a> and <a href="https://www.easifleet.com.au/" target='_blank'> Easi</a>.
+                        </>
+                      }
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: 'offset',
+                              options: {
+                                offset: [160, -60],
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    >
+                      <AiFillInfoCircle />
+                    </HtmlTooltip>}
                   />
                 </div >
                 {/* </td>
@@ -1033,7 +1075,7 @@ export default function PayCalculator() {
                 <div className='flex-cell'>
                   <ToggleExpandVerticalTab
                     label='Work Deductables'
-                    desc='Subtract your work expenses (minus GST) from your taxable income'
+                    desc='Subtract your work expenses Pre-Tax'
                     contents={<>
                       <table className='dropdown-table'>
                         <tbody>
@@ -1071,7 +1113,9 @@ export default function PayCalculator() {
                             <li>Tools for work (computers, stationery)</li>
                             <li>Education and training for work</li>
                           </ul>
-                          A comprehensive list can be found
+                          The value of work expenses (minus GST) can be deducted from your Taxable Income to lower your tax.
+                          <br></br>
+                          A comprehensive list of deductables can be found
                           <a href="https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records/deductions-you-can-claim/work-related-deductions" target="_blank"> here</a>
                         </>
                       }
@@ -1150,7 +1194,7 @@ export default function PayCalculator() {
               </tbody>
             </table>
             {optionsActive.length > 0 ?
-              <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>
+              <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} className='desktop-only' >
                 Benefits Active: {optionsActive.map((option) => {
                   return (
                     <span style={{ color: 'black', fontWeight: 'bold' }}>
@@ -1163,7 +1207,20 @@ export default function PayCalculator() {
               :
               null}
           </div>
+          {optionsActive.length > 0 ?
+            <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} className='mobile-only' >
+              Benefits Active: {optionsActive.map((option) => {
+                return (
+                  <span style={{ color: 'black', fontWeight: 'bold' }}>
+                    {option}
+                  </span>
+                )
 
+              })}
+            </p>
+            :
+            null}
+          {<p className='mobile-only'><i>Swipe to see more </i><AiOutlineArrowRight /></p>}
           <div className='chart-block'>
             <PayrollPieChart title={''} data={financialData['payrollData']} />
 

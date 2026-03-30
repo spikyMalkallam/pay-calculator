@@ -13,7 +13,7 @@ export function SwitchToggle({ label, description, setFunc, infoTag, dropdown }:
         <table className={(dropdown ? 'toggle-table' : '')}>
             <tbody>
                 <tr>
-                    <td rowSpan={2}>
+                    <td className='toggle-box' rowSpan={2}>
                         <label className="switch">
                             <input type="checkbox" onClick={setFunc}></input>
                             <span className="slider round"></span>

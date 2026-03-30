@@ -1,5 +1,5 @@
 :root {
-  overflow: hidden;
+  /* overflow: hidden; */
   margin: 0 auto;
   padding: 0;
   text-align: center;
@@ -158,6 +158,52 @@ body {
   }
 }
 
+#mortage-link {
+  display: flex;
+  /* margin: 10px 0px 20px 0px; */
+  background-color: black;
+  border-radius: 30px;
+  width: 100%;
+  padding: 10px 12px;
+  justify-content: center;
+  transition: 0.3s all ease;
+  color: var(--hive-yellow);
+  /* font-weight: bold; */
+  font-size: 20px;
+}
+
+#mortage-container {
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  width: fit-content;
+  --c: var(--hive-yellow);
+  --b: 25px;
+  --g: 5px;
+  padding: calc(var(--g));
+  --_g: #0000 25%,
+    var(--c) 0;
+  background: conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) var(--_i, 200%) 0 /200% var(--_i, var(--b)) no-repeat,
+    conic-gradient(at bottom var(--b) left var(--b), var(--_g)) 0 var(--_i, 200%)/var(--_i, var(--b)) 200% no-repeat;
+  transition: .3s,
+    background-position .3s;
+  border-radius: 30px;
+  /* cursor: pointer; */
+  /* padding: 0px 5px */
+}
+
+#mortage-container:hover {
+  --_i: 100%;
+  transition: .3s, background-size .3s .3s;
+  border-radius: 20px;
+}
+
+#mortage-container-container {
+  display: flex;
+  justify-content: center;
+  margin: 5px 0px 10px 10px;
+}
+
 #summary-section {
   display: flex;
   width: 100%;
@@ -180,6 +226,7 @@ body {
 }
 
 #summary-div {
+
   flex: 1 1 auto;
   width: 100%;
   /* min-width: 40%; */
@@ -213,13 +260,29 @@ button:focus {
   border-collapse: collapse;
 }
 
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
 @media (max-width: 768px) {
 
   /* .table-container {
-    width: 100%;
+    width: 100%; 
     margin: 0 auto;
     border: 1px solid #ddd;
   } */
+
+  .mobile-only {
+    display: block;
+  }
+
+  .desktop-only {
+    display: none;
+  }
 
 
   .payroll-options {

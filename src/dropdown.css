@@ -136,6 +136,7 @@
 
 .dropdown-subdiv.expanded {
     max-height: 910px;
+    cursor: default;
 }
 
 .expand-subdiv-vertical.expanded {
@@ -639,6 +640,7 @@ select>option {
     gap: 4px;
     font-weight: bold;
     margin-right: 0px;
+    min-width: 400px;
     /* space between dot and text */
 }
 

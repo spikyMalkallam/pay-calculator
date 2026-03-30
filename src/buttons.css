@@ -78,3 +78,7 @@ input:checked+.slider:before {
 .switch-desc {
     font-style: italic;
 }
+
+.toggle-box {
+    width: 10%;
+}

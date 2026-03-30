@@ -503,7 +503,7 @@ export default function PayCalculator() {
 
     if (pretaxDeductionAmount > 0) {
       numUndeductedTax = calculateTax(salaryPeriods[4], employerContributionSum, taxRates['2226'], yearlyHours)['totalTaxSplit'];
-      console.log(numUndeductedTax)
+      // console.log(numUndeductedTax)
       taxDeductionDiff = currentTax['totalTaxSplit'].map((val: number, i: number) =>
         round(numUndeductedTax[i] - val, 2)
       );

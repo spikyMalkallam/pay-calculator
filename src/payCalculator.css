@@ -160,18 +160,21 @@ body {
 
 #mortage-link {
   display: flex;
-  /* margin: 10px 0px 20px 0px; */
   background-color: black;
-  border-radius: 30px;
+  border-radius: 0px;
   width: 100%;
-  padding: 10px 12px;
+  padding: 5px 12px 10px 12px;
   justify-content: center;
   transition: 0.3s all ease;
   color: var(--hive-yellow);
-  /* font-weight: bold; */
   font-size: 20px;
 }
 
+#mortage-link:hover {
+  text-decoration: underline;
+}
+
+/* 
 #mortage-container {
   display: flex;
   justify-content: center;
@@ -188,8 +191,6 @@ body {
   transition: .3s,
     background-position .3s;
   border-radius: 30px;
-  /* cursor: pointer; */
-  /* padding: 0px 5px */
 }
 
 #mortage-container:hover {
@@ -202,7 +203,7 @@ body {
   display: flex;
   justify-content: center;
   margin: 5px 0px 10px 10px;
-}
+} */
 
 #summary-section {
   display: flex;

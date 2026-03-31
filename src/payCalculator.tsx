@@ -76,7 +76,7 @@ export default function PayCalculator() {
   //   "Telsa Model 3": [[], []],
   //   "Audi A1": [[], []]
   // }
-  const [salary, setSalary] = useState(40.00)
+  const [salary, setSalary] = useState(100.00)
   // 0: 1: 2: 3: 4: 5: 6:
   const payCycle = 'Hourly';
   // const [payCycle, setPayCycle] = useState('Hourly')
@@ -420,17 +420,17 @@ export default function PayCalculator() {
       superSalary = round(superSalary / (1 + (superPercentage / 100)), 2);
       superSum = round(superSalary * (superPercentage / 100), 2);
       // Cap to concessional limit
-      if (superSum > 30000) {
-        superSum = 30000
-        superSalary = salarySum - superSum;
-      }
+      // if (superSum > 30000) {
+      //   superSum = 30000
+      //   superSalary = salarySum - superSum;
+      // }
     }
     else {
       superSum = round((salarySum * (superPercentage / 100)), 2);
       // Cap to concessional limits
-      if (superSum > 30000) {
-        superSum = 30000
-      }
+      // if (superSum > 30000) {
+      //   superSum = 30000
+      // }
     }
     let employerContribution = splitTax(superSum, yearlyHours);
     for (let i = 0; i < 5; i++) {
@@ -445,7 +445,11 @@ export default function PayCalculator() {
     let nonConcessional = 0;
     if (hasSuperSalarySacrifise) {
       if (maximiseSuper) {
-        superContribution = 30000 - superSum;
+        if (superSum <= 30000) {
+          superContribution = 30000 - superSum;
+        } else {
+          superContribution = 0;
+        }
         setVoluntarySuperAmmount(superContribution / 52)
         // console.log(voluntarySuperAmmount)
       }
@@ -624,6 +628,9 @@ export default function PayCalculator() {
     }
     if (hasMortage) {
       payrollData[0].subCategories.push({ id: 'mortage', label: 'Mortage Repayments', value: Number(mortageAnnualPayments), color: '#a30101' });
+    }
+    if (hasWorkDeductions && workDeductablesAmount > 0) {
+      payrollData[0].subCategories.push({ id: 'work-deducts', label: 'Work Deductions', value: Number(workDeductablesAmount), color: '#00b300' });
     }
     if (hasNovatedLease) {
       if (-novatedLeasePostTax[4] > 0) {
@@ -906,15 +913,8 @@ export default function PayCalculator() {
             </div>}
           />
         </div> */}
-        <div id='mortage-container-container'>
-          <div id='mortage-container'>
-            <a target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
-              <div id='mortage-link'>
-                <i>Learn how Hive's weekly pay can help you save money on your Mortage</i>
-              </div>
-            </a>
-          </div>
-        </div>
+        <p style={{ color: 'black', margin: '0px', paddingBottom: '5px' }}><i>If you have any questions get in touch with our accounts team <a href='mailto:accounts@recruitmenthive.com.au' target='_blank' style={{ color: 'black', fontWeight: 'bold' }}>here</a></i></p>
+
         <div id='hive-benefits'>
           <DropdownTab
             colour='black'
@@ -1144,13 +1144,29 @@ export default function PayCalculator() {
                 </tbody>
               </table> */}
               </div>
+              {/* <div id='mortage-container-container'>
+                <div id='mortage-container'>
+                  <a target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
+                    <div id='mortage-link'>
+                      <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
+                    </div>
+                  </a>
+                </div>
+              </div> */}
+              <a target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
+                <div id='mortage-link'>
+                  <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
+                </div>
+              </a>
               <div style={{ background: 'black' }}>
-                <p style={{ color: 'var(--hive-yellow)', margin: '0px', paddingBottom: '5px' }}><i>We also offer Living Away From Home Allowance (LAFHA), Banked Pay, and Banking Benefits. Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
+                <p style={{ color: 'var(--hive-yellow)', margin: '0px', paddingBottom: '5px' }}><i>We also offer Living Away From Home Allowance (LAFHA). Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
               </div>
             </>}
 
           />
+
         </div>
+
         <div id='summary-section'>
           {/* <div id='summary-div'> */}
           <div className="table-container">

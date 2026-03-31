@@ -463,7 +463,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                 </tr>
                 <tr className="mortage-table-header">
                     <td colSpan={4} style={{ textAlign: 'center' }}>
-                        Savings with Weekly
+                        Savings with Weekly Repayments
                     </td>
                 </tr>
                 <tr>

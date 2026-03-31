@@ -728,11 +728,28 @@ select>option {
 .sub-benefit-box {
     text-align: center;
     width: 33%;
+    color: var(--hive-yellow);
+}
+
+#savings-box {
+    background-color: black;
+    border-radius: 30px;
+    border: 5px solid var(--hive-yellow);
+    padding: 5px;
+    margin-top: 15px;
+}
+
+#savings-header {
+    font-weight: bold;
+    font-size: 30px;
+    color: var(--hive-yellow);
 }
 
 #benefits-box {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 #benefits-box p {
@@ -741,7 +758,7 @@ select>option {
 }
 
 .mortage-body td {
-    text-align: left;
+    text-align: center;
     color: black;
     /* background-color: var(--yellow-tone-5); */
 }

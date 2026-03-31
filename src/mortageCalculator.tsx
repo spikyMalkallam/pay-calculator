@@ -60,7 +60,7 @@ export default function MortageCalculator() {
                             <InputField
                                 textColour='black'
                                 headerColour='rgba(0,0,0,0)'
-                                backgroundColour='rgba(0,0,0,0)'
+                                backgroundColour='rgba(0, 0, 0, 0)'
                                 label={"Loan Ammount"}
                                 id='mortage-loan-ammount'
                                 value={mortageLoanAmmount}
@@ -74,8 +74,8 @@ export default function MortageCalculator() {
                             />
                             <InputField
                                 textColour='black'
-                                headerColour='white'
-                                backgroundColour='white'
+                                headerColour='rgba(0,0,0,0)'
+                                backgroundColour='rgba(102, 102, 102, 0)'
                                 label={"Loan Term (years)"}
                                 id='mortage-loan-ammount'
                                 value={mortageTerm}
@@ -89,8 +89,8 @@ export default function MortageCalculator() {
                             />
                             <InputField
                                 textColour='black'
-                                headerColour='white'
-                                backgroundColour='white'
+                                headerColour='rgba(0,0,0,0)'
+                                backgroundColour='rgba(102, 102, 102, 0)'
                                 label={"Annual Interest Rate"}
                                 id='mortage-loan-ammount'
                                 value={mortageInterestRate}

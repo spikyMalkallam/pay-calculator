@@ -217,7 +217,7 @@ select>option {
     padding-top: 25px;
 }
 
-.toggle-table {}
+
 
 /* .dropdown-button.expanded.Benefits {
     border-radius: 20px 0px 0px 0px;
@@ -701,12 +701,23 @@ select>option {
 .mortage-table {
     border-collapse: collapse;
     color: white;
-    border: 2px solid var(--hive-yellow);
+    /* border: 2px solid var(--hive-yellow); */
+}
+
+.mortage-table-header td {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.value {
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .mortage-table td {
     padding: 8px;
-    border: 2px solid var(--hive-yellow);
+    color: black;
+    /* border: 2px solid var(--hive-yellow); */
     /* background-color: var(--income-subtable-backing); */
 }
 
@@ -714,8 +725,25 @@ select>option {
     font-size: 20px;
 }
 
+.sub-benefit-box {
+    text-align: center;
+    width: 33%;
+}
+
+#benefits-box {
+    display: flex;
+    flex-direction: row;
+}
+
+#benefits-box p {
+    font-size: 20px;
+    margin: 5px;
+}
+
 .mortage-body td {
-    background-color: var(--yellow-tone-5);
+    text-align: left;
+    color: black;
+    /* background-color: var(--yellow-tone-5); */
 }
 
 .selected-freq {

@@ -396,28 +396,37 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
         <table className="mortage-table">
             <thead>
                 <tr className="mortage-table-header">
-                    <td colSpan={1} className='unselected-freq'>
-                        Mortage Repayments
+                    <td colSpan={4} >
+                        Your Home Loan Repayments
                     </td>
-                    <td className={!monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
+                    {/* <td className={!monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
                         Monthly
                     </td>
                     <td className={monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
                         Weekly
-                    </td>
+                    </td> */}
                 </tr>
             </thead>
             <tbody className="mortage-body">
 
                 <tr>
+                    <td style={{ borderLeft: '2px solid var(--hive-yellow)' }}>
+                        <span style={{ fontSize: '20px', fontWeight: '600' }}>Monthly</span>
+                        <div className="value">{displayMoney(mortageData['montlyRepaymentAmmount'])}</div>
+                    </td>
+                    <td style={{ borderRight: '2px solid var(--hive-yellow)' }}>
+                        Loan Duration
+                        <div className="value">{mortageData['loanTerm']} years</div>
+                        {/* {displayMoney(mortageData['montlyRepaymentAmmount'])} */}
+                    </td>
                     <td>
-                        Repayment Ammount
+                        <span style={{ fontSize: '20px', fontWeight: '600' }}>Weekly</span>
+                        <div className="value">{displayMoney(mortageData['weeklyRepaymentAmmount'])}</div>
                     </td>
                     <td className={!monthlyPayment ? 'selected-val' : ''}>
-                        {displayMoney(mortageData['montlyRepaymentAmmount'])}
-                    </td>
-                    <td className={monthlyPayment ? 'selected-val' : ''}>
-                        {displayMoney(mortageData['weeklyRepaymentAmmount'])}
+                        Loan Duration
+                        <div className="value" style={{ color: "var(--hive-yellow)" }}>{mortageData['weeklyPayedOffIn']} years</div>
+                        {/* {displayMoney(mortageData['montlyRepaymentAmmount'])} */}
                     </td>
                 </tr>
                 {/* <tr>
@@ -432,14 +441,47 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     </td>
                 </tr> */}
                 <tr>
-                    <td>
-                        Time Saved
+                    <td style={{ borderLeft: '2px solid var(--hive-yellow)' }}>
+                        Total loan Repayments
+                        <div className="value">{displayMoney(mortageData['monthlyTotalRepayments'])}</div>
+                    </td>
+                    <td style={{ borderRight: '2px solid var(--hive-yellow)' }}>
+                        Total interest charged
+                        <div className="value" >  {displayMoney(mortageData['monthlyTotalInterest'])}</div>
                     </td>
                     <td>
-                        {'-'}
+                        Total loan Repayments
+                        <div className="value" style={{ color: "var(--hive-yellow)" }}>{displayMoney(mortageData['weeklyTotalRepayments'])}</div>
                     </td>
-                    <td className={monthlyPayment ? 'selected-val' : ''}>
+                    <td>
+                        Total interest charged
+                        <div className="value" style={{ color: "var(--hive-yellow)" }}>  {displayMoney(mortageData['weeklyTotalInterest'])}</div>
+                    </td>
+                    {/* <td className={monthlyPayment ? 'selected-val' : ''}>
                         {mortageData['weeklyTimeSaved']} years
+                    </td> */}
+                </tr>
+                <tr className="mortage-table-header">
+                    <td colSpan={4} style={{ textAlign: 'center' }}>
+                        Savings with Weekly
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={4} >
+                        <div id='benefits-box' >
+                            <div className="sub-benefit-box">
+                                <p>Time Saved</p>
+                                <div style={{ color: "var(--hive-yellow)", fontSize: '28px', fontWeight: '600' }}>  {mortageData['weeklyTimeSaved'] + ' years'}</div>
+                            </div>
+                            <div className="sub-benefit-box">
+                                <p>Annual Interest Savings</p>
+                                <div style={{ color: "var(--hive-yellow)", fontSize: '28px', fontWeight: '600' }}>  {displayMoney(mortageData['weeklyAnnualInterestSavings'])}</div>
+                            </div>
+                            <div className="sub-benefit-box">
+                                <p>Total Interest Savings</p>
+                                <div style={{ color: "var(--hive-yellow)", fontSize: '28px', fontWeight: '600' }}>  {displayMoney(mortageData['weeklyInterestSavings'])}</div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
 
@@ -454,7 +496,7 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                         {displayMoney(mortageData['weeklyTotalInterest'])}
                     </td>
                 </tr> */}
-                <tr>
+                {/* <tr>
                     <td>
                         Total Interest Savings
                     </td>
@@ -486,8 +528,9 @@ export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortagePr
                     <td className={monthlyPayment ? 'selected-val' : ''}>
                         {displayMoney(mortageData['weeklyTotalRepayments'])}
                     </td>
-                </tr>
+                </tr> */}
+
             </tbody>
-        </table>
+        </table >
     )
 }

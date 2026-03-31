@@ -7,9 +7,9 @@ import { InputField } from './forms'
 import './mortageCalculator.css'
 
 export default function MortageCalculator() {
-    const [mortageLoanAmmount, setMortageLoanAmmount] = useState(500000);
-    const [mortageInterestRate, setMortageInterestRate] = useState(5.25);
-    const [mortageTerm, setMortageTerm] = useState(20);
+    const [mortageLoanAmmount, setMortageLoanAmmount] = useState(1000000);
+    const [mortageInterestRate, setMortageInterestRate] = useState(6);
+    const [mortageTerm, setMortageTerm] = useState(30);
     // const [mortagePayFreq, setMortagePayFreq] = useToggle();
     const mortagePayFreq = true;
     // const [hasMortage, setHasMortage] = useToggle();
@@ -76,21 +76,6 @@ export default function MortageCalculator() {
                                 textColour='black'
                                 headerColour='white'
                                 backgroundColour='white'
-                                label={"Annual Interest Rate"}
-                                id='mortage-loan-ammount'
-                                value={mortageInterestRate}
-                                setFunc={(val) => { setMortageInterestRate(val); }}
-                                styling='medium'
-                                formatting={'percentage'}
-                                rounding={2}
-                                min={0}
-                                max={null}
-                                lock={false}
-                            />
-                            <InputField
-                                textColour='black'
-                                headerColour='white'
-                                backgroundColour='white'
                                 label={"Loan Term (years)"}
                                 id='mortage-loan-ammount'
                                 value={mortageTerm}
@@ -102,6 +87,22 @@ export default function MortageCalculator() {
                                 max={null}
                                 lock={false}
                             />
+                            <InputField
+                                textColour='black'
+                                headerColour='white'
+                                backgroundColour='white'
+                                label={"Annual Interest Rate"}
+                                id='mortage-loan-ammount'
+                                value={mortageInterestRate}
+                                setFunc={(val) => { setMortageInterestRate(val); }}
+                                styling='medium'
+                                formatting={'percentage'}
+                                rounding={2}
+                                min={0}
+                                max={null}
+                                lock={false}
+                            />
+
                             {/* <SwitchToggle
                                 dropdown={false}
                                 label="Accelerated repayments"

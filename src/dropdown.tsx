@@ -388,7 +388,7 @@ type MortageProps = {
     monthlyPayment: boolean;
 }
 
-export function MortageRepaymentTable({ mortageData, monthlyPayment }: MortageProps) {
+export function MortageRepaymentTable({ mortageData }: MortageProps) {
     // Excel helpers
 
 

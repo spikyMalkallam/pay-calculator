@@ -1199,7 +1199,7 @@ export default function PayCalculator() {
                       totals={financialData['postTax'].map(displayMoney)}
                       totalItems={{
                         "Net Salary": financialData['grossPay'].map(displayMoney),
-                        "Work Deductables": (hasWorkDeductions ? [0, 0, 0, 0, -workDeductablesAmount].map(displayMoney) : null),
+                        "Work Deductables Post-Tax": (hasWorkDeductions ? [0, 0, 0, 0, -(round((workDeductablesAmount / 11), 2))].map(displayMoney) : null),
                         "Non-Concessional Voluntary Super": (hasSuperSalarySacrifise && financialData['voluntarySuperCon'][1][4] != 0) ? financialData['voluntarySuperCon'][1].map((x) => displayMoney(-x)) : null,
                         "Mortage Repayments": hasMortage ? financialData['annualMortageSplit'].map((x) => displayMoney(-x)) : null,
                         "Novated Lease Post-Tax Payment": financialData['novatedPayments'][1][0] != 0 ? financialData['novatedPayments'][1].map(displayMoney) : null,
@@ -1223,6 +1223,7 @@ export default function PayCalculator() {
               :
               null}
           </div>
+          {<p className='mobile-only'><i>Swipe to see more </i><AiOutlineArrowRight /></p>}
           {optionsActive.length > 0 ?
             <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} className='mobile-only' >
               Benefits Active: {optionsActive.map((option) => {
@@ -1236,7 +1237,7 @@ export default function PayCalculator() {
             </p>
             :
             null}
-          {<p className='mobile-only'><i>Swipe to see more </i><AiOutlineArrowRight /></p>}
+
           <div className='chart-block'>
             <PayrollPieChart title={''} data={financialData['payrollData']} />
 

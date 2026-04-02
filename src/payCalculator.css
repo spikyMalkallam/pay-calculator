@@ -154,7 +154,7 @@ body {
   }
 
   .pretax-savings {
-    font-size: 22px;
+    font-size: 24px;
   }
 }
 
@@ -173,6 +173,7 @@ body {
 #mortage-link:hover {
   text-decoration: underline;
 }
+
 
 /* 
 #mortage-container {
@@ -298,7 +299,7 @@ button:focus {
   } */
 
   .pretax-savings {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   #mortage-input {

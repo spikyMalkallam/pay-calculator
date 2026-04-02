@@ -58,9 +58,9 @@ export default function MortageCalculator() {
                     <div id='mortage-dropdown'>
                         <div id='mortage-input'>
                             <InputField
-                                textColour='black'
-                                headerColour='rgba(0,0,0,0)'
-                                backgroundColour='rgba(0, 0, 0, 0)'
+                                textColour='white'
+                                headerColour='var(--hive-yellow)'
+                                backgroundColour='var(--yellow-tone-5)'
                                 label={"Loan Ammount"}
                                 id='mortage-loan-ammount'
                                 value={mortageLoanAmmount}
@@ -73,9 +73,9 @@ export default function MortageCalculator() {
                                 lock={false}
                             />
                             <InputField
-                                textColour='black'
-                                headerColour='rgba(0,0,0,0)'
-                                backgroundColour='rgba(102, 102, 102, 0)'
+                                textColour='white'
+                                headerColour='var(--hive-yellow)'
+                                backgroundColour='var(--yellow-tone-5)'
                                 label={"Loan Term (years)"}
                                 id='mortage-loan-ammount'
                                 value={mortageTerm}
@@ -88,9 +88,9 @@ export default function MortageCalculator() {
                                 lock={false}
                             />
                             <InputField
-                                textColour='black'
-                                headerColour='rgba(0,0,0,0)'
-                                backgroundColour='rgba(102, 102, 102, 0)'
+                                textColour='white'
+                                headerColour='var(--hive-yellow)'
+                                backgroundColour='var(--yellow-tone-5)'
                                 label={"Annual Interest Rate"}
                                 id='mortage-loan-ammount'
                                 value={mortageInterestRate}
@@ -112,6 +112,8 @@ export default function MortageCalculator() {
                             /> */}
                         </div>
                         <MortageRepaymentTable mortageData={mortageData} monthlyPayment={mortagePayFreq} />
+                        <br></br>
+                        <i>Recruitment Hive's weekly pay has a 1% admin fee</i>
                     </div>
                 </div>
             </div>

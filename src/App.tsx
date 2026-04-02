@@ -1,5 +1,5 @@
 import PayCalculator from './payCalculator'
-import MortageCalculator from './mortageCalculator';
+import HomeLoanCalculator from './homeLoanCalculator';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
             {/* Routes */}
             <Routes>
                 <Route path="/pay-calculator" element={<PayCalculator />} />
-                <Route path="/mortage-calculator" element={<MortageCalculator />} />
+                <Route path="/homeloan-calculator" element={<HomeLoanCalculator />} />
             </Routes>
         </HashRouter>
     );

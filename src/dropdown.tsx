@@ -367,7 +367,7 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
                         <table className="income-takehome-table">
                             <tbody>
                                 <tr className="income-table-takehome-row">
-                                    <td className="income-table-takehome label">Pay</td>
+                                    <td className="income-table-takehome label">Take-Home Pay</td>
                                     <td className="income-table-takehome">{totals[1]}</td>
                                     {/* <td className="income-table-takehome-cell">{totals[2]}</td> */}
                                     <td className="income-table-takehome">{totals[3]}</td>

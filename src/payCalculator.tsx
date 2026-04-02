@@ -926,7 +926,7 @@ export default function PayCalculator() {
                     <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
                     Hive Benefits
                   </h2>
-                  <span className='hive-subheader'>Our accounts team can offer you</span>
+                  <span className='hive-subheader'>Recruitment Hive can offer you</span>
                   <div className='pretax-savings'>
                     {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in annual income tax savings') : null}
                   </div>

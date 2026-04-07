@@ -397,7 +397,7 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
             <table className="mortage-table">
                 <thead>
                     <tr className="mortage-table-header">
-                        <td colSpan={5} >
+                        <td colSpan={4} >
                             Your Home Loan Repayments
                         </td>
                         {/* <td className={!monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
@@ -410,27 +410,25 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
                 </thead>
                 <tbody className="mortage-body">
                     <tr>
-                        <td colSpan={2} style={{ textAlign: 'center' }}>
+                        <td colSpan={2} style={{ textAlign: 'center', borderRight: '2px solid var(--hive-yellow)' }}>
                             <span style={{ fontSize: '20px', fontWeight: '600', textAlign: 'center' }}>Monthly</span>
                         </td>
-                        <td></td>
                         <td colSpan={2} style={{ textAlign: 'center' }}>
                             <span style={{ fontSize: '20px', fontWeight: '600' }}>Weekly</span>
                         </td>
                     </tr>
                     <tr>
                         <td style={{ borderTop: '2px solid var(--hive-yellow)' }}> {/* borderLeft: '2px solid var(--hive-yellow)', */}
-                            <span >Repayments</span>
+                            <span >Repayment</span>
                             <div className="value">{displayMoney(mortageData['montlyRepaymentAmmount'])}</div>
                         </td>
-                        <td style={{ borderTop: '2px solid var(--hive-yellow)' }}> {/* borderRight: '2px solid var(--hive-yellow)',*/}
+                        <td style={{ borderTop: '2px solid var(--hive-yellow)', borderRight: '2px solid var(--hive-yellow)' }}> {/* borderRight: '2px solid var(--hive-yellow)',*/}
                             Loan Duration
                             <div className="value">{mortageData['loanTerm']} years</div>
                             {/* {displayMoney(mortageData['montlyRepaymentAmmount'])} */}
                         </td>
-                        <td></td>
                         <td style={{ borderTop: '2px solid var(--hive-yellow)' }}>
-                            <span >Repayments</span>
+                            <span >Repayment</span>
                             <div className="value">{displayMoney(mortageData['weeklyRepaymentAmmount'])}</div>
                         </td>
                         <td style={{ borderTop: '2px solid var(--hive-yellow)' }}>
@@ -455,16 +453,15 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
                             Total loan Repayments
                             <div className="value">{displayMoney(mortageData['monthlyTotalRepayments'])}</div>
                         </td>
-                        <td > {/* style={{ borderRight: '2px solid var(--hive-yellow)', borderBottom: '2px solid var(--hive-yellow)' }} */}
+                        <td style={{ borderRight: '2px solid var(--hive-yellow)' }}> {/* style={{ borderRight: '2px solid var(--hive-yellow)', borderBottom: '2px solid var(--hive-yellow)' }} */}
                             Total interest charged
                             <div className="value" >  {displayMoney(mortageData['monthlyTotalInterest'])}</div>
                         </td>
-                        <td></td>
                         <td>
                             Total loan Repayments
                             <div className="value" style={{ color: "var(--hive-yellow)" }}>{displayMoney(mortageData['weeklyTotalRepayments'])}</div>
                         </td>
-                        <td>
+                        <td >
                             Total interest charged
                             <div className="value" style={{ color: "var(--hive-yellow)" }}>  {displayMoney(mortageData['weeklyTotalInterest'])}</div>
                         </td>

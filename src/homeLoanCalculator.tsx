@@ -7,6 +7,26 @@ import { InputField } from './forms'
 import './homeLoanCalculator.css'
 
 export default function HomeLoanCalculator() {
+    // 1. Define the function to report the height
+    const notifyParent = () => {
+        // 1. Temporarily allow the body to shrink to 0 to find the 'true' content height
+        document.body.style.height = '0px';
+        // 2. Measure the height of the actual content wrapper
+        // Use a specific wrapper div ID if possible for better accuracy
+        const height = document.body.scrollHeight;
+        // 3. Reset the body height so it can grow again
+        document.body.style.height = 'auto';
+        window.parent.postMessage({ frameHeight: height }, '*');
+        // console.log("Child: " + height);
+    };
+
+    // 2. Create the Observer
+    const resizeObserver = new ResizeObserver(() => {
+        notifyParent();
+    });
+
+    // 3. Start observing the body or a specific wrapper
+    resizeObserver.observe(document.body);
     const [mortageLoanAmmount, setMortageLoanAmmount] = useState(1000000);
     const [mortageInterestRate, setMortageInterestRate] = useState(6);
     const [mortageTerm, setMortageTerm] = useState(30);
@@ -58,9 +78,9 @@ export default function HomeLoanCalculator() {
                     <div id='mortage-dropdown'>
                         <div id='mortage-input'>
                             <InputField
-                                textColour='white'
+                                textColour='black'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='var(--yellow-tone-5)'
+                                backgroundColour='rgba(0,0,0,0)'
                                 label={"Loan Ammount"}
                                 id='mortage-loan-ammount'
                                 value={mortageLoanAmmount}
@@ -73,9 +93,9 @@ export default function HomeLoanCalculator() {
                                 lock={false}
                             />
                             <InputField
-                                textColour='white'
+                                textColour='black'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='var(--yellow-tone-5)'
+                                backgroundColour='rgba(0,0,0,0)'
                                 label={"Loan Term (years)"}
                                 id='mortage-loan-ammount'
                                 value={mortageTerm}
@@ -88,9 +108,9 @@ export default function HomeLoanCalculator() {
                                 lock={false}
                             />
                             <InputField
-                                textColour='white'
+                                textColour='black'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='var(--yellow-tone-5)'
+                                backgroundColour='rgba(0,0,0,0)'
                                 label={"Annual Interest Rate"}
                                 id='mortage-loan-ammount'
                                 value={mortageInterestRate}

@@ -921,7 +921,7 @@ export default function PayCalculator() {
             </div>}
           />
         </div> */}
-        <p style={{ color: 'black', margin: '0px', paddingBottom: '5px' }}><i>If you have any questions get in touch with our accounts team <a href='mailto:accounts@recruitmenthive.com.au' target='_blank' style={{ color: 'black', fontWeight: 'bold' }}>here</a></i></p>
+        <p style={{ color: 'black', margin: '0px', paddingBottom: '17px' }}><i>If you have any questions get in touch with our accounts team <a href='mailto:accounts@recruitmenthive.com.au' target='_blank' style={{ color: 'black', fontWeight: 'bold' }}>here</a></i></p>
 
         <div id='hive-benefits'>
           <DropdownTab
@@ -1058,7 +1058,7 @@ export default function PayCalculator() {
                     infoTag={<HtmlTooltip
                       title={
                         <>
-                          <b>Novated Leasing</b> is salary packaging benefit through your employer. We highly recommend our leasing partners <a href="https://www.allianceleasing.com.au/" target="_blank">Alliance Leasing</a> and <a href="https://www.easifleet.com.au/" target='_blank'> Easi</a>.
+                          <b>Super Salary Sacrifise</b> is where you voluntarily contribute a portion of your pay to your Superannuation fund. If your annual contributions are under $30,000, you can make contributions Pre-Tax. Learn more <a href='https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/how-to-save-more-in-your-super/salary-sacrificing-super'>here</a>.
                         </>
                       }
                       slotProps={{

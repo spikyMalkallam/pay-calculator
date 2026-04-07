@@ -467,6 +467,15 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
             </div>
 
             <style>{`
+            #mortage-dropdown {
+                justify-content: center;
+                align-items: center;
+            }
+                #mortage-input {
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+                }
         .mortgage-container {
           width: 100%;
           max-width: 800px;
@@ -530,9 +539,10 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
         }
 
         /* Mobile Adjustments */
-        @media (max-width: 769px) {
+        @media (max-width: 654px) {
           .comparison-column.border-right { border-right: none; }
           #benefits-box { flex-direction: column; }
+          .mortage-container { flex-direction: column; }
         }
       `}</style>
         </div>

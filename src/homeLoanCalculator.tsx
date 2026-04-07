@@ -78,9 +78,9 @@ export default function HomeLoanCalculator() {
                     <div id='mortage-dropdown'>
                         <div id='mortage-input'>
                             <InputField
-                                textColour='black'
+                                textColour='white'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='rgba(0,0,0,0)'
+                                backgroundColour='var(--yellow-tone-5)'
                                 label={"Loan Ammount"}
                                 id='mortage-loan-ammount'
                                 value={mortageLoanAmmount}
@@ -93,9 +93,9 @@ export default function HomeLoanCalculator() {
                                 lock={false}
                             />
                             <InputField
-                                textColour='black'
+                                textColour='white'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='rgba(0,0,0,0)'
+                                backgroundColour='var(--yellow-tone-5)'
                                 label={"Loan Term (years)"}
                                 id='mortage-loan-ammount'
                                 value={mortageTerm}
@@ -108,9 +108,9 @@ export default function HomeLoanCalculator() {
                                 lock={false}
                             />
                             <InputField
-                                textColour='black'
+                                textColour='white'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='rgba(0,0,0,0)'
+                                backgroundColour='var(--yellow-tone-5)'
                                 label={"Annual Interest Rate"}
                                 id='mortage-loan-ammount'
                                 value={mortageInterestRate}

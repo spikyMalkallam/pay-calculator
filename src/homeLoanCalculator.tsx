@@ -4,9 +4,9 @@ import { useState, useMemo } from 'react'
 import { MortageRepaymentTable } from './dropdown'
 import { InputField } from './forms'
 // import { SwitchToggle } from './buttons'
-import './mortageCalculator.css'
+import './homeLoanCalculator.css'
 
-export default function MortageCalculator() {
+export default function HomeLoanCalculator() {
     const [mortageLoanAmmount, setMortageLoanAmmount] = useState(1000000);
     const [mortageInterestRate, setMortageInterestRate] = useState(6);
     const [mortageTerm, setMortageTerm] = useState(30);
@@ -113,7 +113,7 @@ export default function MortageCalculator() {
                         </div>
                         <MortageRepaymentTable mortageData={mortageData} monthlyPayment={mortagePayFreq} />
                         <br></br>
-                        <i>Recruitment Hive's weekly pay has a 1% admin fee</i>
+                        <i>Recruitment Hive's weekly pay has a 1% fee</i>
                     </div>
                 </div>
             </div>

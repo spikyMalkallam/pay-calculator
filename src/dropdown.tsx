@@ -389,106 +389,152 @@ type MortageProps = {
 }
 
 export function MortageRepaymentTable({ mortageData }: MortageProps) {
-    // Excel helpers
-
 
     return (
-        <>
-            <table className="mortage-table">
-                <thead>
-                    <tr className="mortage-table-header">
-                        <td colSpan={4} >
-                            Your Home Loan Repayments
-                        </td>
-                        {/* <td className={!monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
-                        Monthly
-                    </td>
-                    <td className={monthlyPayment ? 'selected-freq' : 'unselected-freq'}>
-                        Weekly
-                    </td> */}
-                    </tr>
-                </thead>
-                <tbody className="mortage-body">
-                    <tr>
-                        <td colSpan={2} style={{ textAlign: 'center', borderRight: '2px solid var(--hive-yellow)' }}>
-                            <span style={{ fontSize: '20px', fontWeight: '600', textAlign: 'center' }}>Monthly</span>
-                        </td>
-                        <td colSpan={2} style={{ textAlign: 'center' }}>
-                            <span style={{ fontSize: '20px', fontWeight: '600' }}>Weekly</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style={{ borderTop: '2px solid var(--hive-yellow)' }}> {/* borderLeft: '2px solid var(--hive-yellow)', */}
-                            <span >Repayment</span>
-                            <div className="value">{displayMoney(mortageData['montlyRepaymentAmmount'])}</div>
-                        </td>
-                        <td style={{ borderTop: '2px solid var(--hive-yellow)', borderRight: '2px solid var(--hive-yellow)' }}> {/* borderRight: '2px solid var(--hive-yellow)',*/}
-                            Loan Duration
-                            <div className="value">{mortageData['loanTerm']} years</div>
-                            {/* {displayMoney(mortageData['montlyRepaymentAmmount'])} */}
-                        </td>
-                        <td style={{ borderTop: '2px solid var(--hive-yellow)' }}>
-                            <span >Repayment</span>
-                            <div className="value">{displayMoney(mortageData['weeklyRepaymentAmmount'])}</div>
-                        </td>
-                        <td style={{ borderTop: '2px solid var(--hive-yellow)' }}>
-                            Loan Duration
-                            <div className="value" style={{ color: "var(--hive-yellow)" }}>{mortageData['weeklyPayedOffIn']} years</div>
-                            {/* {displayMoney(mortageData['montlyRepaymentAmmount'])} */}
-                        </td>
-                    </tr>
-                    {/* <tr>
-                    <td>
-                        Loan Paid Off In Years
-                    </td>
-                    <td className={!monthlyPayment ? 'selected-val' : ''}>
-                        {mortageData['loanTerm']}
-                    </td>
-                    <td className={monthlyPayment ? 'selected-val' : ''}>
-                        {mortageData['weeklyPayedOffIn']}
-                    </td>
-                </tr> */}
-                    <tr>
-                        <td> {/* borderLeft: '2px solid var(--hive-yellow)', borderBottom: '2px solid var(--hive-yellow)' */}
-                            Total loan Repayments
-                            <div className="value">{displayMoney(mortageData['monthlyTotalRepayments'])}</div>
-                        </td>
-                        <td style={{ borderRight: '2px solid var(--hive-yellow)' }}> {/* style={{ borderRight: '2px solid var(--hive-yellow)', borderBottom: '2px solid var(--hive-yellow)' }} */}
-                            Total interest charged
-                            <div className="value" >  {displayMoney(mortageData['monthlyTotalInterest'])}</div>
-                        </td>
-                        <td>
-                            Total loan Repayments
-                            <div className="value" style={{ color: "var(--hive-yellow)" }}>{displayMoney(mortageData['weeklyTotalRepayments'])}</div>
-                        </td>
-                        <td >
-                            Total interest charged
-                            <div className="value" style={{ color: "var(--hive-yellow)" }}>  {displayMoney(mortageData['weeklyTotalInterest'])}</div>
-                        </td>
-                        {/* <td className={monthlyPayment ? 'selected-val' : ''}>
-                        {mortageData['weeklyTimeSaved']} years
-                    </td> */}
-                    </tr>
+        <div className="mortgage-container">
+            {/* Header */}
+            <div className="mortgage-header">
+                Your Home Loan Repayments
+            </div>
 
-                </tbody>
-            </table >
-            <div id="savings-box">
-                <div id="savings-header">Savings with Weekly Repayments</div>
-                <div id='benefits-box' >
-                    <div className="sub-benefit-box">
-                        <p>Time Saved</p>
-                        <div style={{ color: "var(--hive-yellow)", fontSize: '28px', fontWeight: '600' }}>  {mortageData['weeklyTimeSaved'] + ' years'}</div>
+            {/* Main Comparison Section */}
+            <div className="comparison-flex">
+
+                {/* Monthly Column */}
+                <div className="comparison-column border-right">
+                    <div className="frequency-title">Monthly</div>
+                    <div className="stats-grid">
+                        <div className="stat-item border-top">
+                            <span>Repayment</span>
+                            <div className="value">{displayMoney(mortageData['montlyRepaymentAmmount'])}</div>
+                        </div>
+                        <div className="stat-item border-top">
+                            <span>Loan Duration</span>
+                            <div className="value">{mortageData['loanTerm']} years</div>
+                        </div>
+                        <div className="stat-item">
+                            <span>Total loan Repayments</span>
+                            <div className="value">{displayMoney(mortageData['monthlyTotalRepayments'])}</div>
+                        </div>
+                        <div className="stat-item">
+                            <span>Total interest charged</span>
+                            <div className="value">{displayMoney(mortageData['monthlyTotalInterest'])}</div>
+                        </div>
                     </div>
-                    <div className="sub-benefit-box">
-                        <p>Annual Interest Savings</p>
-                        <div style={{ color: "var(--hive-yellow)", fontSize: '28px', fontWeight: '600' }}>  {displayMoney(mortageData['weeklyAnnualInterestSavings'])}</div>
-                    </div>
-                    <div className="sub-benefit-box">
-                        <p>Total Interest Savings</p>
-                        <div style={{ color: "var(--hive-yellow)", fontSize: '28px', fontWeight: '600' }}>  {displayMoney(mortageData['weeklyInterestSavings'])}</div>
+                </div>
+
+                {/* Weekly Column */}
+                <div className="comparison-column">
+                    <div className="frequency-title">Weekly</div>
+                    <div className="stats-grid">
+                        <div className="stat-item border-top">
+                            <span>Repayment</span>
+                            <div className="value">{displayMoney(mortageData['weeklyRepaymentAmmount'])}</div>
+                        </div>
+                        <div className="stat-item border-top">
+                            <span>Loan Duration</span>
+                            <div className="value highlighted-text">{mortageData['weeklyPayedOffIn']} years</div>
+                        </div>
+                        <div className="stat-item">
+                            <span>Total loan Repayments</span>
+                            <div className="value highlighted-text">{displayMoney(mortageData['weeklyTotalRepayments'])}</div>
+                        </div>
+                        <div className="stat-item">
+                            <span>Total interest charged</span>
+                            <div className="value highlighted-text">{displayMoney(mortageData['weeklyTotalInterest'])}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </>
+
+            {/* Savings Box */}
+            <div id="savings-box">
+                <div id="savings-header">Savings with Weekly Repayments</div>
+                <div id="benefits-box">
+                    <div className="sub-benefit-box">
+                        <p>Time Saved</p>
+                        <div className="highlighted-value">{mortageData['weeklyTimeSaved']} years</div>
+                    </div>
+                    <div className="sub-benefit-box">
+                        <p>Annual Interest Savings</p>
+                        <div className="highlighted-value">{displayMoney(mortageData['weeklyAnnualInterestSavings'])}</div>
+                    </div>
+                    <div className="sub-benefit-box">
+                        <p>Total Interest Savings</p>
+                        <div className="highlighted-value">{displayMoney(mortageData['weeklyInterestSavings'])}</div>
+                    </div>
+                </div>
+            </div>
+
+            <style>{`
+        .mortgage-container {
+          width: 100%;
+          max-width: 800px;
+          margin: 0 auto;
+          font-family: sans-serif;
+        }
+        .mortgage-header {
+        //   background-color: #f8f9fa;
+          padding: 15px;
+          font-size: 28px;
+          text-align: center;
+          font-weight: bold;
+        }
+        .comparison-flex {
+          display: flex;
+          flex-wrap: wrap;
+        //   border: 1px solid #ddd;
+        }
+        .comparison-column {
+          flex: 1;
+          min-width: 300px;
+          display: flex;
+          flex-direction: column;
+        }
+        .frequency-title {
+          padding: 15px;
+          text-align: center;
+          font-size: 20px;
+          font-weight: 600;
+        }
+        .stats-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .stat-item {
+          padding: 15px;
+          display: flex;
+          flex-direction: column;
+        }
+        .value {
+          font-weight: 600;
+          margin-top: 5px;
+        }
+        .highlighted-text {
+          color: var(--hive-yellow);
+        }
+        .highlighted-value {
+          color: var(--hive-yellow);
+          font-size: 28px;
+          font-weight: 600;
+        }
+        .border-right { border-right: 2px solid var(--hive-yellow); }
+        .border-top { border-top: 2px solid var(--hive-yellow); }
+        
+        #benefits-box {
+          display: flex;
+          justify-content: space-around;
+          text-align: center;
+          gap: 20px;
+          padding: 20px;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 769px) {
+          .comparison-column.border-right { border-right: none; }
+          #benefits-box { flex-direction: column; }
+        }
+      `}</style>
+        </div>
     )
 }

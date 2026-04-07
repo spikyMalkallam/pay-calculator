@@ -727,7 +727,7 @@ select>option {
 
 .sub-benefit-box {
     text-align: center;
-    width: 33%;
+    /* width: 33%; */
     color: var(--hive-yellow);
 }
 

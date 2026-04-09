@@ -5,7 +5,7 @@
 .dropdown-container {
     width: 100%;
     border: 1px solid rgb(54, 54, 54);
-    cursor: pointer;
+    /* cursor: pointer; */
     margin: auto;
     overflow: hidden;
     transition: max-height 0.7s ease;
@@ -108,7 +108,7 @@
     align-items: center;
     color: black;
     width: 100%;
-    cursor: pointer;
+    /* cursor: pointer; */
     /* max-width: 1067px; */
 }
 
@@ -275,8 +275,13 @@ select>option {
 .dropdown-contents-div.Benefits {
     /* background-color: black; */
     max-width: 100%;
-    border-radius: 0px 20px 0px 0px;
+    /* padding-left: 200px; */
+    border-radius: 20px 20px 0px 0px;
     transition: 0.5s ease;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* .dropdown-contents-div.expanded {
@@ -590,6 +595,7 @@ select>option {
 }
 
 .dropdown.row-drop {
+    cursor: default;
     width: 100%;
     /* background-color: var(--income-subtable-backing); */
     text-align: left;

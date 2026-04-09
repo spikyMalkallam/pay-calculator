@@ -46,20 +46,30 @@ type IncomeProps = {
 }
 
 export function DropdownTab({ label, contents, subContents, colour }: DropdownProps) {
-    const [expanded, setExpanded] = useToggle()
+    // const [expanded, setExpanded] = useToggle()
+    const expanded = true;
 
     return (
         <>
-            <div className={'dropdown row-drop ' + label + (expanded ? " open" : '')} style={{ display: 'flex' }} onClick={setExpanded}>
-                <button
+            <div className={'dropdown row-drop ' + label + (expanded ? " open" : '')} style={{ display: 'flex' }} > {/* onClick={setExpanded} */}
+                {/* <button
                     className={'dropdown-button ' + (expanded ? "expanded " : '') + label}
                     style={{ backgroundColor: colour }}
                 >
                     {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
-                </button>
-                <div className={'dropdown-contents-div ' + (expanded ? "expanded " : '') + label} style={{ flexGrow: 1, backgroundColor: colour }}>{contents}</div>
+                </button> */}
+                <div className={'dropdown-contents-div ' + (expanded ? "expanded " : '') + label} style={{ flexGrow: 1, backgroundColor: colour }}>
+                    {/* <div id='mortage-link-box'>
+                        <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
+                            <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
+                        </a>
+                    </div> */}
+                    {contents}
+
+                </div>
+
             </div>
-            <div className={'dropdown-subdiv ' + (expanded ? "expanded " : '') + label} onClick={() => !expanded ? setExpanded() : () => null}>
+            <div className={'dropdown-subdiv ' + (expanded ? "expanded " : '') + label} > {/* onClick={() => !expanded ? setExpanded() : () => null} */}
                 {subContents}
             </div >
         </>
@@ -355,7 +365,8 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
 
                                 )
                             })
-                            }</td>
+                            }
+                        </td>
                     </tr>
                 </tbody>
             </table >

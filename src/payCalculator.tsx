@@ -921,7 +921,7 @@ export default function PayCalculator() {
             </div>}
           />
         </div> */}
-        <p style={{ color: 'black', margin: '0px', paddingBottom: '17px' }}><i>If you have any questions get in touch with our accounts team <a href='mailto:accounts@recruitmenthive.com.au' target='_blank' style={{ color: 'black', fontWeight: 'bold' }}>here</a></i></p>
+        <p style={{ color: 'black', margin: '0px', paddingBottom: '12px', paddingTop: '5px' }}><i>If you have any questions get in touch with our accounts team <a href='mailto:accounts@recruitmenthive.com.au' target='_blank' style={{ color: 'black', fontWeight: 'bold' }}>here</a></i></p>
 
         <div id='hive-benefits'>
           <DropdownTab
@@ -934,7 +934,7 @@ export default function PayCalculator() {
                     <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
                     Hive Benefits
                   </h2>
-                  <span className='hive-subheader'>Recruitment Hive can offer you</span>
+                  <span className='hive-subheader'>What can Recruitment Hive offer you</span>
                   <div className='pretax-savings'>
                     {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in annual income tax savings') : null}
                   </div>
@@ -1161,14 +1161,12 @@ export default function PayCalculator() {
                   </a>
                 </div>
               </div> */}
-
-              <div id='mortage-link-box'>
-                <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
-                  <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
-                </a>
-              </div>
-
-              <div style={{ background: 'black' }}>
+              <div style={{ background: 'black', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <div id='mortage-link-box'>
+                  <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
+                    <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
+                  </a>
+                </div>
                 <p style={{ color: 'var(--hive-yellow)', margin: '0px', paddingBottom: '5px' }}><i>We also offer Living Away From Home Allowance (LAFHA). Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
               </div>
             </>}

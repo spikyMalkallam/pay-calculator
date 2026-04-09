@@ -174,8 +174,15 @@ body {
   margin: 10px 0px;
   padding: 6px;
   justify-content: center;
-  transition: 0.3s all ease;
+  transition: 0.1s padding ease;
   border-radius: 40px;
+}
+
+#mortage-link-box:hover {
+  /* background-color: black; */
+  color: var(--hive-yellow);
+  padding: 6px 30px;
+  margin: 10px 0px;
 }
 
 #mortage-link {
@@ -183,8 +190,10 @@ body {
   font-size: 18px;
 }
 
-#mortage-link:hover {
-  text-decoration: underline;
+#mortage-link-box:hover a {
+  /* color: var(--hive-yellow); */
+
+  /* text-decoration: underline; */
 }
 
 

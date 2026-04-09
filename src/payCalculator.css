@@ -172,7 +172,7 @@ body {
   background-color: var(--hive-yellow);
   /* border-radius: 0px; */
   margin: 10px 0px;
-  padding: 6px;
+  padding: 6px 10px;
   justify-content: center;
   transition: 0.1s padding ease;
   border-radius: 40px;

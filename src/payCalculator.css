@@ -133,6 +133,10 @@ body {
     width: 30px;
     height: 30px;
   }
+
+  #mortage-link-box {
+    width: 95%;
+  }
 }
 
 @media (width > 1280px) {
@@ -157,15 +161,18 @@ body {
   .pretax-savings {
     font-size: 24px;
   }
+
+  #mortage-link-box {
+    width: fit-content;
+  }
 }
 
 #mortage-link-box {
   display: flex;
   background-color: var(--hive-yellow);
   /* border-radius: 0px; */
-  width: 45%;
   margin: 10px 0px;
-  padding: 5px 5px 5px 5px;
+  padding: 6px;
   justify-content: center;
   transition: 0.3s all ease;
   border-radius: 40px;

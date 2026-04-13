@@ -86,7 +86,7 @@ body {
 } */
 
 
-@media (width < 1280px) {
+@media (width <=1085px) {
   .global-div {
     flex-direction: column;
     align-items: center;
@@ -139,7 +139,7 @@ body {
   }
 }
 
-@media (width > 1280px) {
+@media (width > 1085px) {
   .flex-cell {
     margin: 0px 5px;
   }
@@ -168,27 +168,28 @@ body {
 }
 
 #mortage-link-box {
-  display: flex;
-  background-color: var(--hive-yellow);
-  /* border-radius: 0px; */
-  margin: 10px 0px;
-  padding: 6px 0px;
-  justify-content: center;
-  transition: 0.1s all ease;
-  border-radius: 40px;
+
   width: 100%;
 }
 
-#mortage-link-box:hover {
+#mortage-link:hover {
   /* background-color: black; */
-  color: var(--hive-yellow);
-  padding: 11px 0px;
-  margin: 5px 0px;
+  /* color: var(--hive-yellow); */
+  padding: 12px 10px;
+  margin: 7px 0px;
 }
 
 #mortage-link {
+  display: flex;
+  /* border-radius: 0px; */
+  justify-content: center;
+  transition: 0.1s all ease;
   color: black;
   font-size: 18px;
+  background-color: var(--hive-yellow);
+  margin: 13px 0px;
+  padding: 6px 10px;
+  border-radius: 40px;
 }
 
 /* #mortage-link-box:hover a {

@@ -16,6 +16,7 @@ export default function App() {
             <Routes>
                 <Route path="/pay-calculator" element={<PayCalculator />} />
                 <Route path="/homeloan-calculator" element={<HomeLoanCalculator />} />
+                <Route path="*" element={<p>Path not resolved</p>} />
             </Routes>
         </HashRouter>
     );

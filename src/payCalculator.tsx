@@ -788,11 +788,11 @@ export default function PayCalculator() {
                   </tr>
                 </tbody>
               </table>
-              <div id='mortage-link-box'>
-                <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
-                  <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
-                </a>
-              </div>
+              <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
+                {/* <div id='mortage-link-box'> */}
+                <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
+                {/* </div> */}
+              </a>
             </div>
             : <div className='flex-cell'></div>}
 

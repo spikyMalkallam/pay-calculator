@@ -11,7 +11,7 @@
   --super-colour: #33a2c6;
   --tax-colour: #ea9f21;
   --yellow-tone-5: #a69370; */
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 @keyframes spinAnimation {
@@ -172,17 +172,18 @@ body {
   background-color: var(--hive-yellow);
   /* border-radius: 0px; */
   margin: 10px 0px;
-  padding: 6px 10px;
+  padding: 6px 0px;
   justify-content: center;
-  transition: 0.1s padding ease;
+  transition: 0.1s all ease;
   border-radius: 40px;
+  width: 100%;
 }
 
 #mortage-link-box:hover {
   /* background-color: black; */
   color: var(--hive-yellow);
-  padding: 6px 30px;
-  margin: 10px 0px;
+  padding: 11px 0px;
+  margin: 5px 0px;
 }
 
 #mortage-link {
@@ -190,11 +191,11 @@ body {
   font-size: 18px;
 }
 
-#mortage-link-box:hover a {
-  /* color: var(--hive-yellow); */
+/* #mortage-link-box:hover a {
+  color: var(--hive-yellow);
 
-  /* text-decoration: underline; */
-}
+  text-decoration: underline;
+} */
 
 
 /* 
@@ -231,6 +232,7 @@ body {
 #summary-section {
   display: flex;
   width: 100%;
+  margin-top: 10px;
 }
 
 #income-div {
@@ -244,8 +246,10 @@ body {
 
 .flex-cell {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   width: 100%;
+  flex-direction: column;
+  align-items: center;
   /* justify-content: baseline; */
 }
 
@@ -375,7 +379,7 @@ button:focus {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   /* Add these */
   /* margin-left: auto;
   margin-right: auto;

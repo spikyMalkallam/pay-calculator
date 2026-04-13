@@ -3,7 +3,7 @@ import './dropdown.css'
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import useToggle from "./hooks/useToggle";
 import { SwitchToggle } from './buttons'
-import { displayMoney, HtmlTooltip } from "./functions"
+import { displayMoney, HtmlTooltip, round } from "./functions"
 import { AiFillInfoCircle } from "react-icons/ai";
 
 type DropdownProps = {
@@ -471,8 +471,13 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
                         <div className="highlighted-value">{displayMoney(mortageData['weeklyAnnualInterestSavings'])}</div>
                     </div>
                     <div className="sub-benefit-box">
-                        <p>Total Interest Savings</p>
-                        <div className="highlighted-value">{displayMoney(mortageData['weeklyInterestSavings'])}</div>
+                        <p>Annual Weekly Pay Fee</p>
+                        <div className="highlighted-value">{displayMoney(mortageData['yearlyFee'])}</div>
+                    </div>
+                    <div className="sub-benefit-box">
+                        <p>Net Savings</p>
+                        <p style={{ fontSize: '14px' }}><i>(Total interest savings minus total Fee)</i></p>
+                        <div className="highlighted-value">{displayMoney(round(mortageData['weeklyInterestSavings'] - (mortageData['totalFeeSum']), 2))}</div>
                     </div>
                 </div>
             </div>
@@ -489,7 +494,7 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
                 }
         .mortgage-container {
           width: 100%;
-          max-width: 800px;
+          max-width: 900px;
           margin: 0 auto;
           font-family: sans-serif;
         }
@@ -553,7 +558,7 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
         @media (max-width: 654px) {
           .comparison-column.border-right { border-right: none; }
           #benefits-box { flex-direction: column; }
-          .mortage-container { flex-direction: column; }
+          .mortgage-container { flex-direction: column; }
         }
       `}</style>
         </div>

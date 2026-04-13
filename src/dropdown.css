@@ -140,7 +140,8 @@
 }
 
 .expand-subdiv-vertical.expanded {
-    max-height: 500px;
+    height: 500px;
+    max-height: 140px;
     padding: 10px 5px 5px 5px;
 }
 

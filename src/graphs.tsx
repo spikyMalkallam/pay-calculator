@@ -118,14 +118,14 @@ export default function PayrollPieChart({ data, title }: PayrollPieProps) {
             color: sub.color, // Using the unique sub-color
         }))
     );
-    const innerRadius = 50;
-    const middleRadius = 110;
-    const outerRadius = 130;
+    const innerRadius = 60;
+    const middleRadius = 130;
+    const outerRadius = 155;
     // console.log(totalValue)
     return (
-        <Box sx={{ maxWidth: 350, height: 350, textAlign: 'center' }}>
+        <Box sx={{ maxWidth: 350, height: 150, textAlign: 'center' }}>
             <h2 style={{ margin: '0px 10px 0px 10px' }}>{title}</h2>
-            <Box sx={{ display: 'flex', justifyContent: 'center', width: 350, height: 350 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: 350, height: 319 }}>
                 <PieChart
                     series={[
                         {
@@ -134,7 +134,7 @@ export default function PayrollPieChart({ data, title }: PayrollPieProps) {
                             innerRadius: innerRadius,
                             outerRadius: middleRadius,
                             paddingAngle: 2,
-                            cornerRadius: 4,
+                            cornerRadius: 3,
                             arcLabel: (item) => `${item.label}`,
                             highlightScope: { fade: 'global', highlight: 'item' },
                         },
@@ -144,7 +144,7 @@ export default function PayrollPieChart({ data, title }: PayrollPieProps) {
                             innerRadius: middleRadius + 5,
                             outerRadius: outerRadius,
                             paddingAngle: 1,
-                            cornerRadius: 2,
+                            cornerRadius: 3,
                             // arcLabel: (item) => `${((item.value / totalValue) * 100).toFixed(0)}%`,
                             arcLabelRadius: outerRadius + 20, // Move labels outside
                             highlightScope: { fade: 'global', highlight: 'item' },

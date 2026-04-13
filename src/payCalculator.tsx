@@ -697,6 +697,7 @@ export default function PayCalculator() {
               max={null}
               lock={false}
             />
+            <p style={{ color: 'black', margin: '0px', paddingBottom: '16px', paddingTop: '16px', fontSize: '18px' }}><i>If you have any questions get in touch with our accounts team <a href='mailto:accounts@recruitmenthive.com.au' target='_blank' style={{ color: 'black', fontWeight: 'bold' }}>here</a></i></p>
           </div>
           {/* <div className='flex-cell'>
             <table className='dropdown-table'>
@@ -787,6 +788,11 @@ export default function PayCalculator() {
                   </tr>
                 </tbody>
               </table>
+              <div id='mortage-link-box'>
+                <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
+                  <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
+                </a>
+              </div>
             </div>
             : <div className='flex-cell'></div>}
 
@@ -921,8 +927,8 @@ export default function PayCalculator() {
             </div>}
           />
         </div> */}
-        <p style={{ color: 'black', margin: '0px', paddingBottom: '12px', paddingTop: '5px' }}><i>If you have any questions get in touch with our accounts team <a href='mailto:accounts@recruitmenthive.com.au' target='_blank' style={{ color: 'black', fontWeight: 'bold' }}>here</a></i></p>
-
+        <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+        </div>
         <div id='hive-benefits'>
           <DropdownTab
             colour='black'
@@ -1162,19 +1168,31 @@ export default function PayCalculator() {
                 </div>
               </div> */}
               <div style={{ background: 'black', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <div id='mortage-link-box'>
+                {/* <div id='mortage-link-box'>
                   <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
                     <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
                   </a>
-                </div>
-                <p style={{ color: 'var(--hive-yellow)', margin: '0px', paddingBottom: '5px' }}><i>We also offer Living Away From Home Allowance (LAFHA). Learn more <a href='https://www.recruitmenthive.com.au/payroll-operations/' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a></i></p>
+                </div> */}
+                <p style={{ color: 'var(--hive-yellow)', margin: '0px', paddingBottom: '12px', paddingTop: '5px' }}><i>We also offer Living Away From Home Allowance (LAFHA). Get in touch with our accounts team <a href='mailto:accounts@recruitmenthive.com.au' target='_blank' style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }}>here</a> to learn more.</i></p>
               </div>
             </>}
 
           />
 
         </div>
+        {optionsActive.length > 0 ?
+          <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold', marginTop: '0px', marginBottom: '4px' }} className='desktop-only' >
+            Benefits Active: {optionsActive.map((option) => {
+              return (
+                <span style={{ color: 'black', fontWeight: 'bold' }}>
+                  {option}
+                </span>
+              )
 
+            })}
+          </p>
+          :
+          null}
         <div id='summary-section'>
           {/* <div id='summary-div'> */}
           <div className="table-container">
@@ -1217,19 +1235,7 @@ export default function PayCalculator() {
                 </tr>
               </tbody>
             </table>
-            {optionsActive.length > 0 ?
-              <p style={{ color: 'var(--hive-yellow)', fontWeight: 'bold' }} className='desktop-only' >
-                Benefits Active: {optionsActive.map((option) => {
-                  return (
-                    <span style={{ color: 'black', fontWeight: 'bold' }}>
-                      {option}
-                    </span>
-                  )
 
-                })}
-              </p>
-              :
-              null}
           </div>
           {<p className='mobile-only'><i>Swipe to see more </i><AiOutlineArrowRight /></p>}
           {optionsActive.length > 0 ?

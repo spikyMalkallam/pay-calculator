@@ -30,6 +30,7 @@ export default function HomeLoanCalculator() {
     const [mortageLoanAmmount, setMortageLoanAmmount] = useState(1000000);
     const [mortageInterestRate, setMortageInterestRate] = useState(6);
     const [mortageTerm, setMortageTerm] = useState(30);
+    const [hourlyRate, setHourlyRate] = useState(100);
     // const [mortagePayFreq, setMortagePayFreq] = useToggle();
     const mortagePayFreq = true;
     // const [hasMortage, setHasMortage] = useToggle();
@@ -46,6 +47,9 @@ export default function HomeLoanCalculator() {
         const weeklyTotalInterest = round(weeklyTotalRepayments - loanAmmount, 2);
         const weeklyInterestSavings = round(monthlyTotalInterest - weeklyTotalInterest, 2);
         const weeklyAnnualInterestSavings = round(weeklyInterestSavings / weeklyPayedOffIn, 2);
+
+        const yearlyFee = (hourlyRate * 1976) * 0.01;
+        const totalFeeSum = yearlyFee * weeklyPayedOffIn;
         return (
             {
                 'loanTerm': loanTerm,
@@ -58,14 +62,16 @@ export default function HomeLoanCalculator() {
                 'monthlyTotalInterest': monthlyTotalInterest,
                 'weeklyTotalInterest': weeklyTotalInterest,
                 'weeklyInterestSavings': weeklyInterestSavings,
-                'weeklyAnnualInterestSavings': weeklyAnnualInterestSavings
+                'weeklyAnnualInterestSavings': weeklyAnnualInterestSavings,
+                'yearlyFee': yearlyFee,
+                'totalFeeSum': totalFeeSum
             }
         )
     }
     const mortageData = useMemo(() => {
         const mortageData = calculateMortage(mortageLoanAmmount, mortageInterestRate, mortageTerm);
         return mortageData
-    }, [mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq])
+    }, [mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hourlyRate])
     return (
         <div id='payroll-options'>
             <div >
@@ -131,9 +137,30 @@ export default function HomeLoanCalculator() {
                                 infoTag={null}
                             /> */}
                         </div>
+                        <br></br>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyItems: 'center', alignItems: 'center' }}>
+                            <br></br>
+                            <InputField
+                                textColour='white'
+                                headerColour='var(--hive-yellow)'
+                                backgroundColour='var(--yellow-tone-5)'
+                                label={"Hourly Rate (including super)"}
+                                id='hourly-rate'
+                                value={hourlyRate}
+                                setFunc={(val) => { setHourlyRate(val); }}
+                                styling='medium'
+                                formatting={'monetary'}
+                                rounding={2}
+                                min={0}
+                                max={null}
+                                lock={false}
+                            />
+                            <p style={{ fontSize: '17px' }}><i>Recruitment Hive's weekly pay has a 1% fee (Monthly Pay has no fee)</i></p>
+
+                        </div>
                         <MortageRepaymentTable mortageData={mortageData} monthlyPayment={mortagePayFreq} />
                         <br></br>
-                        <i>Recruitment Hive's weekly pay has a 1% fee</i>
+
                     </div>
                 </div>
             </div>

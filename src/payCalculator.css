@@ -11,7 +11,7 @@
   --super-colour: #33a2c6;
   --tax-colour: #ea9f21;
   --yellow-tone-5: #a69370; */
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 @keyframes spinAnimation {

@@ -58,7 +58,7 @@ export function DropdownTab({ label, contents, subContents, colour }: DropdownPr
                 >
                     {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
                 </button> */}
-                <div className={'dropdown-contents-div ' + (expanded ? "expanded " : '') + label} style={{ flexGrow: 1, cursor: 'pointer', backgroundColor: colour }}>
+                <div className={'dropdown-contents-div ' + (expanded ? "expanded " : '') + label} style={{ flexGrow: 1, cursor: 'default', backgroundColor: colour }}>
                     {/* <div id='mortage-link-box'>
                         <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
                             <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>

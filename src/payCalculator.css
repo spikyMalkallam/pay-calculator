@@ -97,6 +97,10 @@ body {
     overflow: visible;
   }
 
+  #estimate-line {
+    padding: 190px 0px 0px 20px
+  }
+
   .summary-div {
     display: flex;
     flex-direction: column;

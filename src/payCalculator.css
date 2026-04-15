@@ -177,10 +177,7 @@ body {
 }
 
 #mortage-link:hover {
-  /* background-color: black; */
-  /* color: var(--hive-yellow); */
-  padding: 11px 10px;
-  margin: 8px 0px;
+  transform: scale(1.08);
 }
 
 #mortage-link {

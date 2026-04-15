@@ -1257,7 +1257,7 @@ export default function PayCalculator() {
 
           </div>
         </div>
-        <div style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
+        <div id="estimate-line" style={{ textAlign: 'center', fontStyle: 'italic' }}>This calculator is an estimate</div>
       </div >
     </>
   )

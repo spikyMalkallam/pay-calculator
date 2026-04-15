@@ -86,7 +86,7 @@ export default function HomeLoanCalculator() {
                             <InputField
                                 textColour='white'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='var(--yellow-tone-5)'
+                                backgroundColour='rgba(131, 131, 131)'
                                 label={"Loan Ammount"}
                                 id='mortage-loan-ammount'
                                 value={mortageLoanAmmount}
@@ -101,7 +101,7 @@ export default function HomeLoanCalculator() {
                             <InputField
                                 textColour='white'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='var(--yellow-tone-5)'
+                                backgroundColour='rgba(131, 131, 131)'
                                 label={"Loan Term (years)"}
                                 id='mortage-loan-ammount'
                                 value={mortageTerm}
@@ -116,7 +116,7 @@ export default function HomeLoanCalculator() {
                             <InputField
                                 textColour='white'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='var(--yellow-tone-5)'
+                                backgroundColour='rgba(131, 131, 131)'
                                 label={"Annual Interest Rate"}
                                 id='mortage-loan-ammount'
                                 value={mortageInterestRate}
@@ -143,7 +143,7 @@ export default function HomeLoanCalculator() {
                             <InputField
                                 textColour='white'
                                 headerColour='var(--hive-yellow)'
-                                backgroundColour='var(--yellow-tone-5)'
+                                backgroundColour='rgba(131, 131, 131)'
                                 label={"Hourly Rate (including super)"}
                                 id='hourly-rate'
                                 value={hourlyRate}

@@ -58,7 +58,7 @@ export function DropdownTab({ label, contents, subContents, colour }: DropdownPr
                 >
                     {expanded ? <AiFillCaretDown /> : <AiFillCaretUp />}
                 </button> */}
-                <div className={'dropdown-contents-div ' + (expanded ? "expanded " : '') + label} style={{ flexGrow: 1, backgroundColor: colour }}>
+                <div className={'dropdown-contents-div ' + (expanded ? "expanded " : '') + label} style={{ flexGrow: 1, cursor: 'pointer', backgroundColor: colour }}>
                     {/* <div id='mortage-link-box'>
                         <a id='mortage-link' target='_blank' href='https://www.recruitmenthive.com.au/mortage-savings-calculator/'>
                             <i>Learn how Hive's weekly pay can help you save money on your Home Loan</i>
@@ -80,7 +80,7 @@ export function DropdownTab2({ label, contents, subContents, colour }: DropdownP
 
     return (
         <>
-            <div onClick={setExpanded} className={'dropdown row-drop ' + label} style={{ display: 'flex' }}>
+            <div onClick={setExpanded} className={'dropdown row-drop ' + label} style={{ display: 'flex', cursor: 'pointer' }}>
                 <button
                     className={'dropdown-button ' + colour + (expanded ? " expanded" : '')}
 
@@ -287,7 +287,7 @@ export function IncomeTable({ items, totals, oldTax, totalItems }: IncomeProps) 
                                 let renderedSubRows = Object.entries(subrows).map(([key, subValue]: [string, any]) => {
                                     if (subValue != null) {
                                         return (
-                                            <div className={'dropdown row-drop '} style={{ display: 'flex' }}>
+                                            <div className={'dropdown row-drop'} style={{ display: 'flex' }}>
                                                 <button className="dropdown-spacer dark-grey">
                                                 </button>
                                                 <div style={{ flexGrow: 1 }}><table className="sub-sub-table-header">
@@ -494,7 +494,7 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
                 }
         .mortgage-container {
           width: 100%;
-          max-width: 900px;
+          max-width: 1100px;
           margin: 0 auto;
           font-family: sans-serif;
         }

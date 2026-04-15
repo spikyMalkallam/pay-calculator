@@ -7,7 +7,7 @@
     border: 1px solid rgb(54, 54, 54);
     /* cursor: pointer; */
     margin: auto;
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: max-height 0.7s ease;
     min-width: 0;
 }
@@ -596,7 +596,7 @@ select>option {
 }
 
 .dropdown.row-drop {
-    cursor: default;
+    /* cursor: pointer; */
     width: 100%;
     /* background-color: var(--income-subtable-backing); */
     text-align: left;
@@ -744,6 +744,25 @@ select>option {
     border: 5px solid var(--hive-yellow);
     padding: 5px;
     margin-top: 15px;
+    /* width: fit-content; */
+}
+
+@media (width > 1035px) {
+    #benefits-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (width < 1035px) {
+    #benefits-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 #savings-header {
@@ -752,15 +771,8 @@ select>option {
     color: var(--hive-yellow);
 }
 
-#benefits-box {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
 #benefits-box p {
-    font-size: 20px;
+    font-size: 22px;
     margin: 5px;
 }
 

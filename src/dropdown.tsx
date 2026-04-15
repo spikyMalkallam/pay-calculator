@@ -464,19 +464,22 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
                 <div id="benefits-box">
                     <div className="sub-benefit-box">
                         <p>Time Saved</p>
+                        <p style={{ fontSize: '14px', margin: '0px' }}>&#x00AD;</p>
                         <div className="highlighted-value">{mortageData['weeklyTimeSaved']} years</div>
                     </div>
                     <div className="sub-benefit-box">
                         <p>Annual Interest Savings</p>
+                        <p style={{ fontSize: '14px', margin: '0px' }}>&#x00AD;</p>
                         <div className="highlighted-value">{displayMoney(mortageData['weeklyAnnualInterestSavings'])}</div>
                     </div>
                     <div className="sub-benefit-box">
                         <p>Annual Weekly Pay Fee</p>
+                        <p style={{ fontSize: '14px', margin: '0px' }}>&#x00AD;</p>
                         <div className="highlighted-value">{displayMoney(mortageData['yearlyFee'])}</div>
                     </div>
                     <div className="sub-benefit-box">
                         <p>Net Savings</p>
-                        <p style={{ fontSize: '14px' }}><i>(Total interest savings minus total Fee)</i></p>
+                        <p style={{ fontSize: '14px', margin: '0px' }}><i>(Total interest savings minus total Fee)</i></p>
                         <div className="highlighted-value">{displayMoney(round(mortageData['weeklyInterestSavings'] - (mortageData['totalFeeSum']), 2))}</div>
                     </div>
                 </div>

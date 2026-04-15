@@ -23,3 +23,12 @@
     justify-items: center;
     align-items: center;
 }
+
+.medium-form-box {
+    border-radius: 25px 25px 15px 15px;
+    margin: 0px 5px;
+}
+
+.medium-form-box-header {
+    border-radius: 15px 15px 0px 0px;
+}

@@ -138,8 +138,7 @@ export default function HomeLoanCalculator() {
                             /> */}
                         </div>
                         <br></br>
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyItems: 'center', alignItems: 'center' }}>
-                            <br></br>
+                        <div id='salary-box'>
                             <InputField
                                 textColour='white'
                                 headerColour='var(--hive-yellow)'

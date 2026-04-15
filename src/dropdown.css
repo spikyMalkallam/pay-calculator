@@ -768,12 +768,14 @@ select>option {
 #savings-header {
     font-weight: bold;
     font-size: 30px;
+
     color: var(--hive-yellow);
 }
 
 #benefits-box p {
-    font-size: 22px;
+    font-size: 24px;
     margin: 5px;
+    margin-bottom: 0px;
 }
 
 .mortage-body td {

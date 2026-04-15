@@ -674,7 +674,6 @@ export default function PayCalculator() {
     };
   }, [salary, payCycle, superPercentage, salaryIncludesSuper, hasStudentLoan, dailyHours, daysPerPeriod, hoursPeriod, hasNovatedLease, novatedLeaseExample, hasWorkDeductions, workDeductablesAmount, hasSuperSalarySacrifise, voluntarySuperAmmount, maximiseSuper, hasNovatedLease, mortageLoanAmmount, mortageInterestRate, mortageTerm, mortagePayFreq, hasMortage]);
   //bonus hasBonus bonusFrequency hasPretaxDeduction pretaxDeductionAmount
-
   return (
     <>
       <div className='global-div'>
@@ -936,13 +935,17 @@ export default function PayCalculator() {
             contents={
               <>
                 <div className='hive-benefits-div'>
-                  <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}>
-                    <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
-                    Hive Benefits
-                  </h2>
-                  <span className='hive-subheader'>What can Recruitment Hive offer you</span>
-                  <div className='pretax-savings'>
-                    {financialData['undeductedTax'].length > 0 ? (pretaxSavings[4] + ' in annual income tax savings') : null}
+                  <div>
+                    <h2 className='hive-shine' style={{ display: 'flex', justifyContent: 'center' }}>
+                      <img src='https://www.recruitmenthive.com.au/wp-content/uploads/2026/02/cropped-recruitmentHive_H_small.png' id="hive_logo" alt="Recruitment Hive logo" />
+                      Hive Benefits
+                    </h2>
+                    <span className='hive-subheader'>What can Recruitment Hive offer you</span>
+                  </div>
+                  <div className={`pretax-savings${financialData['undeductedTax'].length > 0 ? ' pretax-savings--visible' : ''}`}>
+                    <div className='pretax-savings__inner'>
+                      {pretaxSavings[4] + ' in annual income tax savings'}
+                    </div>
                   </div>
                 </div>
               </>

@@ -468,17 +468,12 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
                         <div className="highlighted-value">{mortageData['weeklyTimeSaved']} years</div>
                     </div>
                     <div className="sub-benefit-box">
-                        <p>Annual Interest Savings</p>
-                        <p style={{ fontSize: '14px', margin: '0px' }}>&#x00AD;</p>
-                        <div className="highlighted-value">{displayMoney(mortageData['weeklyAnnualInterestSavings'])}</div>
+                        <p>Annual Net Savings</p>
+                        <p style={{ fontSize: '14px', margin: '0px' }}><i>(Annual interest savings minus annual Fee)</i></p>
+                        <div className="highlighted-value">{displayMoney(mortageData['weeklyAnnualInterestSavings'] - mortageData['yearlyFee'])}</div>
                     </div>
                     <div className="sub-benefit-box">
-                        <p>Annual Weekly Pay Fee</p>
-                        <p style={{ fontSize: '14px', margin: '0px' }}>&#x00AD;</p>
-                        <div className="highlighted-value">{displayMoney(mortageData['yearlyFee'])}</div>
-                    </div>
-                    <div className="sub-benefit-box">
-                        <p>Net Savings</p>
+                        <p>Total Net Savings</p>
                         <p style={{ fontSize: '14px', margin: '0px' }}><i>(Total interest savings minus total Fee)</i></p>
                         <div className="highlighted-value">{displayMoney(round(mortageData['weeklyInterestSavings'] - (mortageData['totalFeeSum']), 2))}</div>
                     </div>
@@ -486,6 +481,15 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
             </div>
 
             <style>{`
+            #savings-box {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            #savings-header {
+                width: fit-content;
+            }
             #mortage-dropdown {
                 justify-content: center;
                 align-items: center;
@@ -553,10 +557,13 @@ export function MortageRepaymentTable({ mortageData }: MortageProps) {
           display: flex;
           justify-content: space-around;
           text-align: center;
-          gap: 20px;
+          gap: 80px;
           padding: 20px;
+          width: 100%;
         }
-
+        .sub-benefit-box {
+            width: 120%;
+        }
         /* Mobile Adjustments */
         @media (max-width: 654px) {
           .comparison-column.border-right { border-right: none; }

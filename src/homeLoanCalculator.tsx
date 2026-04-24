@@ -87,7 +87,7 @@ export default function HomeLoanCalculator() {
                                 textColour='white'
                                 headerColour='var(--hive-yellow)'
                                 backgroundColour='rgba(151, 151, 151)'
-                                label={"Loan Ammount"}
+                                label={"Loan Amount"}
                                 id='mortage-loan-ammount'
                                 value={mortageLoanAmmount}
                                 setFunc={(val) => { setMortageLoanAmmount(val); }}
